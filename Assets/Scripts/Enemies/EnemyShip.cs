@@ -68,7 +68,7 @@ public class EnemyShip : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Enemy Destroyed")
+        Debug.Log("Enemy Destroyed");
         Destroy(gameObject);
     }
 }
