@@ -11,7 +11,7 @@ public class ShipMovement : MonoBehaviour
     public float shipLength = 10f;
 
     [Header ("Turning")]
-    public float turnSpeed = 60f;
+    public float baseTurnSpeed = 60f;
     
     private float currentSpeed = 0f;
 
@@ -60,14 +60,14 @@ public class ShipMovement : MonoBehaviour
     {
         float turnInput = Input.GetAxis("Horizontal");
 
-        if (Math.Abs(currentSpeed) < 0.01f)
+        if (Mathf.Abs(currentSpeed) < 0.01f)
             return;
 
         //Longer ships turn more slowly
-        float lengthFactor - 10f / shipLength
+        float lengthFactor - 10f / shipLength;
 
         //Ships turn slower at high speed
-        flot speedFactor = Mathf.Clamp01(
+        float speedFactor = Mathf.Clamp01(
             Mathf.Abs(currentSpeed) / maxSpeed
         );
 

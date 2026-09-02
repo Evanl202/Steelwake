@@ -15,12 +15,12 @@ public class Weapon : MonoBehaviour
     {
         if (reloadTimer > 0f)
         {
-            reloadTimer -= TIme.deltaTime;
+            reloadTimer -= Time.deltaTime;
         }
 
         if (Input.GetMouseButton(0) && reloadTimer <= 0f)
         {
-            Fire()
+            Fire();
         }
     }
 

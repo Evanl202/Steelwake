@@ -22,9 +22,9 @@ public class EnemyShip : MonoBehaviour
         {
             player = playerObject.transform;
         }
-        else()
+        else
         {
-            Debug.LogWarning("Enemy can't find Player")
+            Debug.LogWarning("Enemy can't find Player");
         }
     }
 
@@ -35,7 +35,7 @@ public class EnemyShip : MonoBehaviour
             return;
         }
             
-        MoveTowardPlayer()
+        MoveTowardPlayer();
     }
 
     private void MoveTowardPlayer()
@@ -58,9 +58,9 @@ public class EnemyShip : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        Debug.log("Enemy HP: " + currentHealth)
+        Debug.Log("Enemy HP: " + currentHealth);
 
-        if (currentHealth <= 0f):
+        if (currentHealth <= 0f)
         {
             Die();
         }

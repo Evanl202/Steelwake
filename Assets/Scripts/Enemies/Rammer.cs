@@ -8,14 +8,14 @@ public class Rammer : EnemyShip
     public float impactDistance = 1.5f;
 
     protected override void Update()
-    (
+    {
         if (GameManager.Instance != null && !GameManager.Instance.gameRunning)
         {
             return;
         }
 
-        RamPlayer()
-    )
+        RamPlayer();
+    }
 
     private void RamPlayer()
     {
@@ -44,7 +44,7 @@ public class Rammer : EnemyShip
         if (playerShip == null)
             return;
         
-        float impactSpeed = moveSpeed
+        float impactSpeed = moveSpeed;
 
         float damage = Mathf.Max(
             minimumDamage,

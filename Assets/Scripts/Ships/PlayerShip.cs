@@ -12,7 +12,7 @@ public class PlayerShip : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(float TakeDamage)
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
 
