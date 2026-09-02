@@ -64,7 +64,7 @@ public class ShipMovement : MonoBehaviour
             return;
 
         //Longer ships turn more slowly
-        float lengthFactor - 10f / shipLength;
+        float lengthFactor = 10f / shipLength;
 
         //Ships turn slower at high speed
         float speedFactor = Mathf.Clamp01(

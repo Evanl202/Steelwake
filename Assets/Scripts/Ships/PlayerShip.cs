@@ -27,7 +27,7 @@ public class PlayerShip : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Ship destroyed")
+        Debug.Log("Ship destroyed");
 
         if (GameManager.Instance != null)
         {
