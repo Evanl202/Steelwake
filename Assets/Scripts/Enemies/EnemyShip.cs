@@ -10,7 +10,7 @@ public class EnemyShip : MonoBehaviour
     [Header ("Movement")]
     public float moveSpeed = 3f;
 
-    private Transform player;
+    protected Transform player;
 
     private void Start()
     {
