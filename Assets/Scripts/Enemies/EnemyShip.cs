@@ -28,7 +28,7 @@ public class EnemyShip : MonoBehaviour
         }
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (GameManager.Instance != null && !GameManager.Instance.gameRunning)
         {
