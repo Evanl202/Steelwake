@@ -4,10 +4,9 @@ using TMPro;
 
 public class HealthBarUI : MonoBehaviour
 {
+    public PlayerShip player;
     public Slider healthSlider;
     public TMP_Text healthText;
-
-    public PlayerShip player;
 
     private void start()
     {
