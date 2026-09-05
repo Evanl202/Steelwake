@@ -7,11 +7,11 @@ public class HealthBarUI : MonoBehaviour
     public Slider healthSlider;
     public TMP_Text healthText;
 
-    private PlayerShip player;
+    public PlayerShip player;
 
     private void start()
     {
-        player = FindFirstObjectByType<PlayerShip>();
+        UpdateHealthBar()
     }
 
     private void Update()
@@ -19,10 +19,10 @@ public class HealthBarUI : MonoBehaviour
         if (player == null)
             return;
 
-        UpdateHealthBarUI();
+        UpdateHealthBar();
     }
 
-    private void UpdateHealthBarUI ()
+    private void UpdateHealthBar()
     {
         float currentHealth = player.CurrentHealth;
         float maxHealth = player.maxHealth;
