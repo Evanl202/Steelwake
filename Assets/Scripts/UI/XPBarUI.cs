@@ -10,7 +10,7 @@ public class XPBarUI : MonoBehaviour
 
     private void Update()
     {
-        if (ExperienceManager != null)
+        if (ExperienceManager.Instance == null)
             return;
 
         UpdateXPBar();

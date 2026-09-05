@@ -36,7 +36,7 @@ public class ExperienceManager : MonoBehaviour
 
     public void CheckLevel()
     {
-        if(currentXP >= xpToNextLevel)
+        while (currentXP >= xpToNextLevel)
         {
             LevelUp();
 
@@ -47,7 +47,7 @@ public class ExperienceManager : MonoBehaviour
     {
         currentXP -= xpToNextLevel;
 
-        currentXP++;
+        currentLevel++;
 
         xpToNextLevel = Mathf.RoundToInt(
             xpToNextLevel * 1.5f
