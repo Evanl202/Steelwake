@@ -4,7 +4,54 @@ using TMPro;
 
 public class LevelUpUI : MonoBehaviour
 {
+    [Header ("Panel")]
     public GameObject levelUpPanel;
+    
+    [Header ("Buttons")]
+    public Button button1;
+    public Button button2;
+    public Button button3;
+
+    [Header ("Button Text")]
+    public TMP_Text button1Name;
+    public TMP_Text button1Description;
+
+    public TMP_Text button2Name;
+    public TMP_Text button2Description;
+
+    public TMP_Text button3Name;
+    public TMP_Text button3Description;
+
+    private UpgradeData[] upgrades =
+    {
+        new UpgradeData(
+            "SPEED",
+            "Increase maximum ship speed by 10%".
+            0
+        ),
+
+        new UpgradeData(
+            "DAMAGE",
+            "Increase shell damage by 10%".
+            1
+        ),
+
+        new UpgradeData(
+            "RELOAD",
+            "Reduce reload time by 10%".
+            2
+        ),
+
+        new UpgradeData(
+            "HEALTH",
+            "Increase maximum health by 20".
+            3
+        ),
+    };
+
+    private UpgradeData choice1;
+    private UpgradeData choice2;
+    private UpgradeData choice3;
 
     private void start()
     {
@@ -20,49 +67,94 @@ public class LevelUpUI : MonoBehaviour
         Debug.Log("Level up panel opened");
     }
 
-    public void SelectSpeed()
+    private void GenerateChoices()
     {
-        Debug.Log("Speed Upgrade Selected");
+        choice1 = upgrades[Random.Range(0, upgrades.Length)];
 
-        if (UpgradeManager.Instance != null)
+        do
         {
-            UpgradeManager.Instance.UpgradeSpeed();
+            choice2 = upgrades[Random.Range(0, upgrades.Length)];
         }
+        while (choice2 == choice1);
 
-        HideLevelUp();
+        do
+        {
+            choice3 = upgrades[Random.Range(0, upgrades.Length)];
+        }
+        while (choice3 == choice1 || choice3 == choice2);
+
+        DisplayUpgrade(
+            choice1,
+            button1Name,
+            button1Description
+        );
+
+        DisplayUpgrade(
+            choice2,
+            button2Name,
+            button2Description
+        );
+
+        DisplayUpgrade(
+            choice3,
+            button3Name,
+            button3Description
+        );
     }
 
-    public void SelectDamage()
+    private void DisplayUpgrade(
+        UpgradeData upgrade,
+        TMP_Text nameText,
+        TMP_Text descriptionText
+    )
     {
-        Debug.Log("Damage Upgrade Selected");
-
-        if (UpgradeManager.Instance != null)
-        {
-            UpgradeManager.Instance.UpgradeDamage();
-        }
-
-        HideLevelUp();
+        nameText.text = upgrade.upgradeName;
+        descriptionText.text = upgrade.description;
     }
 
-    public void SelectHealth()
+    public void SelectButton1()
     {
-        Debug.Log("Health Upgrade Selected");
-
-        if (UpgradeManager.Instance != null)
-        {
-            UpgradeManager.Instance.UpgradeHealth();
-        }
-
-        HideLevelUp();
+        ApplyUpgrade(choice1);
     }
 
-    public void SelectReload()
+    public void SelectButton2()
     {
-        Debug.Log("Reload Upgrade Selected");
+        ApplyUpgrade(choice2);
+    }
 
-        if (UpgradeManager.Instance != null)
+    public void SelectButton3()
+    {
+        ApplyUpgrade(choice3);
+    }
+
+    private void ApplyUpgrade(UpgradeData upgrade)
+    {
+        Debug.Log("Selected upgrade: " + upgrade.upgradeName);
+
+        if (UpgradeManager.Instance == null)
         {
-            UpgradeManager.Instance.UpgradeReload();
+            Debug.LogWarning("UpgradeManager not found.");
+            HideLevelUp();
+            return;
+        }
+
+        switch (upgrade.upgradeType)
+        {
+            case 0:
+                UpgradeManager.Instance.UpgradeSpeed();
+                break;
+
+            case 1:
+                UpgradeManager.Instance.UpgradeDamage();
+                break;
+
+            case 2:
+                UpgradeManager.Instance.UpgradeReload();
+                break;
+
+            case 3:
+                UpgradeManager.Instance.UpgradeHealth();
+                break;
         }
 
         HideLevelUp();
@@ -75,5 +167,24 @@ public class LevelUpUI : MonoBehaviour
         Time.timeScale = 1f;
 
         Debug.Log("Level up panel closed");
+    }
+}
+
+[System.Serializable]
+public class UpgradeData
+{
+    public string upgradeName;
+    public string description;
+    public int upgradeType;
+
+    public UpgradeData(
+        string name,
+        string descriptionText,
+        int type
+    )
+    {
+        upgradeName = name;
+        description = descriptionText;
+        upgradeType = type;
     }
 }
