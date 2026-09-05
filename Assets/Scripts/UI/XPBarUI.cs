@@ -28,7 +28,7 @@ public class XPBarUI : MonoBehaviour
         levelText.text = "LEVEL " + manager.currentLevel;
 
         //Update xp numbers
-        xpText.text = manager.currentXP " / " + manager.xpToNextLevel " XP";
+        xpText.text = manager.currentXP + " / " + manager.xpToNextLevel + " XP";
 
     }
 }
