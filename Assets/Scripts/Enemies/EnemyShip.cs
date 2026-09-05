@@ -76,6 +76,7 @@ public class EnemyShip : MonoBehaviour
 
         if (xpPickupPrefab != null)
         {
+            Debug.Log("Enemey dropped XP");
             GameObject pickup = Instantiate(
                 xpPickupPrefab,
                 transform.position,
@@ -88,6 +89,12 @@ public class EnemyShip : MonoBehaviour
             {
                 xp.xpAmount = experienceReward;
             }
+        else
+        {
+            Debug.LogWarning(
+                "Enemyship has no XP Prefab assigned"
+            );
+        }
             
         }
         Destroy(gameObject);

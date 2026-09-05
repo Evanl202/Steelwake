@@ -61,6 +61,7 @@ public class Rammer : EnemyShip
 
         if (xpPickupPrefab != null)
         {
+            Debug.Log("Enemey dropped XP");
             GameObject pickup = Instantiate(
                 xpPickupPrefab,
                 transform.position,
@@ -73,6 +74,11 @@ public class Rammer : EnemyShip
             {
                 xp.xpAmount = experienceReward;
             }
+        else
+        {
+            Debug.LogWarning(
+                "Enemyship has no XP Prefab assigned"
+            );
         }
 
         Debug.Log(
