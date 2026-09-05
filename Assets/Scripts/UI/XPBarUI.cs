@@ -5,8 +5,8 @@ using TMPro;
 public class XPBarUI : MonoBehaviour
 {
     public Slider xpSlider;
-    public TMP_Test levelText;
-    public TMP_Test xpText;
+    public TMP_Text levelText;
+    public TMP_Text xpText;
 
     private void Update()
     {
