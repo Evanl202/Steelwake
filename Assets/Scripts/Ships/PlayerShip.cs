@@ -7,6 +7,8 @@ public class PlayerShip : MonoBehaviour
 
     private float currentHealth;
 
+    public float CurrentHealth => currentHealth;
+
     void Start()
     {
         currentHealth = maxHealth;
