@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     [Header ("Game State")]
     public bool gameRunning = true;
 
+    [Header ("UI")]
+    public GameObject gameOverPanel;
+
     private void Awake()
     {
         if (Instance == null)
@@ -20,6 +23,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        //If restarted makes game run
+        Time.timeScale = 1f;
+        gameRunning = true;
+
+        //Hide Game Over panel
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(false);
+        }
+    }
+
     public void GameOver()
     {
         if (!gameRunning)
@@ -27,6 +43,13 @@ public class GameManager : MonoBehaviour
         
         gameRunning = false;
         Debug.Log("Game Over");
+
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true);
+        }
+
+        Time.timeScale = 0f;
     }
 
     public void RestartGame()
