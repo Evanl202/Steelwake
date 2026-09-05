@@ -47,7 +47,7 @@ public class Rammer : EnemyShip
         
         hasImpacted = true;
 
-        Debug.Log("IMPACT")
+        Debug.Log("IMPACT");
 
         if (xpPickupPrefab != null)
         {
