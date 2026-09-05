@@ -7,6 +7,8 @@ public class Rammer : EnemyShip
     public float minimumDamage = 10f;
     public float impactDistance = 1.5f;
 
+    private bool hasImpacted = false;
+
     protected override void Update()
     {
         if (GameManager.Instance != null && !GameManager.Instance.gameRunning)
