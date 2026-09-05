@@ -8,7 +8,7 @@ public class HealthBarUI : MonoBehaviour
     public Slider healthSlider;
     public TMP_Text healthText;
 
-    private void start()
+    private void Start()
     {
         UpdateHealthBar();
     }

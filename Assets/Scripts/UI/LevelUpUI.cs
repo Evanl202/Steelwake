@@ -53,13 +53,15 @@ public class LevelUpUI : MonoBehaviour
     private UpgradeData choice2;
     private UpgradeData choice3;
 
-    private void start()
+    private void Start()
     {
         levelUpPanel.SetActive(false);
     }
 
     public void ShowLevelUp()
     {
+        GenerateChoices();
+
         levelUpPanel.SetActive(true);
 
         Time.timeScale = 0f;
@@ -181,7 +183,7 @@ public class UpgradeData
         string name,
         string descriptionText,
         int type
-    );
+    )
     {
         upgradeName = name;
         description = descriptionText;
