@@ -19,10 +19,14 @@ public class Shell : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Shell hit: " + other.gameObject.name);
+
         EnemyShip enemy = other.GetComponent<EnemyShip>();
 
         if (enemy != null)
         {
+            Debug.Log("Shell dealing " + damage + " damage.");
+            
             enemy.TakeDamage(damage);
             Destroy(gameObject);
         }
