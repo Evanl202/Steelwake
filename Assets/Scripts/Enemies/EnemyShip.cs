@@ -72,6 +72,13 @@ public class EnemyShip : MonoBehaviour
     private void Die()
     {
         Debug.Log("Enemy Destroyed");
+
+        if (ExperienceManager.Instance != null)
+        {
+            ExperienceManager.Instance.AddXP(
+                experienceReward
+            );
+        }
         Destroy(gameObject);
     }
 }
