@@ -1,4 +1,4 @@
-using UnityEgine;
+using UnityEngine;
 
 public class XPPickup : MonoBehaviour
 {
