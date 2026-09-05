@@ -66,7 +66,7 @@ public class ExperienceManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("ExperienceManager has no LevelUpUI assigned")
+            Debug.LogWarning("ExperienceManager has no LevelUpUI assigned");
         }
     }
 }
