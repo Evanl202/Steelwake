@@ -74,6 +74,7 @@ public class Rammer : EnemyShip
             {
                 xp.xpAmount = experienceReward;
             }
+        }
         else
         {
             Debug.LogWarning(
