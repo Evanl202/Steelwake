@@ -53,7 +53,7 @@ public class LevelUpUI : MonoBehaviour
     private UpgradeData choice2;
     private UpgradeData choice3;
 
-    private void Awake()
+    private void Start()
     {
         levelUpPanel.SetActive(false);
     }
