@@ -4,7 +4,7 @@ using TMPro;
 
 public class LevelUpUI : MonoBehaviour
 {
-    public GameObject levelUpPanel();
+    public GameObject levelUpPanel;
 
     private void start()
     {
