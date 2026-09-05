@@ -47,23 +47,7 @@ public class Rammer : EnemyShip
         
         hasImpacted = true;
 
-        PlayerShip playerShip = player.GetComponent<PlayerShip>();
-
-        if (playerShip == null)
-            return;
-        
-        float impactSpeed = moveSpeed;
-
-        float damage = Mathf.Max(
-            minimumDamage,
-            impactSpeed * damageMultiplier
-        );
-
-        Debug.Log(
-            "Rammer Impact speed: " + impactSpeed +" | Damage: " + damage
-        );
-
-        playerShip.TakeDamage(damage);
+        Debug.Log("IMPACT")
 
         if (xpPickupPrefab != null)
         {
@@ -89,6 +73,24 @@ public class Rammer : EnemyShip
                 "Enemyship has no XP Prefab assigned"
             );
         }
+
+        PlayerShip playerShip = player.GetComponent<PlayerShip>();
+
+        if (playerShip == null)
+            return;
+        
+        float impactSpeed = moveSpeed;
+
+        float damage = Mathf.Max(
+            minimumDamage,
+            impactSpeed * damageMultiplier
+        );
+
+        Debug.Log(
+            "Rammer Impact speed: " + impactSpeed +" | Damage: " + damage
+        );
+
+        playerShip.TakeDamage(damage);
 
         Debug.Log(
             "Rammer suicide."
