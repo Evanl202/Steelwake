@@ -39,6 +39,8 @@ public class Rammer : EnemyShip
 
     private void Impact()
     {
+
+
         PlayerShip playerShip = player.GetComponent<PlayerShip>();
 
         if (playerShip == null)
@@ -56,6 +58,17 @@ public class Rammer : EnemyShip
         );
 
         playerShip.TakeDamage(damage);
+
+        if (ExperienceManager.Instance != null)
+        {
+            ExperienceManager.Instance.AddXP(
+                experienceReward
+            );
+        }
+
+        Debug.Log(
+            "Rammer suicide. XP Gained: " +experienceReward + " XP."
+        );
 
         //Rammer dies on impact
         Destroy(gameObject);
