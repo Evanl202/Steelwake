@@ -59,12 +59,20 @@ public class Rammer : EnemyShip
 
         playerShip.TakeDamage(damage);
 
-        if (ExperienceManager.Instance != null)
+        if (xpPickupPrefab != null)
         {
-            ExperienceManager.Instance.AddXP(
-                experienceReward
+            GameObject pickup = Instantiate(
+                xpPickupPrefab,
+                transform.position,
+                Quaternion.identity
             );
-        }
+
+            XPPickup xp = pickup.GetComponent<XPPickup>();
+
+            if (xp != null)
+            {
+                xp.xpAmount = experienceReward;
+            }
 
         Debug.Log(
             "Rammer suicide. XP Gained: " +experienceReward + " XP."

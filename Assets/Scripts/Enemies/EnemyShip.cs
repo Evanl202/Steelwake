@@ -9,6 +9,7 @@ public class EnemyShip : MonoBehaviour
 
     [Header ("Experience")]
     public int experienceReward = 10;
+    public GameObject xpPickupPrefab;
     
     [Header ("Movement")]
     public float moveSpeed = 3f;
@@ -73,11 +74,21 @@ public class EnemyShip : MonoBehaviour
     {
         Debug.Log("Enemy Destroyed");
 
-        if (ExperienceManager.Instance != null)
+        if (xpPickupPrefab != null)
         {
-            ExperienceManager.Instance.AddXP(
-                experienceReward
+            GameObject pickup = Instantiate(
+                xpPickupPrefab,
+                transform.position,
+                Quaternion.identity
             );
+
+            XPPickup xp = pickup.GetComponent<XPPickup>();
+
+            if (xp != null)
+            {
+                xp.xpAmount = experienceReward;
+            }
+            
         }
         Destroy(gameObject);
     }
