@@ -39,7 +39,7 @@ public class Rammer : EnemyShip
 
     private void Impact()
     {
-        #Makes sure collision does not give more xp or do double damage
+        //Makes sure collision does not give more xp or do double damage
         if (hasImpacted)
             return;
         
