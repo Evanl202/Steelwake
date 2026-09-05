@@ -17,15 +17,15 @@ public class LevelUpUI : MonoBehaviour
 
         Time.timeScale = 0f;
 
-        Debug.Log("Level up panel opened")
+        Debug.Log("Level up panel opened");
     }
 
     public void HideLevelUp()
     {
-        levelUpPanel.SetActive(false)
+        levelUpPanel.SetActive(false);
 
         Time.timeScale = 1f;
 
-        Debug.Log("Level up panel closed")
+        Debug.Log("Level up panel closed");
     }
 }
