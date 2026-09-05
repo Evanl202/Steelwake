@@ -12,7 +12,7 @@ public class PlayerShip : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(float TakeDamage)
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
 
@@ -27,7 +27,7 @@ public class PlayerShip : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Ship destroyed")
+        Debug.Log("Ship destroyed");
 
         if (GameManager.Instance != null)
         {

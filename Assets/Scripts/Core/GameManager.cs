@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     [Header ("Game State")]
     public bool gameRunning = true;
 
-    private void Awake()\
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         if (!gameRunning)
-            return
+            return;
         
         gameRunning = false;
         Debug.Log("Game Over");
