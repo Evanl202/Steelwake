@@ -4,7 +4,7 @@ public class ExperienceManager : MonoBehaviour
 {
     public static ExperienceManager Instance;
 
-    [Header("Experience")]
+    [Header ("Experience")]
     public int currentLevel = 1;
     public int currentXP = 0;
     public int xpToNextLevel = 100;

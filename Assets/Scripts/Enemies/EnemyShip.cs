@@ -7,6 +7,9 @@ public class EnemyShip : MonoBehaviour
 
     private float currentHealth;
 
+    [Header ("Experience")]
+    public int experienceReward = 10;
+    
     [Header ("Movement")]
     public float moveSpeed = 3f;
 

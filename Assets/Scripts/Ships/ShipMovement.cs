@@ -7,7 +7,7 @@ public class ShipMovement : MonoBehaviour
     public float acceleration = 5f;
     public float deceleration = 4f;
 
-    [Header("Ship Dimensions")]
+    [Header ("Ship Dimensions")]
     public float shipLength = 10f;
 
     [Header ("Turning")]
