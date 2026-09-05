@@ -59,15 +59,32 @@ public class Rammer : EnemyShip
 
         playerShip.TakeDamage(damage);
 
-        if (ExperienceManager.Instance != null)
+        if (xpPickupPrefab != null)
         {
-            ExperienceManager.Instance.AddXP(
-                experienceReward
+            Debug.Log("Enemey dropped XP");
+            GameObject pickup = Instantiate(
+                xpPickupPrefab,
+                transform.position,
+                Quaternion.identity
+            );
+
+            XPPickup xp = pickup.GetComponent<XPPickup>();
+
+            if (xp != null)
+            {
+                xp.xpAmount = experienceReward;
+            }
+            
+        }
+        else
+        {
+            Debug.LogWarning(
+                "Enemyship has no XP Prefab assigned"
             );
         }
 
         Debug.Log(
-            "Rammer suicide. XP Gained: " +experienceReward + " XP."
+            "Rammer suicide."
         );
 
         //Rammer dies on impact
