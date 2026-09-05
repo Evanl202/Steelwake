@@ -11,7 +11,7 @@ public class HealthBarUI : MonoBehaviour
 
     private void start()
     {
-        player = FindFirstObectByType<PlayerShip>();
+        player = FindFirstObjectByType<PlayerShip>();
     }
 
     private void Update()
