@@ -20,6 +20,24 @@ public class LevelUpUI : MonoBehaviour
         Debug.Log("Level up panel opened");
     }
 
+    public void SelectSpeed()
+    {
+        Debug.Log("Speed Upgrade Selected");
+        HideLevelUp();
+    }
+
+    public void SelectAttack()
+    {
+        Debug.Log("Attack Upgrade Selected");
+        HideLevelUp();
+    }
+
+    public void SelectHealth()
+    {
+        Debug.Log("Health Upgrade Selected");
+        HideLevelUp();
+    }
+
     public void HideLevelUp()
     {
         levelUpPanel.SetActive(false);
