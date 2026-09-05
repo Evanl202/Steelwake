@@ -6,7 +6,7 @@ public class CameraFollow : MonoBehaviour
     public Transform target;
 
     [Header ("Camera Position")]
-    public Vector3 offset = new Vector3(0f, 25f, -10f);
+    public Vector3 offset = new Vector3(0f, 16f, -8f);
 
     [Header ("Camera Movement")]
     public float followSpeed = 5f;

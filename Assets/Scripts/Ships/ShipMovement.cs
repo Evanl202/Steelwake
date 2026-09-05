@@ -11,7 +11,7 @@ public class ShipMovement : MonoBehaviour
     public float shipLength = 10f;
 
     [Header ("Turning")]
-    public float baseTurnSpeed = 60f;
+    public float baseTurnSpeed = 90f;
     
     private float currentSpeed = 0f;
 
@@ -71,7 +71,7 @@ public class ShipMovement : MonoBehaviour
             Mathf.Abs(currentSpeed) / maxSpeed
         );
 
-        float turnSpeed = baseTurnSpeed * lengthFactor * Mathf.Lerp(1f, 0.4f, speedFactor);
+        float turnSpeed = baseTurnSpeed * lengthFactor * Mathf.Lerp(1f, 0.7f, speedFactor);
 
         transform.Rotate(
             Vector3.up,
