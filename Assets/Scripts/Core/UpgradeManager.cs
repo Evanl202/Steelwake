@@ -43,11 +43,11 @@ public class UpgradeManager : MonoBehaviour
     {
         if (playerMovement == null)
         {
-            Debug.LogWarning("UpgradeManager: Player # not assigned");
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
             return;
         }
         
-        // playerMovement.maxSpeed *= 1f + speedIncrease;
+        playerWeapon.damage *= 1.10f;
 
         Debug.Log("Damage Upgrade! New damage: " );
     }

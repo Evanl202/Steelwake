@@ -6,6 +6,9 @@ public class Weapon : MonoBehaviour
     public GameObject shellPrefab;
     public Transform firingPoint;
 
+    [Header ("Damage")]
+    public float damage = 25f;
+
     [Header ("Reload")]
     public float reloadTime = 1f;
 
@@ -32,11 +35,18 @@ public class Weapon : MonoBehaviour
             return;
         }
 
-        Instantiate(
+        GameObject shellObject = Instantiate(
             shellPrefab,
             firingPoint.position,
             firingPoint.rotation
         );
+
+        Shell shell = shellObject.GetComponent<Shell>();
+
+        if (shell != null)
+        {
+            shell.damage = damage;
+        }
 
         reloadTimer = reloadTime;
     }

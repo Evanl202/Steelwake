@@ -36,10 +36,10 @@ public class LevelUpUI : MonoBehaviour
     {
         Debug.Log("Damage Upgrade Selected");
 
-        // if (UpgradeManager.Instance != null)
-        // {
-        //     UpgradeManager.Instance.UpgradeDamage();
-        // }
+        if (UpgradeManager.Instance != null)
+        {
+            UpgradeManager.Instance.UpgradeDamage();
+        }
 
         HideLevelUp();
     }
