@@ -18,7 +18,7 @@ public class XPBarUI : MonoBehaviour
 
     private void UpdateXPBar()
     {
-        ExperienceManager manager = ExperienceManager.Instace;
+        ExperienceManager manager = ExperienceManager.Instance;
 
         //Update bar
         xpSlider.maxValue = manager.xpToNextLevel;
