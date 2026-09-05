@@ -23,18 +23,48 @@ public class LevelUpUI : MonoBehaviour
     public void SelectSpeed()
     {
         Debug.Log("Speed Upgrade Selected");
+
+        if (UpgradeManager.Instance != null)
+        {
+            UpgradeManager.Instance.UpgradeSpeed();
+        }
+
         HideLevelUp();
     }
 
-    public void SelectAttack()
+    public void SelectDamage()
     {
-        Debug.Log("Attack Upgrade Selected");
+        Debug.Log("Damage Upgrade Selected");
+
+        // if (UpgradeManager.Instance != null)
+        // {
+        //     UpgradeManager.Instance.UpgradeSpeed();
+        // }
+
         HideLevelUp();
     }
 
     public void SelectHealth()
     {
         Debug.Log("Health Upgrade Selected");
+
+        if (UpgradeManager.Instance != null)
+        {
+            UpgradeManager.Instance.UpgradeSpeed();
+        }
+
+        HideLevelUp();
+    }
+
+    public void SelectReload()
+    {
+        Debug.Log("Reload Upgrade Selected");
+
+        if (UpgradeManager.Instance != null)
+        {
+            UpgradeManager.Instance.UpgradeSpeed();
+        }
+
         HideLevelUp();
     }
 
