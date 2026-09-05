@@ -26,25 +26,25 @@ public class LevelUpUI : MonoBehaviour
     {
         new UpgradeData(
             "SPEED",
-            "Increase maximum ship speed by 10%".
+            "Increase maximum ship speed by 10%",
             0
         ),
 
         new UpgradeData(
             "DAMAGE",
-            "Increase shell damage by 10%".
+            "Increase shell damage by 10%",
             1
         ),
 
         new UpgradeData(
             "RELOAD",
-            "Reduce reload time by 10%".
+            "Reduce reload time by 10%",
             2
         ),
 
         new UpgradeData(
             "HEALTH",
-            "Increase maximum health by 20".
+            "Increase maximum health by 20",
             3
         ),
     };
@@ -181,7 +181,7 @@ public class UpgradeData
         string name,
         string descriptionText,
         int type
-    )
+    );
     {
         upgradeName = name;
         description = descriptionText;
