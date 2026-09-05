@@ -12,7 +12,7 @@ public class XPPickup : MonoBehaviour
         {
             if (ExperienceManager.Instance != null)
             {
-                ExperienceManager.Instance.AddXP(xpAmount)
+                ExperienceManager.Instance.AddXP(xpAmount);
             }
             Debug.Log("Collected XP: " + xpAmount);
             Destroy(gameObject);

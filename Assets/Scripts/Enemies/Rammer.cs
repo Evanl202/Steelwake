@@ -73,7 +73,8 @@ public class Rammer : EnemyShip
             {
                 xp.xpAmount = experienceReward;
             }
-
+        }
+        
         Debug.Log(
             "Rammer suicide. XP Gained: " +experienceReward + " XP."
         );
