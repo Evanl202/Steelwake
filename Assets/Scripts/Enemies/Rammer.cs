@@ -39,7 +39,11 @@ public class Rammer : EnemyShip
 
     private void Impact()
     {
-
+        #Makes sure collision does not give more xp or do double damage
+        if (hasImpacted)
+            return;
+        
+        hasImpacted = true;
 
         PlayerShip playerShip = player.GetComponent<PlayerShip>();
 
@@ -61,7 +65,6 @@ public class Rammer : EnemyShip
 
         if (xpPickupPrefab != null)
         {
-            Debug.Log("Enemey dropped XP");
             GameObject pickup = Instantiate(
                 xpPickupPrefab,
                 transform.position,
@@ -74,7 +77,9 @@ public class Rammer : EnemyShip
             {
                 xp.xpAmount = experienceReward;
             }
-            
+            Debug.Log("Rammer dropped " +
+                experienceReward + " XP!"
+            );
         }
         else
         {
