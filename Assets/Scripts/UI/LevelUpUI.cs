@@ -38,7 +38,7 @@ public class LevelUpUI : MonoBehaviour
 
         // if (UpgradeManager.Instance != null)
         // {
-        //     UpgradeManager.Instance.UpgradeSpeed();
+        //     UpgradeManager.Instance.UpgradeDamage();
         // }
 
         HideLevelUp();
@@ -50,7 +50,7 @@ public class LevelUpUI : MonoBehaviour
 
         if (UpgradeManager.Instance != null)
         {
-            UpgradeManager.Instance.UpgradeSpeed();
+            UpgradeManager.Instance.UpgradeHealth();
         }
 
         HideLevelUp();
@@ -62,7 +62,7 @@ public class LevelUpUI : MonoBehaviour
 
         if (UpgradeManager.Instance != null)
         {
-            UpgradeManager.Instance.UpgradeSpeed();
+            UpgradeManager.Instance.UpgradeReload();
         }
 
         HideLevelUp();

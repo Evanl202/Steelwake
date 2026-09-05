@@ -39,6 +39,19 @@ public class UpgradeManager : MonoBehaviour
         Debug.Log("Speed Upgrade! New Max Speed: " + playerMovement.maxSpeed);
     }
 
+    public void UpgradeDamage()
+    {
+        if (playerMovement == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player # not assigned");
+            return;
+        }
+        
+        // playerMovement.maxSpeed *= 1f + speedIncrease;
+
+        Debug.Log("Damage Upgrade! New damage: " );
+    }
+
     public void UpgradeReload()
     {
         if (playerWeapon == null)
