@@ -60,7 +60,7 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         
-        playerWeapon.reloadTime *= 1f + reloadReduction;
+        playerWeapon.reloadTime *= 1f - reloadReduction;
         
         Debug.Log("Weapon Upgrade! New reload time: " + playerWeapon.reloadTime);
         
