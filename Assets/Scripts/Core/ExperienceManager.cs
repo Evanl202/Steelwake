@@ -29,16 +29,16 @@ public class ExperienceManager : MonoBehaviour
             "Gained: " + amount +
             "XP. Total XP: " + currentXP +
             "/" + xpToNextLevel
-        )
+        );
 
-        CheckLevel()
+        CheckLevel();
     }
 
     public void CheckLevel()
     {
         if(currentXP >= xpToNextLevel)
         {
-            LevelUp()
+            LevelUp();
 
         }
     }
