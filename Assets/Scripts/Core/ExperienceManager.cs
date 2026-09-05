@@ -9,6 +9,9 @@ public class ExperienceManager : MonoBehaviour
     public int currentXP = 0;
     public int xpToNextLevel = 100;
 
+    [Header ("Level Up UI")]
+    public LevelUpUI levelUpUI;
+
     private void Awake()
     {
         if (Instance == null)
@@ -56,5 +59,14 @@ public class ExperienceManager : MonoBehaviour
         Debug.Log(
             "LEVEL UP! Current Level: " + currentLevel
         );
+
+        if (levelUpUI != null)
+        {
+            levelUpUI.ShowLevelUp();
+        }
+        else
+        {
+            Debug.LogWarning("ExperienceManager has no LevelUpUI assigned")
+        }
     }
 }
