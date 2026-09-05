@@ -21,7 +21,7 @@ public class ExperienceManager : MonoBehaviour
         }
     }
 
-    public void AddXP()
+    public void AddXP(int amount)
     {
         currentXP += amount;
 
