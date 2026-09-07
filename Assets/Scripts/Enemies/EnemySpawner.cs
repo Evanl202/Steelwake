@@ -75,26 +75,26 @@ public class EnemySpawner : MonoBehaviour
 
         float time = timer.elapsedTime;
 
-        //0:00 - 2:00
-        if (time < 120f)
+        //0:00 - 2:00 120f
+        if (time < 10f)
         {
             return rammerPrefab;
         }
 
-        //2:00 - 5:00
-        if (time < 300f)
+        //2:00 - 5:00 300f
+        if (time < 20)
         {
             return frigatePrefab;
         }
 
-        //5:00 - 8:00
-        if (time < 480f)
+        //5:00 - 8:00 480f
+        if (time < 30)
         {
             return Random.value < 0.7f ? frigatePrefab : destroyerPrefab;
         }
 
-        //8:00 - 12:00
-        if (time < 720f)
+        //8:00 - 12:00 720f
+        if (time < 40)
         {
             float roll = Random.value;
 
