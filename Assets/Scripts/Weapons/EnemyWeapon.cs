@@ -6,12 +6,23 @@ public class EnemyWeapon : MonoBehaviour
     public GameObject shellPrefab;
     public Transform firingPoint;
 
-    [Header ("Combat")]
-    public float damage = 10f;
-    public float reloadTime = 2f;
-    public float firingRange = 25f;
+    [Header ("Torpedo")]
+    public GameObject torpedoPrefab;
+    public Transform torpedoFiringPoint;
+
+    [Header ("Gun Combat")]
+    public float gunDamage = 10f;
+    public float gunReloadTime = 2f;
+    public float gunFiringRange = 25f;
+
+    [Header ("Torpedo Combat")]
+    public float torpedoDamage = 50f;
+    public float torpedoReloadTime = 8f;
+    public float torpedoFiringRange = 35f;
 
     private float reloadTimer = 0f;
+    private float torpedoReloadTimer = 0f;
+
     private Transform player;
 
     private void Start()
@@ -47,9 +58,16 @@ public class EnemyWeapon : MonoBehaviour
 
         float distance = Vector3.Distance( transform.position, player.position);
 
-        if (distance <= firingRange && reloadTimer <= 0f)
+        //Gun
+        if (distance <= gunFiringRange && reloadTimer <= 0f)
         {
-            Fire();
+            FireGun();
+        }
+
+        //Torpedo
+        if (distance <= torpedoFiringRange && torpedoReloadTimer <= 0f)
+        {
+            FireTorpedo();
         }
     }
 
@@ -65,7 +83,7 @@ public class EnemyWeapon : MonoBehaviour
         }
     }
 
-    private void Fire()
+    private void FireGun()
     {
         if (shellPrefab == null || firingPoint == null)
         {
@@ -83,9 +101,33 @@ public class EnemyWeapon : MonoBehaviour
 
         if (shell != null)
         {
-            shell.damage = damage;
+            shell.damage = gunDamage;
         }
 
-        reloadTimer = reloadTime;
+        reloadTimer = gunReloadTime;
+    }
+
+    private void FireTorpedo()
+    {
+        if (torpedoPrefab == null || torpedoFiringPoint == null)
+        {
+            Debug.LogWarning("Missing torpedo or torpedo firing point");
+            return;
+        }
+
+        GameObject torpedoObject = Instantiate(
+            torpedoPrefab,
+            torpedoFiringPoint.position,
+            torpedoFiringPoint.rotation
+        );
+
+        EnemyTorpedo torpedo = torpedoObject.GetComponent<EnemyTorpedo>();
+
+        if (torpedo != null)
+        {
+            torpedo.damage = torpedoDamage;
+        }
+
+        torpedoReloadTimer = torpedoReloadTime;
     }
 }
