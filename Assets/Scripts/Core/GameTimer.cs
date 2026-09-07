@@ -23,8 +23,8 @@ public class GameTimer : MonoBehaviour
 
     private void UpdateTimerText()
     {
-        int minutes = Mathf.FloorToInt(elapsedTime / 60f);
-        int seconds = Mathf.FloorToInt(elapsedTime % 60f);
+        int minutes = Mathf.FloorToInt(elaspedTime / 60f);
+        int seconds = Mathf.FloorToInt(elaspedTime % 60f);
 
         timerText.text = string.Format(
             "{0:00}:{1:00}",
