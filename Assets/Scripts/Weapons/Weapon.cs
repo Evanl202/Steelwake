@@ -56,7 +56,7 @@ public class Weapon : MonoBehaviour
         );
 
         //Aimming
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition)
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
         if (oceanPlane.Raycast(ray, out float distance))
         {
@@ -75,7 +75,7 @@ public class Weapon : MonoBehaviour
             //Rotate Turret
             gunTransform.rotation = Quaternion.RotateTowards(
                 gunTransform.rotation,
-                targetRotation;
+                targetRotation,
                 rotationSpeed * Time.deltaTime
             );
         }
