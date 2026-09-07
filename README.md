@@ -54,12 +54,20 @@ The game combines:
 - [x] Shell projectiles
 - [x] Enemy ships
 - [x] Enemy spawning
-- [ ] XP system
-- [ ] Upgrades
+
+### v0.2 - Basic UI and Leveling System
+- [x] XP system
+- [x] Upgrades
+- [x] Level Panel
+- [x] HUD
+
+### v0.3 - More classes, Enemy variety, and game time
 - [ ] Torpedoes
 - [ ] HE / AP
 - [ ] Armor
 - [ ] Multiple ship classes
+- [ ] Enemy sips
+- [ ] Game Time 
 
 ## Technology
 
