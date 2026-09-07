@@ -17,6 +17,10 @@ public class EnemyShip : MonoBehaviour
     public float minimumDistance = 10f;
     public float orbitSpeed = 1f;
 
+    [Header ("Spacing")]
+    public float enemySpacing = 8f;
+    public float spacingStrength = 2f;
+
     protected Transform player;
 
     private float orbitDirection;
@@ -89,6 +93,29 @@ public class EnemyShip : MonoBehaviour
         {
             //Maintain distance
             movementDirection = orbitDirectionVector * orbitSpeed;
+        }
+
+        //Spacing
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject enemy in enemies)
+        {
+            if (enemy == gameObject)
+                continue;
+            
+            Vector3 awayFromEnemy = transform.position - enemy.transform.position;
+
+            awayFromEnemy.y = 0f;
+
+            float enemyDistance = awayFromEnemy.magnitude;
+
+            if (enemyDistance < enemySpacing && enemyDistance > 0.01f)
+            {
+                float strength = 1f - (enemyDistance / enemySpacing);
+
+                movementDirection +=
+                    awayFromEnemy.normalized * strength * spacingStrength;
+            }
         }
 
         movementDirection.y = 0f;
