@@ -96,7 +96,7 @@ public class EnemySpawner : MonoBehaviour
         //8:00 - 12:00
         if (time < 720f)
         {
-            float roll == Random.value;
+            float roll = Random.value;
 
             if (roll < 0.5f)
                 return frigatePrefab;
@@ -107,7 +107,7 @@ public class EnemySpawner : MonoBehaviour
             return cruiserrPrefab;
         }
         //12:00+
-        float lateRoll == Random.value;
+        float lateRoll = Random.value;
 
         if (lateRoll < 0.45f)
             return destroyerPrefab;
