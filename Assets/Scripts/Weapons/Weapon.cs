@@ -8,7 +8,7 @@ public class Weapon : MonoBehaviour
 
     [Header ("Gun Rotation")]
     public Transform gunTransform;
-    public float reotationSpeed = 360f;
+    public float rotationSpeed = 360f;
 
     [Header ("Damage")]
     public float damage = 25f;
@@ -66,7 +66,7 @@ public class Weapon : MonoBehaviour
 
             direction.y = 0f;
 
-            if (diection.sqrMagnitude < 0.001f)
+            if (direction.sqrMagnitude < 0.001f)
                 return;
 
             Quaternion targetRotation =
