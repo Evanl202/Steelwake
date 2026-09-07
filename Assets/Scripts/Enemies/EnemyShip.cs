@@ -13,8 +13,13 @@ public class EnemyShip : MonoBehaviour
     
     [Header ("Movement")]
     public float moveSpeed = 3f;
+    public float preferredDistance = 25f;
+    public float minimumDistance = 10f;
+    public float orbitSpeed = 1f;
 
     protected Transform player;
+
+    private float orbitDirection;
 
     private void Start()
     {
@@ -30,6 +35,9 @@ public class EnemyShip : MonoBehaviour
         {
             Debug.LogWarning("Enemy can't find Player");
         }
+
+        //clockwise or counterclockwise
+        orbitDirection = Random.value < 0.5f ? -1f : 1f;
     }
 
     protected virtual void Update()
@@ -39,23 +47,59 @@ public class EnemyShip : MonoBehaviour
             return;
         }
             
-        MoveTowardPlayer();
+        MoveAroundPlayer();
     }
 
-    private void MoveTowardPlayer()
+    private void MoveAroundPlayer()
     {
         if (player == null)
             return;
         
-        Vector3 direction = player.position - transform.position;
+        Vector3 toPlayer = player.position - transform.position;
 
-        direction.y = 0f;
+        toPlayer.y = 0f;
 
-        if (direction.magnitude > 0.1f)
+        float distance = toPlayer.magnitude;
+
+        if (toPlayer.sqrMagnitude < 0.1f)
+            return;
+
+        Vector3 directionToPlayer = toPlayer.normalized;
+
+        //Surround and Orbit
+        Vector3 orbitDirectionVector = new Vector3(
+            -directionToPlayer.z, 0f, directionToPlayer.x);
+
+        orbitDirectionVector *= orbitDirection;
+
+        Vector3 movementDirection;
+
+        if (distance > preferredDistance)
         {
-            transform.position += direction.normalized * moveSpeed * Time.deltaTime;
+            //Too far: Move toward player while orbit
+            movementDirection = directionToPlayer + orbitDirectionVector * orbitSpeed;
+        }
+        else if (distance < minimumDistance)
+        {
+            //Too close: Move away while orbiting
+            movementDirection = -directionToPlayer + orbitDirectionVector * orbitSpeed;
         }
 
+        else
+        {
+            //Maintain distance
+            movementDirection = orbitDirectionVector * orbitSpeed;
+        }
+
+        movementDirection.y = 0f;
+
+        if (movementDirection.sqrMagnitude > 0.01f)
+        {
+            movementDirection.Normalize();
+
+            transform.position +=
+                movementDirection * moveSpeed * Time.deltaTime;
+        }
     }
 
     public void TakeDamage(float damage)
