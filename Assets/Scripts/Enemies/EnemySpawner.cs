@@ -64,7 +64,7 @@ public class EnemySpawner : MonoBehaviour
         Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
     }
 
-    private void GetEnemeyPrefab()
+    private void GetEnemyPrefab()
     {
         GameTimer timer = FindFirstObjectByType<GameTimer>();
 
@@ -73,7 +73,7 @@ public class EnemySpawner : MonoBehaviour
             return rammerPrefab;
         }
 
-        float time = timer.elaspedTime;
+        float time = timer.elapsedTime;
 
         //0:00 - 2:00
         if (time < 120f)
@@ -104,7 +104,7 @@ public class EnemySpawner : MonoBehaviour
             if (roll < 0.8f)
                 return destroyerPrefab;
 
-            return cruiserrPrefab;
+            return cruiserPrefab;
         }
         //12:00+
         float lateRoll = Random.value;
@@ -113,7 +113,7 @@ public class EnemySpawner : MonoBehaviour
             return destroyerPrefab;
 
         if (lateRoll < 0.8f)
-            return cruiserrPrefab;
+            return cruiserPrefab;
                 
         return battleshipPrefab;
         
