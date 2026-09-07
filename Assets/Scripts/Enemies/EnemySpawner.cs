@@ -3,7 +3,11 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [Header ("Enemy")]
-    public GameObject enemyPrefab;
+    public GameObject rammerPrefab;
+    public GameObject frigatePrefab;
+    public GameObject destroyerPrefab;
+    public GameObject cruiserPrefab;
+    public GameObject battleshipPrefab;
 
     [Header ("Player")]
     public Transform player;
@@ -21,6 +25,12 @@ public class EnemySpawner : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance != null &&
+            !GameManager.Instance.gameRunning)
+        {
+            return;
+        }
+
         spawnTimer -= Time.deltaTime;
 
         if (spawnTimer <= 0f)
@@ -33,9 +43,17 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        if (enemyPrefab == null || player == null)
+        if (player == null)
         {
-            Debug.LogWarning("EnemySpawner missing reference");
+            Debug.LogWarning("EnemySpawner missing player reference");
+            return;
+        }
+
+        GameObject enemyPrefab = GetEnemyPrefab();
+
+        if (enemyPrefab == null)
+        {
+            Debug.LogWarning("No enemy prefab available for current phase");
             return;
         }
 
@@ -46,4 +64,58 @@ public class EnemySpawner : MonoBehaviour
         Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
     }
 
+    private void GetEnemeyPrefab()
+    {
+        GameTimer timer = FindFirstObjectByType<GameTimer>();
+
+        if (timer == null)
+        {
+            return rammerPrefab;
+        }
+
+        float time = timer.elaspedTime;
+
+        //0:00 - 2:00
+        if (time < 120f)
+        {
+            return rammerPrefab;
+        }
+
+        //2:00 - 5:00
+        if (time < 300f)
+        {
+            return frigatePrefab;
+        }
+
+        //5:00 - 8:00
+        if (time < 480f)
+        {
+            return Random.value < 0.7f ? frigatePrefab : destroyerPrefab;
+        }
+
+        //8:00 - 12:00
+        if (time < 720f)
+        {
+            float roll == Random.value;
+
+            if (roll < 0.5f)
+                return frigatePrefab;
+
+            if (roll < 0.8f)
+                return destroyerPrefab;
+
+            return cruiserrPrefab;
+        }
+        //12:00+
+        float lateRoll == Random.value;
+
+        if (lateRoll < 0.45f)
+            return destroyerPrefab;
+
+        if (lateRoll < 0.8f)
+            return cruiserrPrefab;
+                
+        return battleshipPrefab;
+        
+    }
 }
