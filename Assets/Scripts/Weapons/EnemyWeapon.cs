@@ -73,13 +73,29 @@ public class EnemyWeapon : MonoBehaviour
 
     private void AimAtPlayer()
     {
-        Vector3 direction = player.position - transform.position;
+        //Aim Gun
+        Vector3 gunDirection = player.position - transform.position;
 
-        direction.y = 0f;
+        gunDirection.y = 0f;
 
-        if (direction.sqrMagnitude > 0.01f)
+        if (gunDirection.sqrMagnitude > 0.01f)
         {
-            transform.rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.LookRotation(gunDirection);
+        }
+
+        //Aim Torpedo
+        if (torpedoFiringPoint != null)
+        {
+            Transform launcher = torpedoFiringPoint.parent;
+
+            Vector3 torpedoDirection = player.position - launcher.position;
+
+            torpedoDirection.y = 0f;
+
+            if (torpedoDirection.sqrMagnitude > 0.01f)
+            {
+                launcher.rotation = Quaternion.LookRotation(torpedoDirection);
+            }
         }
     }
 
