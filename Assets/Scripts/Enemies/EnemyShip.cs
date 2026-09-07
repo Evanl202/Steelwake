@@ -54,7 +54,6 @@ public class EnemyShip : MonoBehaviour
         if (direction.magnitude > 0.1f)
         {
             transform.position += direction.normalized * moveSpeed * Time.deltaTime;
-
         }
 
     }
