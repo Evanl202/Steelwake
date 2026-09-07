@@ -64,7 +64,7 @@ public class EnemySpawner : MonoBehaviour
         Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
     }
 
-    private void GetEnemyPrefab()
+    private GameObject GetEnemyPrefab()
     {
         GameTimer timer = FindFirstObjectByType<GameTimer>();
 
