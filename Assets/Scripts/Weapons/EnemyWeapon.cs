@@ -54,6 +54,11 @@ public class EnemyWeapon : MonoBehaviour
             reloadTimer -= Time.deltaTime;
         }
 
+        if (torpedoReloadTimer > 0f)
+        {
+            torpedoReloadTimer -= Time.deltaTime;
+        }
+        
         AimAtPlayer();
 
         float distance = Vector3.Distance( transform.position, player.position);
