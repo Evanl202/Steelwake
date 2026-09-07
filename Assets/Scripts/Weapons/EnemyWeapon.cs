@@ -6,7 +6,7 @@ public class EnemyWeapon : MonoBehaviour
     public GameObject shellPrefab;
     public Transform firingPoint;
 
-    [Header ('Combat')]
+    [Header ("Combat")]
     public float damage = 10f;
     public float reloadTime = 2f;
     public float firingRange = 25f;
@@ -48,12 +48,12 @@ public class EnemyWeapon : MonoBehaviour
         float distance = Vector3.Distance( transform.position, player.position);
 
         if (distance <= firingRange && reloadTimer <= 0f)
-        (
+        {
             Fire();
-        )
+        }
     }
 
-    private void AimAtPlayer();
+    private void AimAtPlayer()
     {
         Vector3 direction = player.position - transform.position;
 
@@ -64,7 +64,7 @@ public class EnemyWeapon : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(direction);
         }
     }
-    
+
     private void Fire()
     {
         if (shellPrefab == null || firingPoint == null)
