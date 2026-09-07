@@ -67,7 +67,8 @@ The game combines:
 - [ ] Armor
 - [ ] Multiple ship classes
 - [ ] Enemy sips
-- [ ] Game Time 
+- [ ] Game Time
+- [ ] Gun Aiming
 
 ## Technology
 
