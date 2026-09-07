@@ -16,7 +16,7 @@ public class GameTimer : MonoBehaviour
             return;
         }
         
-        elaspedTIme += Time.deltaTime;
+        elaspedTime += Time.deltaTime;
 
         UpdateTimerText();
     }
