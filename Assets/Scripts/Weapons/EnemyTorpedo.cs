@@ -4,7 +4,7 @@ public class EnemyTorpedo : MonoBehaviour
 {
     [Header ("Torpedo settings")]
     public float speed = 15f;
-    public float damage = 35f;
+    public float damage = 50f;
     public float lifetime = 5f;
 
     private void Start()
