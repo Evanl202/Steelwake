@@ -22,9 +22,9 @@ public class Weapon : MonoBehaviour
 
     [Header ("Torpedo Combat")]
     public float torpedoDamage = 50f;
-    public float torpedoReloadTime = 50f;
+    public float torpedoReloadTime = 5f;
     private float torpedoReloadTimer = 0f;
-    
+
     void Update()
     {
 
@@ -40,9 +40,19 @@ public class Weapon : MonoBehaviour
             reloadTimer -= Time.deltaTime;
         }
 
+        if (torpedoReloadTimer > 0f)
+        {
+            torpedoReloadTimer -=Time.deltaTime;
+        }
+
         if (Input.GetMouseButton(0) && reloadTimer <= 0f)
         {
             Fire();
+        }
+
+        if (Input.GetMouseButton(1) && reloadTimer <= 0f)
+        {
+            FireTorpedo();
         }
     }
 
@@ -85,6 +95,11 @@ public class Weapon : MonoBehaviour
                 targetRotation,
                 rotationSpeed * Time.deltaTime
             );
+
+            if (torpedoLauncher != null)
+            {
+                torpedoLauncher.rotation = gunTransform.rotation;
+            }
         }
     }
 
@@ -110,5 +125,30 @@ public class Weapon : MonoBehaviour
         }
 
         reloadTimer = reloadTime;
+    }
+
+    private void FireTorpedo()
+    {
+        if (torpedoPrefab == null || torpedoFiringPoint == null)
+        {
+            Debug.LogWarning("Missing torpedo or torpedo firing point");
+            return;            
+        }
+
+        GameObject torpedoObject = Instantiate(
+            torpedoPrefab,
+            torpedoFiringPoint.position,
+            torpedoFiringPoint.rotation
+        );
+
+        Torpedo torpedo = torpedoObject.GetComponent<Torpedo>();
+
+        if (torpedo != null)
+        {
+            torpedo.damage = torpedoDamage;
+        }
+
+        torpedoReloadTimer = torpedoReloadTime;
+
     }
 }
