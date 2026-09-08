@@ -14,6 +14,8 @@ public class EnemyWeapon : MonoBehaviour
     public float gunDamage = 10f;
     public float gunReloadTime = 2f;
     public float gunFiringRange = 25f;
+    public float shellSpeed = 20f;
+    public float aimPrediction = 1f;
 
     [Header ("Torpedo Combat")]
     public float torpedoDamage = 50f;
@@ -79,6 +81,22 @@ public class EnemyWeapon : MonoBehaviour
     private void AimAtPlayer()
     {
         //Aim Gun
+        Vector3 targetPosition = player.position;
+
+        ShipMovement playerMovement = player.GetComponent<ShipMovement>();
+
+        if (playerMovement == null)
+        {
+            Vector3 playerVelocity = player.forward * playerMovement.CurrentSpeed;
+
+            float distance = Vector3.Distance(transform.position, player.position);
+
+            float travelTime = distance / shellSpeed;
+
+            targetPosition += playerVelocity * travelTime * aimPrediction;
+            
+        }
+
         Vector3 gunDirection = player.position - transform.position;
 
         gunDirection.y = 0f;
