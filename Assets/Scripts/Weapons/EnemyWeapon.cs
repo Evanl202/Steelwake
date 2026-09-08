@@ -15,7 +15,6 @@ public class EnemyWeapon : MonoBehaviour
     public float gunReloadTime = 2f;
     public float gunFiringRange = 25f;
     public float shellSpeed = 20f;
-    public float aimPrediction = 1f;
 
     [Header ("Torpedo Combat")]
     public float torpedoDamage = 50f;
@@ -81,23 +80,58 @@ public class EnemyWeapon : MonoBehaviour
     private void AimAtPlayer()
     {
         //Aim Gun
+        if (player == null)
+            return;
+        
         Vector3 targetPosition = player.position;
 
         ShipMovement playerMovement = player.GetComponent<ShipMovement>();
 
-        if (playerMovement == null)
+        if (playerMovement != null && shellSpeed > 0f)
         {
             Vector3 playerVelocity = player.forward * playerMovement.CurrentSpeed;
 
-            float distance = Vector3.Distance(transform.position, player.position);
+            Vector3 toTarget = player.position - transform.position;
 
-            float travelTime = distance / shellSpeed;
+            toTarget.y = 0f;
 
-            targetPosition += playerVelocity * travelTime * aimPrediction;
-            
+            playerVelocity.y = 0f;
+
+            //Projectile interception
+            float a = 
+                Vector3.Dot(playerVelocity, playerVelocity)
+                - shellSpeed * shellSpeed;
+
+            float b = 2 * Vector3.Dot(toTarget, playerVelocity);
+
+            float c = Vector3.Dot(toTarget, toTarget);
+
+            float discriminant = b * b - 4f * a * c;
+
+            float travelTime = 0f;
+
+            if (discriminant >= 0f)
+            {
+                float sqrtDiscriminant = Mathf.Sqrt(discriminant);
+
+                float t1 = (-b - sqrtDiscriminant) / (2f * a);
+
+                float t2 = (-b + sqrtDiscriminant) / (2f * a);
+
+                if (t1 > 0f)
+                    travelTime = t1;
+                else if (t2 > 0f)
+                    travelTime = t2;
+            }
+
+            //Fallback
+            if (travelTime > 0f)
+            {
+                targetPosition += playerVelocity * travelTime;
+            }
         }
 
-        Vector3 gunDirection = player.position - transform.position;
+        Vector3 gunDirection = targetPosition - transform.position;
 
         gunDirection.y = 0f;
 
