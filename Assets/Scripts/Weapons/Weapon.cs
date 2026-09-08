@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [Header ("Weapon")]
+    [Header ("Gun")]
     public GameObject shellPrefab;
     public Transform firingPoint;
 
@@ -10,14 +10,21 @@ public class Weapon : MonoBehaviour
     public Transform gunTransform;
     public float rotationSpeed = 360f;
 
-    [Header ("Damage")]
+    [Header ("Gun Combat")]
     public float damage = 25f;
-
-    [Header ("Reload")]
     public float reloadTime = 1f;
-
     private float reloadTimer = 0f;
 
+    [Header ("Torpedo")]
+    public GameObject torpedoPrefab;
+    public Transform torpedoFiringPoint;
+    public Transform torpedoLauncher;
+
+    [Header ("Torpedo Combat")]
+    public float torpedoDamage = 50f;
+    public float torpedoReloadTime = 50f;
+    private float torpedoReloadTimer = 0f;
+    
     void Update()
     {
 
