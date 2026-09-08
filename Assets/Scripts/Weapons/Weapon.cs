@@ -50,7 +50,7 @@ public class Weapon : MonoBehaviour
             Fire();
         }
 
-        if (Input.GetMouseButton(1) && reloadTimer <= 0f)
+        if (Input.GetMouseButton(1) && torpedoReloadTimer <= 0f)
         {
             FireTorpedo();
         }
