@@ -82,56 +82,16 @@ public class EnemyWeapon : MonoBehaviour
         //Aim Gun
         if (player == null)
             return;
-        
-        Vector3 targetPosition = player.position;
 
-        ShipMovement playerMovement = player.GetComponent<ShipMovement>();
+        Vector3 gunTarget = 
+            CalculateInterceptPoint(
+                transform.positon,
+                player.positon,
+                player.forward * GetPlayerSpeed(),
+                20f
+        );
 
-        if (playerMovement != null && shellSpeed > 0f)
-        {
-            Vector3 playerVelocity = player.forward * playerMovement.CurrentSpeed;
-
-            Vector3 toTarget = player.position - transform.position;
-
-            toTarget.y = 0f;
-
-            playerVelocity.y = 0f;
-
-            //Projectile interception
-            float a = 
-                Vector3.Dot(playerVelocity, playerVelocity)
-                - shellSpeed * shellSpeed;
-
-            float b = 2 * Vector3.Dot(toTarget, playerVelocity);
-
-            float c = Vector3.Dot(toTarget, toTarget);
-
-            float discriminant = b * b - 4f * a * c;
-
-            float travelTime = 0f;
-
-            if (discriminant >= 0f)
-            {
-                float sqrtDiscriminant = Mathf.Sqrt(discriminant);
-
-                float t1 = (-b - sqrtDiscriminant) / (2f * a);
-
-                float t2 = (-b + sqrtDiscriminant) / (2f * a);
-
-                if (t1 > 0f)
-                    travelTime = t1;
-                else if (t2 > 0f)
-                    travelTime = t2;
-            }
-
-            //Fallback
-            if (travelTime > 0f)
-            {
-                targetPosition += playerVelocity * travelTime;
-            }
-        }
-
-        Vector3 gunDirection = targetPosition - transform.position;
+        Vector3 gunDirection = gunTarget - transform.position;
 
         gunDirection.y = 0f;
 
@@ -145,7 +105,15 @@ public class EnemyWeapon : MonoBehaviour
         {
             Transform launcher = torpedoFiringPoint.parent;
 
-            Vector3 torpedoDirection = player.position - launcher.position;
+            Vector3 torpedoTarget = 
+                CalculateInterceptPoint(
+                    launcher.positon,
+                    player.positon,
+                    player.forward * GetPlayerSpeed(),
+                    15f
+                );
+
+            Vector3 torpedoDirection = torpedoDirection - launcher.position;
 
             torpedoDirection.y = 0f;
 
@@ -154,6 +122,72 @@ public class EnemyWeapon : MonoBehaviour
                 launcher.rotation = Quaternion.LookRotation(torpedoDirection);
             }
         }
+    }
+
+    private float GetPlayerSpeed()
+    {
+        ShipMovement playerMovement = player.GetComponent<ShipMovement>();
+
+        if (playerMovement == null)
+        {
+            return playerMovement.CurrentSpeed;
+        }
+
+        return 0f;
+    }
+
+    private Vector3 CalculateInterceptPoint(
+        Vector3 shooterPosition,
+        Vector3 targetPosition,
+        Vector3 targetVelocity,
+        float projectileSpeed)
+    {
+        Vector3 toTarget = targetPosition - shooterPosition;
+
+        toTarget.y = 0f;
+        targetVelocity.y = 0f;
+
+        //Projectile interception
+        float a = 
+            Vector3.Dot(targetVelocity, targetVelocity)
+            - projectileSpeed * projectileSpeed;
+
+        float b = 2 * Vector3.Dot(toTarget, targetVelocity);
+
+        float c = Vector3.Dot(toTarget, toTarget);
+
+        float discriminant = b * b - 4f * a * c;
+
+        //If no interception point
+        if (discriminant < 0f)
+        {
+            return targetPosition;
+        }
+
+        float sqrtDiscriminant = Mathf.Sqrt(discriminant);
+
+        float t1 = (-b - sqrtDiscriminant) / (2f * a);
+
+        float t2 = (-b + sqrtDiscriminant) / (2f * a);
+
+        float travelTime = 0f;
+
+        if (t1 > 0f)
+        {
+            travelTime = t1;
+        }
+
+        else if (t2 > 0f)
+        {
+            travelTime = t2;
+        }
+        
+        if (travelTime <= 0f)
+        {
+            return targetPosition;
+        }
+
+        return targetPosition + targetVelocity * travelTime;
     }
 
     private void FireGun()
