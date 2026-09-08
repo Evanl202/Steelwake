@@ -77,8 +77,7 @@ public class ShipMovement : MonoBehaviour
             Vector3.up,
             turnInput * turnSpeed * Time.deltaTime
         );
-
-        public float CurrentSpeed => currentSpeed;
     }
+    public float CurrentSpeed => currentSpeed;
 
 }
