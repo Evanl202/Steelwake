@@ -152,6 +152,12 @@ public class EnemyWeapon : MonoBehaviour
             Vector3.Dot(targetVelocity, targetVelocity)
             - projectileSpeed * projectileSpeed;
 
+        //If ship speed and shell speed same
+        if (Mathf.Abs(a) < 0.001f)
+        {
+            return targetPosition;
+        }
+
         float b = 2 * Vector3.Dot(toTarget, targetVelocity);
 
         float c = Vector3.Dot(toTarget, toTarget);
