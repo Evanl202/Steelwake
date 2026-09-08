@@ -85,11 +85,11 @@ public class EnemyWeapon : MonoBehaviour
 
         Vector3 gunTarget = 
             CalculateInterceptPoint(
-                transform.positon,
-                player.positon,
+                transform.position,
+                player.position,
                 player.forward * GetPlayerSpeed(),
-                20f
-        );
+                shellSpeed
+            );
 
         Vector3 gunDirection = gunTarget - transform.position;
 
@@ -107,13 +107,13 @@ public class EnemyWeapon : MonoBehaviour
 
             Vector3 torpedoTarget = 
                 CalculateInterceptPoint(
-                    launcher.positon,
-                    player.positon,
+                    launcher.position,
+                    player.position,
                     player.forward * GetPlayerSpeed(),
                     15f
                 );
 
-            Vector3 torpedoDirection = torpedoDirection - launcher.position;
+            Vector3 torpedoDirection = torpedoTarget - launcher.position;
 
             torpedoDirection.y = 0f;
 
@@ -128,7 +128,7 @@ public class EnemyWeapon : MonoBehaviour
     {
         ShipMovement playerMovement = player.GetComponent<ShipMovement>();
 
-        if (playerMovement == null)
+        if (playerMovement != null)
         {
             return playerMovement.CurrentSpeed;
         }
@@ -181,7 +181,7 @@ public class EnemyWeapon : MonoBehaviour
         {
             travelTime = t2;
         }
-        
+
         if (travelTime <= 0f)
         {
             return targetPosition;
