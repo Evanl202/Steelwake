@@ -19,7 +19,7 @@ public class EnemyShell : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        PlayerShip player = other.GetComponentInParent<PlayerShip>();
+        PlayerShip player = other.GetComponent<PlayerShip>();
 
         if (player != null)
         {
