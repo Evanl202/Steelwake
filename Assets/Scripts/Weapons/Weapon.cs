@@ -17,8 +17,8 @@ public class Weapon : MonoBehaviour
 
     [Header ("Torpedo")]
     public GameObject torpedoPrefab;
-    public Transform torpedoFiringPoint;
-    public Transform torpedoLauncher;
+    public Transform[] torpedoLaunchers;
+    public Transform[] torpedoFiringPoints;
 
     [Header ("Torpedo Combat")]
     public float torpedoDamage = 50f;
@@ -101,11 +101,6 @@ public class Weapon : MonoBehaviour
                 targetRotation,
                 rotationSpeed * Time.deltaTime
             );
-
-            if (torpedoLauncher != null)
-            {
-                torpedoLauncher.rotation = gun.rotation;
-            }
         }
     }
 
@@ -145,23 +140,35 @@ public class Weapon : MonoBehaviour
 
     private void FireTorpedo()
     {
-        if (torpedoPrefab == null || torpedoFiringPoint == null)
+        if (torpedoPrefab == null)
         {
-            Debug.LogWarning("Missing torpedo or torpedo firing point");
+            Debug.LogWarning("Missing torpedo prefab");
             return;            
         }
 
-        GameObject torpedoObject = Instantiate(
-            torpedoPrefab,
-            torpedoFiringPoint.position,
-            torpedoFiringPoint.rotation
-        );
-
-        Torpedo torpedo = torpedoObject.GetComponent<Torpedo>();
-
-        if (torpedo != null)
+        if (torpedoFiringPoints == null || torpedoFiringPoints.Length == null)
         {
-            torpedo.damage = torpedoDamage;
+            Debug.LogWarning("Missing torpedo firing points");
+            return;            
+        }
+
+        foreach (Transform point in torpedoFiringPoints)
+        {
+            if (point == null)
+                continue;
+            
+            GameObject torpedoObject = Instantiate(
+                torpedoPrefab,
+                torpedoFiringPoints.position,
+                torpedoFiringPoints.rotation
+            );
+
+            Torpedo torpedo = torpedoObject.GetComponent<Torpedo>();
+
+            if (torpedo != null)
+            {
+                torpedo.damage = torpedoDamage;
+            }
         }
 
         torpedoReloadTimer = torpedoReloadTime;
