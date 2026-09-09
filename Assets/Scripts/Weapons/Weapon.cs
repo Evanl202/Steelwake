@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    [Header("Ship")]
+    public Transform shipTransform;
+
     [Header ("Gun")]
     public GameObject shellPrefab;
     public Transform[] gunTransforms;
@@ -112,7 +115,7 @@ public class Weapon : MonoBehaviour
 
             float clampedAngle = Mathf.Clamp(
                 Mathf.DeltaAngle(
-                    transform.eulerAngles.y,
+                    shipTransform.eulerAngles.y,
                     targetAngle
                 ),
                 minAngle,
@@ -120,7 +123,7 @@ public class Weapon : MonoBehaviour
             );
 
             targetRotation = Quaternion.Euler(
-                0f, transform.eulerAngles.y + clampedAngle, 0f
+                0f, shipTransform.eulerAngles.y + clampedAngle, 0f
             );
 
             //Rotate Turret
@@ -133,7 +136,7 @@ public class Weapon : MonoBehaviour
 
         for (int i = 0; i < torpedoLaunchers.Length; i++)
         {
-            Transform laucnher = torpedoLaunchers[i];
+            Transform launcher = torpedoLaunchers[i];
 
             if (launcher == null)
                 continue;
@@ -158,7 +161,7 @@ public class Weapon : MonoBehaviour
 
             float clampedAngle = Mathf.Clamp(
                 Mathf.DeltaAngle(
-                    transform.eulerAngles.y,
+                    shipTransform.eulerAngles.y,
                     targetAngle
                 ),
                 minAngle,
@@ -166,7 +169,7 @@ public class Weapon : MonoBehaviour
             );
 
             torpedoRotation = Quaternion.Euler(
-                0f, transform.eulerAngles.y + clampedAngle, 0f
+                0f, shipTransform.eulerAngles.y + clampedAngle, 0f
             );
 
             launcher.rotation = Quaternion.RotateTowards(
