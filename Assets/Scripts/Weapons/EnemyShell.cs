@@ -19,6 +19,8 @@ public class EnemyShell : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Enemy shell touched: " + other.gameObject.name);
+        
         PlayerShip player = other.GetComponentInParent<PlayerShip>();
 
         if (player != null)
