@@ -41,7 +41,7 @@ public class UpgradeManager : MonoBehaviour
 
     public void UpgradeDamage()
     {
-        if (playerMovement == null)
+        if (playerWeapon == null)
         {
             Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
             return;
