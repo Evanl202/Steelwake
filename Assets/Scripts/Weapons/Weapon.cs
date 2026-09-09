@@ -10,6 +10,10 @@ public class Weapon : MonoBehaviour
     [Header ("Gun Rotation")]
     public float rotationSpeed = 360f;
 
+    [Header ("Gun Firing Arcs")]
+    public float[] gunMinAngles;
+    public float[] gunMaxAngles;
+
     [Header ("Gun Combat")]
     public float damage = 25f;
     public float reloadTime = 1f;
@@ -19,6 +23,10 @@ public class Weapon : MonoBehaviour
     public GameObject torpedoPrefab;
     public Transform[] torpedoLaunchers;
     public Transform[] torpedoFiringPoints;
+
+    [Header ("Torpedo Firing Arcs")]
+    public float[] torpedoMinAngles;
+    public float[] torpedoMaxAngles;
 
     [Header ("Torpedo Combat")]
     public float torpedoDamage = 50f;
@@ -80,8 +88,53 @@ public class Weapon : MonoBehaviour
 
         Vector3 targetPoint = ray.GetPoint(distance);
 
-        foreach (Transform launcher in torpedoLaunchers)
+        for (int i = 0; i < gunTransforms.Length; i++)
         {
+            Transform gun = gunTransforms[i];
+
+            if (gun == null)
+                continue;
+
+            Vector3 direction = targetPoint - gun.position;
+
+            direction.y = 0f;
+
+            if (direction.sqrMagnitude < 0.001f)
+                continue;
+
+            Quaternion targetRotation =
+                Quaternion.LookRotation(direction, Vector3.up);
+            
+            float targetAngle = targetRotation.eulerAngles.y;
+
+            float minAngle = gunMinAngles[i];
+            float maxAngle = gunMaxAngles[i];
+
+            float clampedAngle = Mathf.Clamp(
+                Mathf.DeltaAngle(
+                    transform.eulerAngles.y,
+                    targetAngle
+                ),
+                minAngle,
+                maxAngle
+            );
+
+            targetRotation = Quaternion.Euler(
+                0f, transform.eulerAngles.y + clampedAngle, 0f
+            );
+
+            //Rotate Turret
+            gun.rotation = Quaternion.RotateTowards(
+                gun.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+            );
+        }
+
+        for (int i = 0; i < torpedoLaunchers.Length; i++)
+        {
+            Transform laucnher = torpedoLaunchers[i];
+
             if (launcher == null)
                 continue;
 
@@ -97,33 +150,28 @@ public class Weapon : MonoBehaviour
                     torpedoDirection,
                     Vector3.up
                 );
-                
+            
+            float targetAngle = torpedoRotation.eulerAngles.y;
+
+            float minAngle = torpedoMinAngles[i];
+            float maxAngle = torpedoMaxAngles[i];
+
+            float clampedAngle = Mathf.Clamp(
+                Mathf.DeltaAngle(
+                    transform.eulerAngles.y,
+                    targetAngle
+                ),
+                minAngle,
+                maxAngle
+            );
+
+            torpedoRotation = Quaternion.Euler(
+                0f, transform.eulerAngles.y + clampedAngle, 0f
+            );
+
             launcher.rotation = Quaternion.RotateTowards(
                 launcher.rotation,
                 torpedoRotation,
-                rotationSpeed * Time.deltaTime
-            );
-        }
-
-        foreach (Transform gun in gunTransforms)
-        {
-            if (gun == null)
-                continue;
-
-            Vector3 direction = targetPoint - gun.position;
-
-            direction.y = 0f;
-
-            if (direction.sqrMagnitude < 0.001f)
-                continue;
-
-            Quaternion targetRotation =
-                Quaternion.LookRotation(direction, Vector3.up);
-
-            //Rotate Turret
-            gun.rotation = Quaternion.RotateTowards(
-                gun.rotation,
-                targetRotation,
                 rotationSpeed * Time.deltaTime
             );
         }
