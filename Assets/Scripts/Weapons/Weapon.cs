@@ -62,7 +62,7 @@ public class Weapon : MonoBehaviour
 
             for (int i = 0; i < torpedoLaunchers.Length; i++)
             {
-                if (torpedoBaseAngles[i] != null)
+                if (torpedoLaunchers[i] != null)
                 {
                     torpedoBaseAngles[i] =
                         Mathf.DeltaAngle(0f, torpedoLaunchers[i].localEulerAngles.y);
