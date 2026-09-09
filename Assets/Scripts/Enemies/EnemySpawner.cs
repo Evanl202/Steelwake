@@ -66,7 +66,7 @@ public class EnemySpawner : MonoBehaviour
 
     private GameObject GetEnemyPrefab()
     {
-        GameTimer timer = FindFirstObjectByType<GameTimer>();
+        GameTimer timer = FindAnyObjectByType<GameTimer>();
 
         if (timer == null)
         {

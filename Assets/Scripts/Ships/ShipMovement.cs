@@ -78,5 +78,6 @@ public class ShipMovement : MonoBehaviour
             turnInput * turnSpeed * Time.deltaTime
         );
     }
+    public float CurrentSpeed => currentSpeed;
 
 }

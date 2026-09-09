@@ -23,12 +23,12 @@ public class EnemyShell : MonoBehaviour
 
         if (player != null)
         {
+            Debug.Log("Enemy shell hit player");
             Debug.Log("Enemy shell dealing " + damage + " damage.");
             
             player.TakeDamage(damage);
             
             Destroy(gameObject);
         }
-
     }
 }

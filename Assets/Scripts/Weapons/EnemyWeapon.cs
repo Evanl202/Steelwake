@@ -14,6 +14,7 @@ public class EnemyWeapon : MonoBehaviour
     public float gunDamage = 10f;
     public float gunReloadTime = 2f;
     public float gunFiringRange = 25f;
+    public float shellSpeed = 20f;
 
     [Header ("Torpedo Combat")]
     public float torpedoDamage = 50f;
@@ -70,7 +71,10 @@ public class EnemyWeapon : MonoBehaviour
         }
 
         //Torpedo
-        if (distance <= torpedoFiringRange && torpedoReloadTimer <= 0f)
+        if (torpedoPrefab != null &&
+            torpedoFiringPoint != null &&
+            distance <= torpedoFiringRange &&
+            torpedoReloadTimer <= 0f)
         {
             FireTorpedo();
         }
@@ -79,7 +83,18 @@ public class EnemyWeapon : MonoBehaviour
     private void AimAtPlayer()
     {
         //Aim Gun
-        Vector3 gunDirection = player.position - transform.position;
+        if (player == null)
+            return;
+
+        Vector3 gunTarget = 
+            CalculateInterceptPoint(
+                transform.position,
+                player.position,
+                player.forward * GetPlayerSpeed(),
+                shellSpeed
+            );
+
+        Vector3 gunDirection = gunTarget - transform.position;
 
         gunDirection.y = 0f;
 
@@ -93,7 +108,15 @@ public class EnemyWeapon : MonoBehaviour
         {
             Transform launcher = torpedoFiringPoint.parent;
 
-            Vector3 torpedoDirection = player.position - launcher.position;
+            Vector3 torpedoTarget = 
+                CalculateInterceptPoint(
+                    launcher.position,
+                    player.position,
+                    player.forward * GetPlayerSpeed(),
+                    15f
+                );
+
+            Vector3 torpedoDirection = torpedoTarget - launcher.position;
 
             torpedoDirection.y = 0f;
 
@@ -102,6 +125,78 @@ public class EnemyWeapon : MonoBehaviour
                 launcher.rotation = Quaternion.LookRotation(torpedoDirection);
             }
         }
+    }
+
+    private float GetPlayerSpeed()
+    {
+        ShipMovement playerMovement = player.GetComponent<ShipMovement>();
+
+        if (playerMovement != null)
+        {
+            return playerMovement.CurrentSpeed;
+        }
+
+        return 0f;
+    }
+
+    private Vector3 CalculateInterceptPoint(
+        Vector3 shooterPosition,
+        Vector3 targetPosition,
+        Vector3 targetVelocity,
+        float projectileSpeed)
+    {
+        Vector3 toTarget = targetPosition - shooterPosition;
+
+        toTarget.y = 0f;
+        targetVelocity.y = 0f;
+
+        //Projectile interception
+        float a = 
+            Vector3.Dot(targetVelocity, targetVelocity)
+            - projectileSpeed * projectileSpeed;
+
+        //If ship speed and shell speed same
+        if (Mathf.Abs(a) < 0.001f)
+        {
+            return targetPosition;
+        }
+
+        float b = 2 * Vector3.Dot(toTarget, targetVelocity);
+
+        float c = Vector3.Dot(toTarget, toTarget);
+
+        float discriminant = b * b - 4f * a * c;
+
+        //If no interception point
+        if (discriminant < 0f)
+        {
+            return targetPosition;
+        }
+
+        float sqrtDiscriminant = Mathf.Sqrt(discriminant);
+
+        float t1 = (-b - sqrtDiscriminant) / (2f * a);
+
+        float t2 = (-b + sqrtDiscriminant) / (2f * a);
+
+        float travelTime = 0f;
+
+        if (t1 > 0f)
+        {
+            travelTime = t1;
+        }
+
+        else if (t2 > 0f)
+        {
+            travelTime = t2;
+        }
+
+        if (travelTime <= 0f)
+        {
+            return targetPosition;
+        }
+
+        return targetPosition + targetVelocity * travelTime;
     }
 
     private void FireGun()
