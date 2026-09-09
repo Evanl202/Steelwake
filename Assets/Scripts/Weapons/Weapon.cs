@@ -17,6 +17,8 @@ public class Weapon : MonoBehaviour
     public float[] gunMinAngles;
     public float[] gunMaxAngles;
 
+    public float[] gunBaseAngles;
+
     [Header ("Gun Combat")]
     public float damage = 25f;
     public float reloadTime = 1f;
@@ -31,10 +33,43 @@ public class Weapon : MonoBehaviour
     public float[] torpedoMinAngles;
     public float[] torpedoMaxAngles;
 
+    public float[] torpedoBaseAngles;
+
     [Header ("Torpedo Combat")]
     public float torpedoDamage = 50f;
     public float torpedoReloadTime = 5f;
     private float torpedoReloadTimer = 0f;
+
+    private void Awake()
+    {
+        if (gunTransforms != null)
+        {
+            gunBaseAngles = new float[gunTransforms.Length];
+
+            for (int i = 0; i < gunTransforms.Length; i++)
+            {
+                if (gunTransforms[i] != null)
+                {
+                    gunBaseAngles[i] =
+                        Mathf.DeltaAngle(0f, gunTransforms[i].localEulerAngles.y);
+                }
+            }
+        }
+
+        if (torpedoLaunchers != null)
+        {
+            torpedoBaseAngles = new float[torpedoLaunchers.Length];
+
+            for (int i = 0; i < torpedoLaunchers.Length; i++)
+            {
+                if (torpedoBaseAngles[i] != null)
+                {
+                    torpedoBaseAngles[i] =
+                        Mathf.DeltaAngle(0f, torpedoLaunchers[i].localEulerAngles.y);
+                }
+            }
+        }
+    }
 
     void Update()
     {
@@ -118,20 +153,31 @@ public class Weapon : MonoBehaviour
             
             float targetAngle = targetRotation.eulerAngles.y;
 
-            float minAngle = gunMinAngles[i];
-            float maxAngle = gunMaxAngles[i];
-
-            float clampedAngle = Mathf.Clamp(
-                Mathf.DeltaAngle(
-                    shipTransform.eulerAngles.y,
-                    targetAngle
-                ),
-                minAngle,
-                maxAngle
+            float targetRelativeToShip = Mathf.DeltaAngle(
+                shipTransform.eulerAngles.y,
+                targetAngle
             );
 
+            float targetRelativeToGun = Mathf.DeltaAngle(
+                gunBaseAngles[i],
+                targetRelativeToShip
+            );
+
+            float clampedAngle = Mathf.Clamp(
+                targetRelativeToGun,
+                gunMinAngles[i],
+                gunMaxAngles[i]
+            );
+
+            float finalAngle =
+                shipTransform.eulerAngles.y +
+                gunBaseAngles[i] +
+                clampedAngle;
+
             targetRotation = Quaternion.Euler(
-                0f, shipTransform.eulerAngles.y + clampedAngle, 0f
+                0f,
+                finalAngle,
+                0f
             );
 
             //Rotate Turret
@@ -141,7 +187,7 @@ public class Weapon : MonoBehaviour
                 rotationSpeed * Time.deltaTime
             );
         }
-        
+
         if (torpedoLaunchers == null ||
             torpedoMinAngles == null ||
             torpedoMaxAngles == null ||
@@ -172,20 +218,31 @@ public class Weapon : MonoBehaviour
             
             float targetAngle = torpedoRotation.eulerAngles.y;
 
-            float minAngle = torpedoMinAngles[i];
-            float maxAngle = torpedoMaxAngles[i];
-
-            float clampedAngle = Mathf.Clamp(
-                Mathf.DeltaAngle(
-                    shipTransform.eulerAngles.y,
-                    targetAngle
-                ),
-                minAngle,
-                maxAngle
+            float targetRelativeToShip = Mathf.DeltaAngle(
+                shipTransform.eulerAngles.y,
+                targetAngle
             );
 
+            float targetRelativeToLauncher = Mathf.DeltaAngle(
+                torpedoBaseAngles[i],
+                targetRelativeToShip
+            );
+
+            float clampedAngle = Mathf.Clamp(
+                targetRelativeToLauncher,
+                torpedoMinAngles[i],
+                torpedoMaxAngles[i]
+            );
+
+            float finalAngle =
+                shipTransform.eulerAngles.y +
+                torpedoBaseAngles[i] +
+                clampedAngle;
+
             torpedoRotation = Quaternion.Euler(
-                0f, shipTransform.eulerAngles.y + clampedAngle, 0f
+                0f,
+                finalAngle,
+                0f
             );
 
             launcher.rotation = Quaternion.RotateTowards(
