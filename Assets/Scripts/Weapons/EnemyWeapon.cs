@@ -71,7 +71,10 @@ public class EnemyWeapon : MonoBehaviour
         }
 
         //Torpedo
-        if (distance <= torpedoFiringRange && torpedoReloadTimer <= 0f)
+        if (torpedoPrefab != null &&
+            torpedoFiringPoint != null &&
+            distance <= torpedoFiringRange &&
+            torpedoReloadTimer <= 0f)
         {
             FireTorpedo();
         }
