@@ -146,7 +146,7 @@ public class Weapon : MonoBehaviour
             return;            
         }
 
-        if (torpedoFiringPoints == null || torpedoFiringPoints.Length == null)
+        if (torpedoFiringPoints == null || torpedoFiringPoints.Length == 0)
         {
             Debug.LogWarning("Missing torpedo firing points");
             return;            
@@ -159,8 +159,8 @@ public class Weapon : MonoBehaviour
             
             GameObject torpedoObject = Instantiate(
                 torpedoPrefab,
-                torpedoFiringPoints.position,
-                torpedoFiringPoints.rotation
+                point.position,
+                point.rotation
             );
 
             Torpedo torpedo = torpedoObject.GetComponent<Torpedo>();
