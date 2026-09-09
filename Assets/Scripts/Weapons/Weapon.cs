@@ -85,26 +85,26 @@ public class Weapon : MonoBehaviour
             if (gun == null)
                 continue;
 
-            Vector3 direction = targetPoint - gunTransform.position;
+            Vector3 direction = targetPoint - gun.position;
 
             direction.y = 0f;
 
             if (direction.sqrMagnitude < 0.001f)
-                return;
+                continue;
 
             Quaternion targetRotation =
                 Quaternion.LookRotation(direction, Vector3.up);
 
             //Rotate Turret
-            gunTransform.rotation = Quaternion.RotateTowards(
-                gunTransform.rotation,
+            gun.rotation = Quaternion.RotateTowards(
+                gun.rotation,
                 targetRotation,
                 rotationSpeed * Time.deltaTime
             );
 
             if (torpedoLauncher != null)
             {
-                torpedoLauncher.rotation = gunTransform.rotation;
+                torpedoLauncher.rotation = gun.rotation;
             }
         }
     }
@@ -129,8 +129,8 @@ public class Weapon : MonoBehaviour
             
             GameObject shellObject = Instantiate(
                 shellPrefab,
-                firingPoint.position,
-                firingPoint.rotation
+                point.position,
+                point.rotation
             );
 
             Shell shell = shellObject.GetComponent<Shell>();
