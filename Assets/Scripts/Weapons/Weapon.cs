@@ -69,8 +69,16 @@ public class Weapon : MonoBehaviour
 
     private void HandleGunRotation()
     {
-        if (gunTransforms == null || gunTransforms.Length == 0)
+        //Handle index error
+        if (gunTransforms == null ||
+            gunTransforms.Length == 0 ||
+            gunMinAngles == null ||
+            gunMaxAngles == null ||
+            gunMinAngles.Length != gunTransforms.Length ||
+            gunMaxAngles.Length != gunTransforms.Length)
+        {
             return;
+        }
 
         Camera cam = Camera.main;
 
@@ -133,7 +141,15 @@ public class Weapon : MonoBehaviour
                 rotationSpeed * Time.deltaTime
             );
         }
-
+        
+        if (torpedoLaunchers == null ||
+            torpedoMinAngles == null ||
+            torpedoMaxAngles == null ||
+            torpedoMinAngles.Length != torpedoLaunchers.Length ||
+            torpedoMaxAngles.Length != torpedoLaunchers.Length)
+        {
+            return;
+        }
         for (int i = 0; i < torpedoLaunchers.Length; i++)
         {
             Transform launcher = torpedoLaunchers[i];
