@@ -4,10 +4,10 @@ public class Weapon : MonoBehaviour
 {
     [Header ("Gun")]
     public GameObject shellPrefab;
-    public Transform firingPoint;
-
+    public Transform[] gunTransforms;
+    public Transform[] firingPoints;
+    
     [Header ("Gun Rotation")]
-    public Transform gunTransform;
     public float rotationSpeed = 360f;
 
     [Header ("Gun Combat")]
@@ -58,7 +58,7 @@ public class Weapon : MonoBehaviour
 
     private void HandleGunRotation()
     {
-        if (gunTransform == null)
+        if (gunTransforms == null || gunTransforms.Length == 0)
             return;
 
         Camera cam = Camera.main;
@@ -69,15 +69,21 @@ public class Weapon : MonoBehaviour
         //Horizontal plane at gun height
         Plane oceanPlane = new Plane(
             Vector3.up,
-            gunTransform.position
+            transform.position
         );
 
         //Aimming
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
-        if (oceanPlane.Raycast(ray, out float distance))
+        if (!oceanPlane.Raycast(ray, out float distance))
+            return;
+
+        Vector3 targetPoint = ray.GetPoint(distance);
+
+        foreach (Transform gun in gunTransforms)
         {
-            Vector3 targetPoint = ray.GetPoint(distance);
+            if (gun == null)
+                continue;
 
             Vector3 direction = targetPoint - gunTransform.position;
 
@@ -107,23 +113,33 @@ public class Weapon : MonoBehaviour
     {
         if (shellPrefab == null || firingPoint == null)
         {
-            Debug.LogWarning("Missing shell or firing point");
+            Debug.LogWarning("Missing shell prefab");
             return;
         }
 
-        GameObject shellObject = Instantiate(
-            shellPrefab,
-            firingPoint.position,
-            firingPoint.rotation
-        );
-
-        Shell shell = shellObject.GetComponent<Shell>();
-
-        if (shell != null)
+        if (firingPoints == null || firingPoints.Length == 0)
         {
-            shell.damage = damage;
+            Debug.LogWarning("Missing firing point");
+            return;
         }
+        foreach (Transform point in firingPoints)
+        {
+            if (point == null)
+                continue;
+            
+            GameObject shellObject = Instantiate(
+                shellPrefab,
+                firingPoint.position,
+                firingPoint.rotation
+            );
 
+            Shell shell = shellObject.GetComponent<Shell>();
+
+            if (shell != null)
+            {
+                shell.damage = damage;
+            }
+        }
         reloadTimer = reloadTime;
     }
 
