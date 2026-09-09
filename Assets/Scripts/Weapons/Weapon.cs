@@ -111,7 +111,7 @@ public class Weapon : MonoBehaviour
 
     private void Fire()
     {
-        if (shellPrefab == null || firingPoint == null)
+        if (shellPrefab == null)
         {
             Debug.LogWarning("Missing shell prefab");
             return;
