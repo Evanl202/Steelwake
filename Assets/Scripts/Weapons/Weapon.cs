@@ -80,6 +80,31 @@ public class Weapon : MonoBehaviour
 
         Vector3 targetPoint = ray.GetPoint(distance);
 
+        foreach (Transform launcher in torpedoLaunchers)
+        {
+            if (launcher == null)
+                continue;
+
+            Vector3 torpedoDirection = targetPoint - launcher.position;
+
+            torpedoDirection.y = 0f;
+
+            if (torpedoDirection.sqrMagnitude < 0.001f)
+                continue;
+
+            Quaternion torpedoRotation = 
+                Quaternion.LookRotation(
+                    torpedoDirection,
+                    Vector3.up
+                );
+                
+            launcher.rotation = Quaternion.RotateTowards(
+                launcher.rotation,
+                torpedoRotation,
+                rotationSpeed * Time.deltaTime
+            );
+        }
+
         foreach (Transform gun in gunTransforms)
         {
             if (gun == null)
