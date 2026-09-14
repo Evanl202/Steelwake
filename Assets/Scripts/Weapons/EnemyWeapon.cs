@@ -20,7 +20,7 @@ public class EnemyWeapon : MonoBehaviour
     public float torpedoMinAngle = -45f;
     public float torpedoMaxAngle = 45f;
 
-    private float torpedoBasedAngle;
+    private float torpedoBaseAngle;
 
     [Header ("Gun Combat")]
     public float gunDamage = 10f;
@@ -124,7 +124,7 @@ public class EnemyWeapon : MonoBehaviour
         if (guns != null && gunBaseAngles != null)
         {
             int gunCount = Mathf.Min(
-                firingPoints.Length
+                firingPoints.Length,
                 guns.Length,
                 gunBaseAngles.Length,
                 gunMinAngles.Length,
@@ -160,7 +160,7 @@ public class EnemyWeapon : MonoBehaviour
             Quaternion torpedoTarget = 
                 GetClampedWeaponRotation(
                     torpedoLauncher,
-                    torpedoBasedAngle,
+                    torpedoBaseAngle,
                     torpedoMinAngle,
                     torpedoMaxAngle,
                     15f
@@ -169,7 +169,7 @@ public class EnemyWeapon : MonoBehaviour
             torpedoLauncher.rotation =
                 Quaternion.LookRotation(
                     torpedoLauncher.rotation,
-                    targetRotation,
+                    torpedoTarget,
                     360f * Time.deltaTime
                 );
         }
@@ -348,7 +348,13 @@ public class EnemyWeapon : MonoBehaviour
             return;
         }
 
-        int gunCount = Mathf.Min(firingPoints.Length, guns.Length);
+        int gunCount = Mathf.Min(
+            firingPoints.Length, 
+            guns.Length,
+            gunBaseAngles.Length,
+            gunMinAngles.Length,
+            gunMaxAngles.Length
+        );
 
         bool fired = false;
 
@@ -391,7 +397,9 @@ public class EnemyWeapon : MonoBehaviour
 
     private void FireTorpedo()
     {
-        if (torpedoPrefab == null || torpedoFiringPoint == null || torpedoLauncher)
+        if (torpedoPrefab == null ||
+            torpedoFiringPoint == null || 
+            torpedoLauncher == null)
         {
             Debug.LogWarning("Missing torpedo, torpedo firing points, or launcher");
             return;
@@ -399,18 +407,18 @@ public class EnemyWeapon : MonoBehaviour
 
         if (!IsTargetInArc(
             torpedoLauncher,
-            torpedoBasedAngle,
+            torpedoBaseAngle,
             torpedoMinAngle,
             torpedoMaxAngle,
             15f))
         {
-            return
+            return;
         }
 
         GameObject torpedoObject = Instantiate(
             torpedoPrefab,
-            torpedoFiringPoins[]t.position,
-            torpedoFiringPoints[].rotation
+            torpedoFiringPoint.position,
+            torpedoFiringPoint.rotation
         );
 
         EnemyTorpedo torpedo = torpedoObject.GetComponent<EnemyTorpedo>();
