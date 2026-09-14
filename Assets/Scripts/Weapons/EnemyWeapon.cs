@@ -305,12 +305,12 @@ public class EnemyWeapon : MonoBehaviour
                 float targetRelativeToGun =
                     Mathf.DeltaAngle(gunBaseAngles[i], targetRelativeToShip);
 
-                if (targetRelativeToGun < gunMinAngles[i] || targetRelativeToGun > gunMaxAngles[i])
+                if (targetRelativeToGun >= gunMinAngles[i] && targetRelativeToGun =< gunMaxAngles[i])
                 {
                     GameObject shellObject = Instantiate(
                         shellPrefab,
-                        firingPoints.position,
-                        firingPoints.rotation
+                        firingPoints[i].position,
+                        firingPoints[i].rotation
                     );
 
                     EnemyShell shell = shellObject.GetComponent<EnemyShell>();
@@ -327,6 +327,7 @@ public class EnemyWeapon : MonoBehaviour
                 {
                     reloadTimer = gunReloadTime;
                 }
+            }
     }
 
     private void FireTorpedo()

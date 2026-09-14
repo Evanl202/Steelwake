@@ -15,7 +15,7 @@ public class EnemyShip : MonoBehaviour
     public float maxSpeed = 10f;
     public float acceleration = 5f;
     public float deceleration = 4f;
-    public float reverseSpeedb = 5f;
+    public float reverseSpeed = 5f;
     public float turnSpeed = 60f;
 
     [Header ("AI Distance")]
