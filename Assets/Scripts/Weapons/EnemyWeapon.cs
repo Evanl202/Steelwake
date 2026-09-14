@@ -274,61 +274,63 @@ public class EnemyWeapon : MonoBehaviour
         bool fired = false;
 
         for (int i = 0; i < gunCount; i++)
+        {
+            if (guns[i] == null || firingPoints[i] == null)
+                continue;
+
+            Vector3 gunTarget = 
+                CalculateInterceptPoint(
+                    guns[i].position,
+                    player.position,
+                    player.forward * GetPlayerSpeed(),
+                    shellSpeed
+                );
+            
+            Vector3 direction = gunTarget - guns[i].position;
+
+            direction.y = 0f;
+
+            if (direction.sqrMagnitude < 0.01f)
+                continue;
+
+            Quaternion targetRotation = 
+                Quaternion.LookRotation(direction, Vector3.up);
+
+            float targetAngle =
+                targetRotation.eulerAngles.y;
+
+            float targetRelativeToShip =
+                Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
+
+            float targetRelativeToGun =
+                Mathf.DeltaAngle(gunBaseAngles[i], targetRelativeToShip);
+
+            if (targetRelativeToGun >= gunMinAngles[i] 
+                && targetRelativeToGun <= gunMaxAngles[i])
             {
-                if (guns[i] == null || firingPoints[i] == null)
-                    continue;
-
-                Vector3 gunTarget = 
-                    CalculateInterceptPoint(
-                        guns[i].position,
-                        player.position,
-                        player.forward * GetPlayerSpeed(),
-                        shellSpeed
-                    );
-                
-                Vector3 direction = gunTarget - guns[i].position;
-
-                direction.y = 0f;
-
-                if (direction.sqrMagnitude < 0.01f)
-                    continue;
-
-                Quaternion targetRotation = 
-                    Quaternion.LookRotation(direction, Vector3.up);
-
-                float targetAngle =
-                    targetRotation.eulerAngles.y;
-
-                float targetRelativeToShip =
-                    Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
-
-                float targetRelativeToGun =
-                    Mathf.DeltaAngle(gunBaseAngles[i], targetRelativeToShip);
-
-                if (targetRelativeToGun >= gunMinAngles[i] 
-                    && targetRelativeToGun <= gunMaxAngles[i])
-                {
-                    GameObject shellObject = Instantiate(
-                        shellPrefab,
-                        firingPoints[i].position,
-                        firingPoints[i].rotation
-                    );
-
-                    EnemyShell shell = shellObject.GetComponent<EnemyShell>();
-
-                    if (shell != null)
-                    {
-                        shell.damage = gunDamage;
-                    }
-
-                    fired = true;
-                }
-                
-                if(fired)
-                {
-                    reloadTimer = gunReloadTime;
-                }
+                continue;
             }
+
+            GameObject shellObject = Instantiate(
+                shellPrefab,
+                firingPoints[i].position,
+                firingPoints[i].rotation
+            );
+
+            EnemyShell shell = shellObject.GetComponent<EnemyShell>();
+
+            if (shell != null)
+            {
+                shell.damage = gunDamage;
+            }
+
+            fired = true;
+        }
+            
+        if(fired)
+        {
+            reloadTimer = gunReloadTime;
+        }
     }
 
     private void FireTorpedo()
