@@ -95,7 +95,6 @@ public class EnemyShip : MonoBehaviour
             //Too close: Move away while orbiting
             movementDirection = -directionToPlayer + orbitDirectionVector * orbitSpeed;
         }
-
         else
         {
             //Maintain distance
@@ -151,9 +150,7 @@ public class EnemyShip : MonoBehaviour
                 currentSpeed += acceleration * Time.deltaTime;
 
                 currentSpeed = Mathf.Clamp(currentSpeed, 0f, maxSpeed);
-
             }
-
             //Reverse
             else
             {
@@ -161,17 +158,20 @@ public class EnemyShip : MonoBehaviour
 
                 currentSpeed = Mathf.Clamp(currentSpeed, -reverseSpeed, maxSpeed);
             }
-        
+        }
         //Slow down if no movement choice
         else
         {
-            currentSpeed = Mathf.MoveTowards(currentSpeed, 0f, deceleration * Time.deltaTime);
+            currentSpeed = Mathf.MoveTowards(
+                currentSpeed,
+                0f,
+                deceleration * Time.deltaTime
+            );
         }
 
         //Move
         transform.position += 
             transform.forward * currentSpeed * Time.deltaTime;
-        }
     }
 
     public void TakeDamage(float damage)
@@ -204,14 +204,20 @@ public class EnemyShip : MonoBehaviour
             {
                 xp.xpAmount = experienceReward;
             }
+            else
+            {
+                Debug.LogWarning(
+                    "Enemyship XP Pickup prefab has no XPPickup component"
+                );
+            }
+        }
         else
         {
             Debug.LogWarning(
                 "Enemyship has no XP Prefab assigned"
             );
         }
-            
-        }
+
         Destroy(gameObject);
     }
 }
