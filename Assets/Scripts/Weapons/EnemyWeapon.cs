@@ -4,8 +4,13 @@ public class EnemyWeapon : MonoBehaviour
 {
     [Header ("Weapon")]
     public GameObject shellPrefab;
-    public Transform firingPoint;
-    public Transform gun;
+    public Transform[] firingPoint;
+    public Transform[] gun;
+    
+    [Header ("Turret Firing Arcs")]
+    public float[] gunMinAngles;
+    public float[] gunMaxAngles;
+    public float[] gunBaseAngles;
 
     [Header ("Torpedo")]
     public GameObject torpedoPrefab;
@@ -27,6 +32,26 @@ public class EnemyWeapon : MonoBehaviour
     private float torpedoReloadTimer = 0f;
 
     private Transform player;
+
+    private void Awake()
+    {
+        if (guns != null)
+        {
+            gunBaseAngles = new float[guns.Length];
+
+            for (int i = 0; i < guns.Length; i++)
+            {
+                if (guns[i] != null)
+                {
+                    gunBaseAngles[i] =
+                        Mathf.DeltaAngle(
+                            0f,
+                            guns[i].localEulerAngles.y
+                        );
+                }
+            }
+        }
+    }
 
     private void Start()
     {
@@ -85,24 +110,58 @@ public class EnemyWeapon : MonoBehaviour
     private void AimAtPlayer()
     {
         //Aim Gun
-        if (player == null)
-            return;
-
-        Vector3 gunTarget = 
-            CalculateInterceptPoint(
-                transform.position,
-                player.position,
-                player.forward * GetPlayerSpeed(),
-                shellSpeed
+        if (guns != null && gunBaseAngles != null)
+        {
+            int gunCount = Mathf.Min(
+                guns.Length,
+                gunBaseAngles.Length
             );
 
-        Vector3 gunDirection = gunTarget - gun.position;
+            for (int i = 0; i < gunCount; i++)
+            {
+                if (guns[i] == null)
+                    continue;
 
-        gunDirection.y = 0f;
+                Vector3 gunTarget = 
+                    CalculateInterceptPoint(
+                        guns[i].position,
+                        player.position,
+                        player.forward * GetPlayerSpeed(),
+                        shellSpeed
+                    );
+                
+                Vector3 direction = gunTarget - gun.position;
 
-        if (gunDirection.sqrMagnitude > 0.01f)
-        {
-            gun.rotation = Quaternion.LookRotation(gunDirection);
+                direction.y = 0f;
+
+                if (direction.sqrMagnitude > 0.01f)
+                    continue;
+
+                Quaternion targetRotation = 
+                    Quaternion.LookRotation(direction, Vector3.up);
+
+                float targetRelativeToShip =
+                    Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
+
+                float targeetRelativeToGun =
+                    Mathf.DeltaAngle(gunBaseAngles[i], targetRelativeToShip);
+
+                float clampledAngle =
+                    Mathf.Clamp(targeetRelativeToGun, gunMinAngles[i], gunMaxAngles[i])
+            
+                float finalAngle =
+                    transform.eulerAngles.y + gunBaseAngles[i] + clampledAngle;
+                
+                targetRotation =
+                    Quaternion.Euler(0f, finalAngle, 0f);
+
+                guns[i].rotation = 
+                    Quaternion.RotateTowards(
+                        guns[i].rotation,
+                        targetRotation,
+                        360 * Time.deltaTime
+                    );
+            }
         }
 
         //Aim Torpedo
