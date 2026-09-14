@@ -154,7 +154,7 @@ public class EnemyShip : MonoBehaviour
 
             }
 
-            //Decel
+            //Reverse
             else
             {
                 currentSpeed -= acceleration * Time.deltaTime;
@@ -165,7 +165,7 @@ public class EnemyShip : MonoBehaviour
         //Slow down if no movement choice
         else
         {
-            currentSpeed = Mathf.Clamp(currentSpeed, 0f, deceleration * Time.deltaTime);
+            currentSpeed = Mathf.MoveTowards(currentSpeed, 0f, deceleration * Time.deltaTime);
         }
 
         //Move
