@@ -151,15 +151,27 @@ public class EnemyWeapon : MonoBehaviour
                 if (guns[i] == null)
                     continue;
 
-                Quaternion targetRotation =
-                    GetClampedWeaponRotation(
-                        guns[i],
-                        gunBaseAngles[i],
+                float targetAngle =
+                    GetTargetRelativeAngle(guns[i], shellSpeed);
+                
+                float clampedAngle = 
+                    Mathf.Clamp(
+                        targetAngle,
                         gunMinAngles[i],
-                        gunMaxAngles[i],
-                        shellSpeed
-                    );
+                        gunMaxAngles[i]
+                    ;)
 
+                float finalAngle = 
+                    gunBaseAngles[i] = clampedAngle;
+
+                Quaternion targetRotation =
+                    transform.rotation *
+                    Quarternion.Euler(
+                        0f, 
+                        finalAngle;
+                        0f
+                    );
+                
                 guns[i].rotation = 
                     Quaternion.RotateTowards(
                         guns[i].rotation,
@@ -189,13 +201,25 @@ public class EnemyWeapon : MonoBehaviour
                 if (torpedoLaunchers[i] == null)
                     continue;
 
-                Quaternion torpedoTarget = 
-                    GetClampedWeaponRotation(
-                        torpedoLaunchers[i],
-                        torpedoBaseAngles[i],
+                float targetAngle =
+                    GetTargetRelativeAngle(torpedoLaunchers[i], 15f);
+                
+                float clampedAngle = 
+                    Mathf.Clamp(
+                        targetAngle,
                         torpedoMinAngles[i],
-                        torpedoMaxAngles[i],
-                        15f
+                        torpedoMaxAngles[i]
+                    ;)
+
+                float finalAngle = 
+                    torpedoBaseAngles[i] = clampedAngle;
+
+                Quaternion targetRotation =
+                    transform.rotation *
+                    Quarternion.Euler(
+                        0f, 
+                        finalAngle;
+                        0f
                     );
 
                 torpedoLaunchers[i].rotation =
@@ -282,7 +306,6 @@ public class EnemyWeapon : MonoBehaviour
 
     private float GetTargetRelativeAngle(
         Transform weapon,
-        float baseAngle,
         float projectileSpeed)
     {
         Vector3 target =
@@ -301,25 +324,16 @@ public class EnemyWeapon : MonoBehaviour
         if (direction.sqrMagnitude < 0.01f)
             return 0f;
 
-        Quaternion targetRotation =
-            Quaternion.LookRotation(
-                direction,
-                Vector3.up
-            );
+        Vector3 localDirection =
+            transform.InverseTransformDirection(direction.normalized);
 
         float targetAngle =
-            targetRotation.eulerAngles.y;
-
-        float targetRelativeToShip =
-            Mathf.DeltaAngle(
-                transform.eulerAngles.y,
-                targetAngle
-            );
-
-        return Mathf.DeltaAngle(
-            baseAngle,
-            targetRelativeToShip
-        );
+            Mathf.Atan2(
+                localDirection.x,
+                localDirection.z
+            ) * Mathf.Rad2Deg;
+        
+        return targetAngle;
     }
 
     private Quaternion GetClampedWeaponRotation(
@@ -362,11 +376,16 @@ public class EnemyWeapon : MonoBehaviour
         float maxAngle,
         float projectileSpeed)
     {
-        float targetRelativeAngle =
+        float targetAngle =
             GetTargetRelativeAngle(
                 weapon,
-                baseAngle,
                 projectileSpeed
+            );
+
+        float relativeAngle = 
+            Mathf.DeltaAngle(
+                baseAngle,
+                targetAngle
             );
 
         return targetRelativeAngle >= minAngle &&
