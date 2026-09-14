@@ -108,8 +108,6 @@ public class EnemyWeapon : MonoBehaviour
         //Aim Torpedo
         if (torpedoLauncher != null)
         {
-            Transform launcher = torpedoLauncher;
-
             Vector3 torpedoTarget = 
                 CalculateInterceptPoint(
                     torpedoLauncher.position,
