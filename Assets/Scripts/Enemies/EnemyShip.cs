@@ -131,8 +131,46 @@ public class EnemyShip : MonoBehaviour
         {
             movementDirection.Normalize();
 
-            transform.position +=
-                movementDirection * moveSpeed * Time.deltaTime;
+            //Turn toward movement direction
+            Quaternion targetRotation =
+                Quaternion.LookRotation(movementDirection);
+            
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                targetRotation,
+                turnSpeed * Time.deltaTime
+            );
+
+            //Determine direction
+            float directionDot = 
+                Vector3.Dot(transform.forward, movementDirection);
+
+            //Accel
+            if (directionDot > 0f)
+            {
+                currentSpeed += acceleration * Time.deltaTime;
+
+                currentSpeed = Mathf.Clamp(currentSpeed, 0f, maxSpeed);
+
+            }
+
+            //Decel
+            else
+            {
+                currentSpeed -= acceleration * Time.deltaTime;
+
+                currentSpeed = Mathf.Clamp(currentSpeed, -reverseSpeed, maxSpeed);
+            }
+        
+        //Slow down if no movement choice
+        else
+        {
+            currentSpeed = Mathf.Clamp(currentSpeed, 0f, deceleration * Time.deltaTime);
+        }
+
+        //Move
+        transform.position += 
+            transform.forward * currentSpeed * Time.deltaTime;
         }
     }
 
