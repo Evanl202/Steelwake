@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Header("Enemy")]
+    [Header ("Enemy")]
     public GameObject frigatePrefab;
     public GameObject destroyerPrefab;
     public GameObject cruiserPrefab;
     public GameObject battleshipPrefab;
 
-    [Header("Player")]
+    [Header ("Player")]
     public Transform player;
 
-    [Header("Spawning")]
+    [Header ("Spawning")]
     public float spawnDistance = 30f;
     public float spawnInterval = 3f;
 
@@ -35,6 +35,7 @@ public class EnemySpawner : MonoBehaviour
         if (spawnTimer <= 0f)
         {
             SpawnEnemy();
+
             spawnTimer = spawnInterval;
         }
     }
@@ -57,9 +58,7 @@ public class EnemySpawner : MonoBehaviour
 
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
 
-        Vector3 spawnPosition = player.position +
-            new Vector3(randomDirection.x, 0f, randomDirection.y) *
-            spawnDistance;
+        Vector3 spawnPosition = player.position + new Vector3(randomDirection.x, 0f, randomDirection.y) * spawnDistance;
 
         Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
     }
@@ -75,20 +74,20 @@ public class EnemySpawner : MonoBehaviour
 
         float time = timer.elapsedTime;
 
-        // 0:00 - 0:20
-        if (time < 20f)
+        //0:00 - 2:00 120f
+        if (time < 10f)
         {
             return frigatePrefab;
         }
 
-        // 0:20 - 0:30
-        if (time < 30f)
+        //2:00 - 5:00 300f
+        if (time < 30)
         {
             return Random.value < 0.7f ? frigatePrefab : destroyerPrefab;
         }
 
-        // 0:30 - 0:40
-        if (time < 40f)
+        //8:00 - 12:00 720f
+        if (time < 40)
         {
             float roll = Random.value;
 
@@ -100,8 +99,7 @@ public class EnemySpawner : MonoBehaviour
 
             return cruiserPrefab;
         }
-
-        // 0:40+
+        //12:00+
         float lateRoll = Random.value;
 
         if (lateRoll < 0.45f)
@@ -109,7 +107,8 @@ public class EnemySpawner : MonoBehaviour
 
         if (lateRoll < 0.8f)
             return cruiserPrefab;
-
+                
         return battleshipPrefab;
+        
     }
 }
