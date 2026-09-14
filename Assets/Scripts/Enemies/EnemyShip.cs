@@ -151,7 +151,6 @@ public class EnemyShip : MonoBehaviour
                 currentSpeed += acceleration * Time.deltaTime;
 
                 currentSpeed = Mathf.Clamp(currentSpeed, 0f, maxSpeed);
-
             }
 
             //Reverse
@@ -161,7 +160,7 @@ public class EnemyShip : MonoBehaviour
 
                 currentSpeed = Mathf.Clamp(currentSpeed, -reverseSpeed, maxSpeed);
             }
-        
+        }
         //Slow down if no movement choice
         else
         {
@@ -171,7 +170,7 @@ public class EnemyShip : MonoBehaviour
         //Move
         transform.position += 
             transform.forward * currentSpeed * Time.deltaTime;
-        }
+        
     }
 
     public void TakeDamage(float damage)
