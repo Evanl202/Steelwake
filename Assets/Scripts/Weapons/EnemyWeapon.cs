@@ -4,8 +4,8 @@ public class EnemyWeapon : MonoBehaviour
 {
     [Header ("Weapon")]
     public GameObject shellPrefab;
-    public Transform[] firingPoint;
-    public Transform[] gun;
+    public Transform[] firingPoints;
+    public Transform[] guns;
     
     [Header ("Turret Firing Arcs")]
     public float[] gunMinAngles;
@@ -130,27 +130,30 @@ public class EnemyWeapon : MonoBehaviour
                         shellSpeed
                     );
                 
-                Vector3 direction = gunTarget - gun.position;
+                Vector3 direction = gunTarget - guns[i].position;
 
                 direction.y = 0f;
 
-                if (direction.sqrMagnitude > 0.01f)
+                if (direction.sqrMagnitude < 0.01f)
                     continue;
 
                 Quaternion targetRotation = 
                     Quaternion.LookRotation(direction, Vector3.up);
 
+                float targetAngle =
+                    targetRotation.eulerAngles.y;
+
                 float targetRelativeToShip =
                     Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
 
-                float targeetRelativeToGun =
+                float targetRelativeToGun =
                     Mathf.DeltaAngle(gunBaseAngles[i], targetRelativeToShip);
 
-                float clampledAngle =
-                    Mathf.Clamp(targeetRelativeToGun, gunMinAngles[i], gunMaxAngles[i])
+                float clampedAngle =
+                    Mathf.Clamp(targetRelativeToGun, gunMinAngles[i], gunMaxAngles[i]);
             
                 float finalAngle =
-                    transform.eulerAngles.y + gunBaseAngles[i] + clampledAngle;
+                    transform.eulerAngles.y + gunBaseAngles[i] + clampedAngle;
                 
                 targetRotation =
                     Quaternion.Euler(0f, finalAngle, 0f);
