@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Header ("Enemy")]
+    [Header("Enemy")]
     public GameObject frigatePrefab;
     public GameObject destroyerPrefab;
     public GameObject cruiserPrefab;
     public GameObject battleshipPrefab;
 
-    [Header ("Player")]
+    [Header("Player")]
     public Transform player;
 
-    [Header ("Spawning")]
+    [Header("Spawning")]
     public float spawnDistance = 30f;
     public float spawnInterval = 3f;
 
@@ -35,7 +35,6 @@ public class EnemySpawner : MonoBehaviour
         if (spawnTimer <= 0f)
         {
             SpawnEnemy();
-
             spawnTimer = spawnInterval;
         }
     }
@@ -58,7 +57,9 @@ public class EnemySpawner : MonoBehaviour
 
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
 
-        Vector3 spawnPosition = player.position + new Vector3(randomDirection.x, 0f, randomDirection.y) * spawnDistance;
+        Vector3 spawnPosition = player.position +
+            new Vector3(randomDirection.x, 0f, randomDirection.y) *
+            spawnDistance;
 
         Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
     }
@@ -74,13 +75,7 @@ public class EnemySpawner : MonoBehaviour
 
         float time = timer.elapsedTime;
 
-        // 0:00 - 0:10
-        if (time < 10f)
-        {
-            return frigatePrefab;
-        }
-
-        // 0:10 - 0:20
+        // 0:00 - 0:20
         if (time < 20f)
         {
             return frigatePrefab;
