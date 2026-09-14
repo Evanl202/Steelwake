@@ -5,10 +5,12 @@ public class EnemyWeapon : MonoBehaviour
     [Header ("Weapon")]
     public GameObject shellPrefab;
     public Transform firingPoint;
+    public Transform gun;
 
     [Header ("Torpedo")]
     public GameObject torpedoPrefab;
     public Transform torpedoFiringPoint;
+    public Transform torpedoLauncher;
 
     [Header ("Gun Combat")]
     public float gunDamage = 10f;
@@ -94,35 +96,35 @@ public class EnemyWeapon : MonoBehaviour
                 shellSpeed
             );
 
-        Vector3 gunDirection = gunTarget - transform.position;
+        Vector3 gunDirection = gunTarget - gun.position;
 
         gunDirection.y = 0f;
 
         if (gunDirection.sqrMagnitude > 0.01f)
         {
-            transform.rotation = Quaternion.LookRotation(gunDirection);
+            gun.rotation = Quaternion.LookRotation(gunDirection);
         }
 
         //Aim Torpedo
-        if (torpedoFiringPoint != null)
+        if (torpedoLauncher != null)
         {
-            Transform launcher = torpedoFiringPoint.parent;
+            Transform launcher = torpedoLauncher;
 
             Vector3 torpedoTarget = 
                 CalculateInterceptPoint(
-                    launcher.position,
+                    torpedoLauncher.position,
                     player.position,
                     player.forward * GetPlayerSpeed(),
                     15f
                 );
 
-            Vector3 torpedoDirection = torpedoTarget - launcher.position;
+            Vector3 torpedoDirection = torpedoTarget - torpedoLauncher.position;
 
             torpedoDirection.y = 0f;
 
             if (torpedoDirection.sqrMagnitude > 0.01f)
             {
-                launcher.rotation = Quaternion.LookRotation(torpedoDirection);
+                torpedoLauncher.rotation = Quaternion.LookRotation(torpedoDirection);
             }
         }
     }
