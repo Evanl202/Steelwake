@@ -305,8 +305,11 @@ public class EnemyWeapon : MonoBehaviour
             float targetRelativeToGun =
                 Mathf.DeltaAngle(gunBaseAngles[i], targetRelativeToShip);
 
-            if (targetRelativeToGun >= gunMinAngles[i] 
-                && targetRelativeToGun <= gunMaxAngles[i]);
+            if (targetRelativeToGun < gunMinAngles[i] 
+                || targetRelativeToGun > gunMaxAngles[i])
+            {
+                continue;
+            }
 
             GameObject shellObject = Instantiate(
                 shellPrefab,
