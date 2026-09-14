@@ -162,11 +162,11 @@ public class EnemyWeapon : MonoBehaviour
                     ;)
 
                 float finalAngle = 
-                    gunBaseAngles[i] = clampedAngle;
+                    gunBaseAngles[i] + clampedAngle;
 
                 Quaternion targetRotation =
                     transform.rotation *
-                    Quarternion.Euler(
+                    Quaternion.Euler(
                         0f, 
                         finalAngle;
                         0f
@@ -209,23 +209,23 @@ public class EnemyWeapon : MonoBehaviour
                         targetAngle,
                         torpedoMinAngles[i],
                         torpedoMaxAngles[i]
-                    ;)
+                    );
 
                 float finalAngle = 
-                    torpedoBaseAngles[i] = clampedAngle;
+                    torpedoBaseAngles[i] + clampedAngle;
 
                 Quaternion targetRotation =
                     transform.rotation *
-                    Quarternion.Euler(
+                    Quaternion.Euler(
                         0f, 
-                        finalAngle;
+                        finalAngle,
                         0f
                     );
 
                 torpedoLaunchers[i].rotation =
                     Quaternion.RotateTowards(
                         torpedoLaunchers[i].rotation,
-                        torpedoTarget,
+                        torpedoRotation,
                         360f * Time.deltaTime
                     );
             }
@@ -336,39 +336,6 @@ public class EnemyWeapon : MonoBehaviour
         return targetAngle;
     }
 
-    private Quaternion GetClampedWeaponRotation(
-        Transform weapon,
-        float baseAngle,
-        float minAngle,
-        float maxAngle,
-        float projectileSpeed)
-    {
-        float targetRelativeAngle =
-            GetTargetRelativeAngle(
-                weapon,
-                baseAngle,
-                projectileSpeed
-            );
-
-        float clampedAngle =
-            Mathf.Clamp(
-                targetRelativeAngle,
-                minAngle,
-                maxAngle
-            );
-
-        float finalAngle =
-            transform.eulerAngles.y
-            + baseAngle
-            + clampedAngle;
-
-        return Quaternion.Euler(
-            0f,
-            finalAngle,
-            0f
-        );
-    }
-
     private bool IsTargetInArc(
         Transform weapon,
         float baseAngle,
@@ -388,8 +355,8 @@ public class EnemyWeapon : MonoBehaviour
                 targetAngle
             );
 
-        return targetRelativeAngle >= minAngle &&
-            targetRelativeAngle <= maxAngle;
+        return RelativeAngle >= minAngle &&
+            RelativeAngle <= maxAngle;
     }
 
     private void FireGun()
