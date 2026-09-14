@@ -186,7 +186,7 @@ public class EnemyWeapon : MonoBehaviour
             
             for (int i = 0; i < torpedoCount; i++)
             {
-                if torpedoLaunchers[i] == null
+                if (torpedoLaunchers[i] == null)
                     continue;
 
                 Quaternion torpedoTarget = 
@@ -448,7 +448,7 @@ public class EnemyWeapon : MonoBehaviour
 
         bool fired = false;
 
-        for (int i = 0; i < torpedoCount; i++);
+        for (int i = 0; i < torpedoCount; i++)
         {
             if (torpedoLaunchers[i] == null || torpedoFiringPoints[i] == null)
                 continue;
