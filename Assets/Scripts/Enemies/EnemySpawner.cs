@@ -3,7 +3,6 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [Header ("Enemy")]
-    public GameObject rammerPrefab;
     public GameObject frigatePrefab;
     public GameObject destroyerPrefab;
     public GameObject cruiserPrefab;
@@ -70,31 +69,31 @@ public class EnemySpawner : MonoBehaviour
 
         if (timer == null)
         {
-            return rammerPrefab;
+            return frigatePrefab;
         }
 
         float time = timer.elapsedTime;
 
-        //0:00 - 2:00 120f
+        // 0:00 - 0:10
         if (time < 10f)
-        {
-            return rammerPrefab;
-        }
-
-        //2:00 - 5:00 300f
-        if (time < 20)
         {
             return frigatePrefab;
         }
 
-        //5:00 - 8:00 480f
-        if (time < 30)
+        // 0:10 - 0:20
+        if (time < 20f)
+        {
+            return frigatePrefab;
+        }
+
+        // 0:20 - 0:30
+        if (time < 30f)
         {
             return Random.value < 0.7f ? frigatePrefab : destroyerPrefab;
         }
 
-        //8:00 - 12:00 720f
-        if (time < 40)
+        // 0:30 - 0:40
+        if (time < 40f)
         {
             float roll = Random.value;
 
@@ -106,7 +105,8 @@ public class EnemySpawner : MonoBehaviour
 
             return cruiserPrefab;
         }
-        //12:00+
+
+        // 0:40+
         float lateRoll = Random.value;
 
         if (lateRoll < 0.45f)
@@ -114,8 +114,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (lateRoll < 0.8f)
             return cruiserPrefab;
-                
+
         return battleshipPrefab;
-        
     }
 }
