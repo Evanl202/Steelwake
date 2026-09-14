@@ -14,13 +14,13 @@ public class EnemyWeapon : MonoBehaviour
 
     [Header ("Torpedo")]
     public GameObject torpedoPrefab;
-    public Transform torpedoFiringPoint;
-    public Transform torpedoLauncher;
+    public Transform[] torpedoFiringPoints;
+    public Transform[] torpedoLaunchers;
 
-    public float torpedoMinAngle = -45f;
-    public float torpedoMaxAngle = 45f;
+    public float[] torpedoMinAngles;
+    public float[] torpedoMaxAngles;
 
-    private float torpedoBaseAngle;
+    private float[] torpedoBaseAngles;
 
     [Header ("Gun Combat")]
     public float gunDamage = 10f;
@@ -57,10 +57,21 @@ public class EnemyWeapon : MonoBehaviour
             }
         }
 
-        if (torpedoLauncher != null)
+        if (torpedoLaunchers != null)
         {
-            torpedoBaseAngle = 
-                Mathf.DeltaAngle(0f, torpedoLauncher.localEulerAngles.y);
+            torpedoBaseAngles = new float[torpedoLaunchers.Length];
+
+            for (int i = 0; i < torpedoLaunchers.Length; i++);
+            {
+                if (torpedoLaunchers[i] != null)
+                {
+                    torpedoBaseAngles = 
+                        Mathf.DeltaAngle(
+                            0f,
+                            torpedoLaunchers.localEulerAngles.y
+                        );
+                }
+            }
         }
     }
 
@@ -121,7 +132,10 @@ public class EnemyWeapon : MonoBehaviour
     private void AimAtPlayer()
     {
         //Aim Gun
-        if (guns != null && gunBaseAngles != null)
+        if (guns != null &&
+            gunBaseAngles != null &&
+            gunMinAngles != null &&
+            gunMaxAngles != null)
         {
             int gunCount = Mathf.Min(
                 firingPoints.Length,
@@ -155,23 +169,40 @@ public class EnemyWeapon : MonoBehaviour
         }
 
         //Aim Torpedo
-        if (torpedoLauncher != null)
+        if (torpedoLaunchers != null &&
+            torpedoBaseAngles != null &&
+            torpedoMinAngles != null &&
+            torpedoMaxAngles != null)
         {
-            Quaternion torpedoTarget = 
-                GetClampedWeaponRotation(
-                    torpedoLauncher,
-                    torpedoBaseAngle,
-                    torpedoMinAngle,
-                    torpedoMaxAngle,
-                    15f
-                );
+            int torpedoCount = Mathf.Min(
+                torpedoLaunchers.Length,
+                torpedoFiringPoints.Length,
+                torpedoBaseAngles.Length,
+                torpedoMinAngles.Length,
+                torpedoMaxAngles.Length
+            );
+            
+            for (int i = 0; i < torpedoCount; i++)
+            {
+                if torpedoLaunchers[i] == null
+                    continue;
 
-            torpedoLauncher.rotation =
-                Quaternion.RotateTowards(
-                    torpedoLauncher.rotation,
-                    torpedoTarget,
-                    360f * Time.deltaTime
-                );
+                Quaternion torpedoTarget = 
+                    GetClampedWeaponRotation(
+                        torpedoLaunchers[i],
+                        torpedoBaseAngles[i],
+                        torpedoMinAngles[i],
+                        torpedoMaxAngles[i],
+                        15f
+                    );
+
+                torpedoLaunchers[i].rotation =
+                    Quaternion.RotateTowards(
+                        torpedoLaunchers[i].rotation,
+                        torpedoTarget,
+                        360f * Time.deltaTime
+                    );
+            }
         }
     }
 
@@ -398,36 +429,57 @@ public class EnemyWeapon : MonoBehaviour
     private void FireTorpedo()
     {
         if (torpedoPrefab == null ||
-            torpedoFiringPoint == null || 
-            torpedoLauncher == null)
+            torpedoFiringPoints == null || 
+            torpedoLaunchers == null)
         {
             Debug.LogWarning("Missing torpedo, torpedo firing points, or launcher");
             return;
         }
 
-        if (!IsTargetInArc(
-            torpedoLauncher,
-            torpedoBaseAngle,
-            torpedoMinAngle,
-            torpedoMaxAngle,
-            15f))
-        {
-            return;
-        }
-
-        GameObject torpedoObject = Instantiate(
-            torpedoPrefab,
-            torpedoFiringPoint.position,
-            torpedoFiringPoint.rotation
+        int torpedoCount = Mathf.Min(
+            torpedoLaunchers.Length,
+            torpedoFiringPoints.Length,
+            torpedoBaseAngles.Length,
+            torpedoMinAngles.Length,
+            torpedoMaxAngles.Length
         );
 
-        EnemyTorpedo torpedo = torpedoObject.GetComponent<EnemyTorpedo>();
+        bool fired = false;
 
-        if (torpedo != null)
+        for (int i = 0; i < torpedoCount; i++)
         {
-            torpedo.damage = torpedoDamage;
+            if (torpedoLaunchers[i] == null || torpedoFiringPoints[i] == null)
+                continue;
+
+            if (!IsTargetInArc(
+                torpedoLaunchers[i],
+                torpedoBaseAngles[i],
+                torpedoMinAngles[i],
+                torpedoMaxAngles[i],
+                15f))
+            {
+                return;
+            }
+
+            GameObject torpedoObject = Instantiate(
+                torpedoPrefab,
+                torpedoFiringPoints[i].position,
+                torpedoFiringPoints[i].rotation
+            );
+
+            EnemyTorpedo torpedo = torpedoObject.GetComponent<EnemyTorpedo>();
+
+            if (torpedo != null)
+            {
+                torpedo.damage = torpedoDamage;
+            }
+
+            fired = true;
         }
 
+        if (fired)
+        {
         torpedoReloadTimer = torpedoReloadTime;
+        }
     }
 }
