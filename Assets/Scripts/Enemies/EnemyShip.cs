@@ -12,7 +12,13 @@ public class EnemyShip : MonoBehaviour
     public GameObject xpPickupPrefab;
     
     [Header ("Movement")]
-    public float moveSpeed = 3f;
+    public float maxSpeed = 10f;
+    public float acceleration = 5f;
+    public float deceleration = 4f;
+    public float reverseSpeed= 5f;
+    public float turnSpeed = 60f;
+
+    [Header ("AI Distance")]
     public float preferredDistance = 25f;
     public float minimumDistance = 10f;
     public float orbitSpeed = 1f;
@@ -24,6 +30,7 @@ public class EnemyShip : MonoBehaviour
     protected Transform player;
 
     private float orbitDirection;
+    private float currentSpeed = 0f;
 
     private void Start()
     {
