@@ -167,7 +167,7 @@ public class EnemyWeapon : MonoBehaviour
                 );
 
             torpedoLauncher.rotation =
-                Quaternion.LookRotation(
+                Quaternion.RotateTowards(
                     torpedoLauncher.rotation,
                     torpedoTarget,
                     360f * Time.deltaTime
