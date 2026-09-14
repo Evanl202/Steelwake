@@ -61,7 +61,7 @@ public class EnemyWeapon : MonoBehaviour
         {
             torpedoBaseAngles = new float[torpedoLaunchers.Length];
 
-            for (int i = 0; i < torpedoLaunchers.Length; i++);
+            for (int i = 0; i < torpedoLaunchers.Length; i++)
             {
                 if (torpedoLaunchers[i] != null)
                 {
