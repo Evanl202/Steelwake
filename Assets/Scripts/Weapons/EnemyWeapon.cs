@@ -6,7 +6,10 @@ public class EnemyWeapon : MonoBehaviour
     public GameObject shellPrefab;
     public Transform[] guns;
     public Transform[] firingPoints;
-    
+
+    [Header ("Ship")]
+    public Transform shipTransform;
+
     [Header ("Turret Firing Arcs")]
     public float[] gunMinAngles;
     public float[] gunMaxAngles;
@@ -40,6 +43,11 @@ public class EnemyWeapon : MonoBehaviour
 
     private void Awake()
     {
+        if (shipTransform == null)
+        {
+            shipTransform = transform.root;
+        }
+
         if (guns != null)
         {
             gunBaseAngles = new float[guns.Length];
@@ -233,10 +241,7 @@ public class EnemyWeapon : MonoBehaviour
         }
     }
 
-    // -------------------------
-    // AIMING HELPER METHODS
-    // -------------------------
-
+    // Helper Functions
     private float GetTargetAngle(
         Transform weapon,
         float projectileSpeed)
@@ -268,7 +273,7 @@ public class EnemyWeapon : MonoBehaviour
             return 0f;
 
         Vector3 localDirection =
-            transform.InverseTransformDirection(
+            shipTransform.InverseTransformDirection(
                 direction.normalized
             );
 
@@ -302,7 +307,7 @@ public class EnemyWeapon : MonoBehaviour
         float clampedAngle)
     {
         float finalAngle =
-            transform.eulerAngles.y +
+            shipTransform.eulerAngles.y +
             baseAngle +
             clampedAngle;
 
@@ -325,10 +330,7 @@ public class EnemyWeapon : MonoBehaviour
             );
     }
 
-    // -------------------------
-    // PLAYER / PREDICTION
-    // -------------------------
-
+    // Firing Prediction
     private float GetPlayerSpeed()
     {
         ShipMovement playerMovement =
@@ -443,10 +445,7 @@ public class EnemyWeapon : MonoBehaviour
                relativeAngle <= maxAngle;
     }
 
-    // -------------------------
-    // FIRING
-    // -------------------------
-
+    // Firing
     private void FireGun()
     {
         if (shellPrefab == null ||
