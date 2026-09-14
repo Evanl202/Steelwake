@@ -149,6 +149,7 @@ public class EnemyWeapon : MonoBehaviour
     {
         // Aim Gun
         if (guns != null &&
+            gunFiringPoints != null &&
             gunBaseAngles != null &&
             gunMinAngles != null &&
             gunMaxAngles != null)
