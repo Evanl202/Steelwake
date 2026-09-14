@@ -17,6 +17,11 @@ public class EnemyWeapon : MonoBehaviour
     public Transform torpedoFiringPoint;
     public Transform torpedoLauncher;
 
+    public float torpedoMinAngle = -45f;
+    public float torpedoMaxAngle = 45f;
+
+    private float torpedoBasedAngle;
+
     [Header ("Gun Combat")]
     public float gunDamage = 10f;
     public float gunReloadTime = 2f;
@@ -50,6 +55,12 @@ public class EnemyWeapon : MonoBehaviour
                         );
                 }
             }
+        }
+
+        if (torpedoLauncher != null)
+        {
+            torpedoBasedAngle = 
+                Mathf.DeltaAngle(0f, torpedoLauncher.localEulerAngles.y);
         }
     }
 
@@ -113,8 +124,11 @@ public class EnemyWeapon : MonoBehaviour
         if (guns != null && gunBaseAngles != null)
         {
             int gunCount = Mathf.Min(
+                firingPoints.Length
                 guns.Length,
-                gunBaseAngles.Length
+                gunBaseAngles.Length,
+                gunMinAngles.Length,
+                gunMaxAngles.Length
             );
 
             for (int i = 0; i < gunCount; i++)
@@ -122,41 +136,14 @@ public class EnemyWeapon : MonoBehaviour
                 if (guns[i] == null)
                     continue;
 
-                Vector3 gunTarget = 
-                    CalculateInterceptPoint(
-                        guns[i].position,
-                        player.position,
-                        player.forward * GetPlayerSpeed(),
+                Quaternion targetRotation =
+                    GetClampedWeaponRotation(
+                        guns[i],
+                        gunBaseAngles[i],
+                        gunMinAngles[i],
+                        gunMaxAngles[i],
                         shellSpeed
                     );
-                
-                Vector3 direction = gunTarget - guns[i].position;
-
-                direction.y = 0f;
-
-                if (direction.sqrMagnitude < 0.01f)
-                    continue;
-
-                Quaternion targetRotation = 
-                    Quaternion.LookRotation(direction, Vector3.up);
-
-                float targetAngle =
-                    targetRotation.eulerAngles.y;
-
-                float targetRelativeToShip =
-                    Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
-
-                float targetRelativeToGun =
-                    Mathf.DeltaAngle(gunBaseAngles[i], targetRelativeToShip);
-
-                float clampedAngle =
-                    Mathf.Clamp(targetRelativeToGun, gunMinAngles[i], gunMaxAngles[i]);
-            
-                float finalAngle =
-                    transform.eulerAngles.y + gunBaseAngles[i] + clampedAngle;
-                
-                targetRotation =
-                    Quaternion.Euler(0f, finalAngle, 0f);
 
                 guns[i].rotation = 
                     Quaternion.RotateTowards(
@@ -170,22 +157,21 @@ public class EnemyWeapon : MonoBehaviour
         //Aim Torpedo
         if (torpedoLauncher != null)
         {
-            Vector3 torpedoTarget = 
-                CalculateInterceptPoint(
-                    torpedoLauncher.position,
-                    player.position,
-                    player.forward * GetPlayerSpeed(),
+            Quaternion torpedoTarget = 
+                GetClampedWeaponRotation(
+                    torpedoLauncher,
+                    torpedoBasedAngle,
+                    torpedoMinAngle,
+                    torpedoMaxAngle,
                     15f
                 );
 
-            Vector3 torpedoDirection = torpedoTarget - torpedoLauncher.position;
-
-            torpedoDirection.y = 0f;
-
-            if (torpedoDirection.sqrMagnitude > 0.01f)
-            {
-                torpedoLauncher.rotation = Quaternion.LookRotation(torpedoDirection);
-            }
+            torpedoLauncher.rotation =
+                Quaternion.LookRotation(
+                    torpedoLauncher.rotation,
+                    targetRotation,
+                    360f * Time.deltaTime
+                );
         }
     }
 
@@ -261,6 +247,99 @@ public class EnemyWeapon : MonoBehaviour
         return targetPosition + targetVelocity * travelTime;
     }
 
+    private float GetTargetRelativeAngle(
+        Transform weapon,
+        float baseAngle,
+        float projectileSpeed)
+    {
+        Vector3 target =
+            CalculateInterceptPoint(
+                weapon.position,
+                player.position,
+                player.forward * GetPlayerSpeed(),
+                projectileSpeed
+            );
+
+        Vector3 direction =
+            target - weapon.position;
+
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude < 0.01f)
+            return 0f;
+
+        Quaternion targetRotation =
+            Quaternion.LookRotation(
+                direction,
+                Vector3.up
+            );
+
+        float targetAngle =
+            targetRotation.eulerAngles.y;
+
+        float targetRelativeToShip =
+            Mathf.DeltaAngle(
+                transform.eulerAngles.y,
+                targetAngle
+            );
+
+        return Mathf.DeltaAngle(
+            baseAngle,
+            targetRelativeToShip
+        );
+    }
+
+    private Quaternion GetClampedWeaponRotation(
+        Transform weapon,
+        float baseAngle,
+        float minAngle,
+        float maxAngle,
+        float projectileSpeed)
+    {
+        float targetRelativeAngle =
+            GetTargetRelativeAngle(
+                weapon,
+                baseAngle,
+                projectileSpeed
+            );
+
+        float clampedAngle =
+            Mathf.Clamp(
+                targetRelativeAngle,
+                minAngle,
+                maxAngle
+            );
+
+        float finalAngle =
+            transform.eulerAngles.y
+            + baseAngle
+            + clampedAngle;
+
+        return Quaternion.Euler(
+            0f,
+            finalAngle,
+            0f
+        );
+    }
+
+    private bool IsTargetInArc(
+        Transform weapon,
+        float baseAngle,
+        float minAngle,
+        float maxAngle,
+        float projectileSpeed)
+    {
+        float targetRelativeAngle =
+            GetTargetRelativeAngle(
+                weapon,
+                baseAngle,
+                projectileSpeed
+            );
+
+        return targetRelativeAngle >= minAngle &&
+            targetRelativeAngle <= maxAngle;
+    }
+
     private void FireGun()
     {
         if (shellPrefab == null || firingPoints == null || guns == null)
@@ -278,35 +357,12 @@ public class EnemyWeapon : MonoBehaviour
             if (guns[i] == null || firingPoints[i] == null)
                 continue;
 
-            Vector3 gunTarget = 
-                CalculateInterceptPoint(
-                    guns[i].position,
-                    player.position,
-                    player.forward * GetPlayerSpeed(),
-                    shellSpeed
-                );
-            
-            Vector3 direction = gunTarget - guns[i].position;
-
-            direction.y = 0f;
-
-            if (direction.sqrMagnitude < 0.01f)
-                continue;
-
-            Quaternion targetRotation = 
-                Quaternion.LookRotation(direction, Vector3.up);
-
-            float targetAngle =
-                targetRotation.eulerAngles.y;
-
-            float targetRelativeToShip =
-                Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
-
-            float targetRelativeToGun =
-                Mathf.DeltaAngle(gunBaseAngles[i], targetRelativeToShip);
-
-            if (targetRelativeToGun < gunMinAngles[i] 
-                || targetRelativeToGun > gunMaxAngles[i])
+            if (!IsTargetInArc(
+                    guns[i],
+                    gunBaseAngles[i],
+                    gunMinAngles[i],
+                    gunMaxAngles[i],
+                    shellSpeed))
             {
                 continue;
             }
@@ -335,16 +391,26 @@ public class EnemyWeapon : MonoBehaviour
 
     private void FireTorpedo()
     {
-        if (torpedoPrefab == null || torpedoFiringPoint == null)
+        if (torpedoPrefab == null || torpedoFiringPoint == null || torpedoLauncher)
         {
-            Debug.LogWarning("Missing torpedo or torpedo firing point");
+            Debug.LogWarning("Missing torpedo, torpedo firing points, or launcher");
             return;
+        }
+
+        if (!IsTargetInArc(
+            torpedoLauncher,
+            torpedoBasedAngle,
+            torpedoMinAngle,
+            torpedoMaxAngle,
+            15f))
+        {
+            return
         }
 
         GameObject torpedoObject = Instantiate(
             torpedoPrefab,
-            torpedoFiringPoint.position,
-            torpedoFiringPoint.rotation
+            torpedoFiringPoins[]t.position,
+            torpedoFiringPoints[].rotation
         );
 
         EnemyTorpedo torpedo = torpedoObject.GetComponent<EnemyTorpedo>();
