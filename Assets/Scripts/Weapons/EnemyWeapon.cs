@@ -65,10 +65,10 @@ public class EnemyWeapon : MonoBehaviour
             {
                 if (torpedoLaunchers[i] != null)
                 {
-                    torpedoBaseAngles = 
+                    torpedoBaseAngles[i] = 
                         Mathf.DeltaAngle(
                             0f,
-                            torpedoLaunchers.localEulerAngles.y
+                            torpedoLaunchers[i].localEulerAngles.y
                         );
                 }
             }
@@ -121,7 +121,8 @@ public class EnemyWeapon : MonoBehaviour
 
         //Torpedo
         if (torpedoPrefab != null &&
-            torpedoFiringPoint != null &&
+            torpedoFiringPoints != null &&
+            torpedoLaunchers != null &&
             distance <= torpedoFiringRange &&
             torpedoReloadTimer <= 0f)
         {
@@ -170,6 +171,7 @@ public class EnemyWeapon : MonoBehaviour
 
         //Aim Torpedo
         if (torpedoLaunchers != null &&
+            torpedoFiringPoints != null &&
             torpedoBaseAngles != null &&
             torpedoMinAngles != null &&
             torpedoMaxAngles != null)
@@ -446,7 +448,7 @@ public class EnemyWeapon : MonoBehaviour
 
         bool fired = false;
 
-        for (int i = 0; i < torpedoCount; i++)
+        for (int i = 0; i < torpedoCount; i++);
         {
             if (torpedoLaunchers[i] == null || torpedoFiringPoints[i] == null)
                 continue;
@@ -458,7 +460,7 @@ public class EnemyWeapon : MonoBehaviour
                 torpedoMaxAngles[i],
                 15f))
             {
-                return;
+                continue;
             }
 
             GameObject torpedoObject = Instantiate(
