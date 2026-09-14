@@ -159,7 +159,7 @@ public class EnemyWeapon : MonoBehaviour
                         targetAngle,
                         gunMinAngles[i],
                         gunMaxAngles[i]
-                    ;)
+                    );
 
                 float finalAngle = 
                     gunBaseAngles[i] + clampedAngle;
@@ -168,7 +168,7 @@ public class EnemyWeapon : MonoBehaviour
                     transform.rotation *
                     Quaternion.Euler(
                         0f, 
-                        finalAngle;
+                        finalAngle,
                         0f
                     );
                 
@@ -225,7 +225,7 @@ public class EnemyWeapon : MonoBehaviour
                 torpedoLaunchers[i].rotation =
                     Quaternion.RotateTowards(
                         torpedoLaunchers[i].rotation,
-                        torpedoRotation,
+                        targetRotation,
                         360f * Time.deltaTime
                     );
             }
@@ -355,8 +355,8 @@ public class EnemyWeapon : MonoBehaviour
                 targetAngle
             );
 
-        return RelativeAngle >= minAngle &&
-            RelativeAngle <= maxAngle;
+        return relativeAngle >= minAngle &&
+            relativeAngle <= maxAngle;
     }
 
     private void FireGun()
