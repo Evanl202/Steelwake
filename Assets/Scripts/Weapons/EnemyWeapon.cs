@@ -263,26 +263,70 @@ public class EnemyWeapon : MonoBehaviour
 
     private void FireGun()
     {
-        if (shellPrefab == null || firingPoint == null)
+        if (shellPrefab == null || firingPoints == null || guns == null)
         {
-            Debug.LogWarning("Missing shell or firing point");
+            Debug.LogWarning("Missing shell, firing points, or guns");
             return;
         }
 
-        GameObject shellObject = Instantiate(
-            shellPrefab,
-            firingPoint.position,
-            firingPoint.rotation
-        );
+        int gunCount = Mathf.Min(firingPoints.Length, guns.Length);
 
-        EnemyShell shell = shellObject.GetComponent<EnemyShell>();
+        bool fired = false;
 
-        if (shell != null)
-        {
-            shell.damage = gunDamage;
-        }
+        for (int i = 0; i < gunCount; i++)
+            {
+                if (guns[i] == null || firingPoints[i] == null)
+                    continue;
 
-        reloadTimer = gunReloadTime;
+                Vector3 gunTarget = 
+                    CalculateInterceptPoint(
+                        guns[i].position,
+                        player.position,
+                        player.forward * GetPlayerSpeed(),
+                        shellSpeed
+                    );
+                
+                Vector3 direction = gunTarget - guns[i].position;
+
+                direction.y = 0f;
+
+                if (direction.sqrMagnitude < 0.01f)
+                    continue;
+
+                Quaternion targetRotation = 
+                    Quaternion.LookRotation(direction, Vector3.up);
+
+                float targetAngle =
+                    targetRotation.eulerAngles.y;
+
+                float targetRelativeToShip =
+                    Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
+
+                float targetRelativeToGun =
+                    Mathf.DeltaAngle(gunBaseAngles[i], targetRelativeToShip);
+
+                if (targetRelativeToGun < gunMinAngles[i] || targetRelativeToGun > gunMaxAngles[i])
+                {
+                    GameObject shellObject = Instantiate(
+                        shellPrefab,
+                        firingPoints.position,
+                        firingPoints.rotation
+                    );
+
+                    EnemyShell shell = shellObject.GetComponent<EnemyShell>();
+
+                    if (shell != null)
+                    {
+                        shell.damage = gunDamage;
+                    }
+
+                    fired = true;
+                }
+                
+                if(fired)
+                {
+                    reloadTimer = gunReloadTime;
+                }
     }
 
     private void FireTorpedo()
