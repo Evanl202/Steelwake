@@ -401,7 +401,7 @@ public class EnemyWeapon : MonoBehaviour
                     gunBaseAngles[i],
                     gunMinAngles[i],
                     gunMaxAngles[i],
-                    shellSpeed))
+                    shellSpeed));
             {
                 continue;
             }
@@ -458,7 +458,7 @@ public class EnemyWeapon : MonoBehaviour
                 torpedoBaseAngles[i],
                 torpedoMinAngles[i],
                 torpedoMaxAngles[i],
-                15f))
+                15f));
             {
                 continue;
             }
