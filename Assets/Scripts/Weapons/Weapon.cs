@@ -7,6 +7,8 @@ public class Weapon : MonoBehaviour
 
     [Header ("Gun")]
     public GameObject shellPrefab;
+    public GameObject apShellPrefab;
+
     public Transform[] gunTransforms;
     public Transform[] firingPoints;
     
@@ -25,6 +27,9 @@ public class Weapon : MonoBehaviour
     private float reloadTimer = 0f;
 
     public float ReloadTimer => reloadTimer;
+
+    [Header("Ammo Type")]
+    public bool isAP = false;
 
     [Header ("Torpedo")]
     public GameObject torpedoPrefab;
@@ -259,7 +264,9 @@ public class Weapon : MonoBehaviour
 
     private void Fire()
     {
-        if (shellPrefab == null)
+        GameObject selectedShell = isAP ? apShellPrefab : shellPrefab;
+
+        if (selectedShell == null)
         {
             Debug.LogWarning("Missing shell prefab");
             return;
@@ -276,7 +283,7 @@ public class Weapon : MonoBehaviour
                 continue;
             
             GameObject shellObject = Instantiate(
-                shellPrefab,
+                selectedShell,
                 point.position,
                 point.rotation
             );
@@ -286,6 +293,7 @@ public class Weapon : MonoBehaviour
             if (shell != null)
             {
                 shell.damage = damage;
+                shell.isAP = isAP;
             }
         }
         reloadTimer = reloadTime;
