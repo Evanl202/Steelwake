@@ -4,21 +4,36 @@ using TMPro;
 
 public class HealthBarUI : MonoBehaviour
 {
-    public PlayerShip player;
     public Slider healthSlider;
     public TMP_Text healthText;
 
-    private void Start()
-    {
-        UpdateHealthBar();
-    }
+    public PlayerShip player;
 
     private void Update()
     {
+        FindActivePlayerShip();
+
         if (player == null)
             return;
 
+        if (healthSlider == null || healthText == null)
+            return;
+        
         UpdateHealthBar();
+    }
+
+    private void FindActivePlayerShip()
+    {
+        PlayerShip activeShip = FindAnyObjectByType<PlayerShip>();
+
+        if (activeShip != null)
+        {
+            player = activeShip;
+        }
+        else
+        {
+            player = null;
+        }
     }
 
     private void UpdateHealthBar()
