@@ -24,6 +24,8 @@ public class Weapon : MonoBehaviour
     public float reloadTime = 1f;
     private float reloadTimer = 0f;
 
+    public float ReloadTimer => reloadTimer;
+
     [Header ("Torpedo")]
     public GameObject torpedoPrefab;
     public Transform[] torpedoLaunchers;
@@ -39,6 +41,8 @@ public class Weapon : MonoBehaviour
     public float torpedoDamage = 50f;
     public float torpedoReloadTime = 5f;
     private float torpedoReloadTimer = 0f;
+
+    public float TorpedoReloadTimer => torpedoReloadTimer;
 
     private void Awake()
     {
