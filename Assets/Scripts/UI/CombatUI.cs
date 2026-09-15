@@ -12,6 +12,11 @@ public class CombatUI : MonoBehaviour
 
     private Weapon weapon;
 
+    [Header("Torpedo UI")]
+    public TMP_Text torpedoName;
+    public TMP_Text torpedoReloadText;
+    public Slider torpedoReloadBar;
+
     private void Update()
     {
         FindActiveWeapon();
@@ -21,6 +26,7 @@ public class CombatUI : MonoBehaviour
         
         UpdateWeaponInfo();
         UpdateReload();
+        UpdateTorpedoReload();
     }
 
     private void FindActiveWeapon()
@@ -44,7 +50,7 @@ public class CombatUI : MonoBehaviour
             weapon = null;
         }
     }
-    
+
     private void UpdateWeaponInfo()
     {
         weaponName.text = "MAIN BATTERY";
@@ -67,6 +73,26 @@ public class CombatUI : MonoBehaviour
 
             float progress = 1f - (remainingTime / reloadTime);
             reloadBar.value = progress;
+        }
+    }
+
+    private void UpdateTorpedoReload()
+    {
+        float reloadTime = weapon.torpedoReloadTime;
+        float remainingTime = weapon.TorpedoReloadTimer;
+
+        if (remainingTime <= 0f)
+        {
+            torpedoReloadText.text = "RELOAD: READY";
+            torpedoReloadBar.value = 1f;
+        }
+        else
+        {
+            torpedoReloadText.text =
+                "RELOAD: " + remainingTime.ToString("0.0") + "s";
+
+            float progress = 1f - (remainingTime / reloadTime);
+            torpedoReloadBar.value = progress;
         }
     }
 }
