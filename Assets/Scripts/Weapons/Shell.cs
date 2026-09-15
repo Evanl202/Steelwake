@@ -7,6 +7,10 @@ public class Shell : MonoBehaviour
     public float damage = 25f;
     public float lifetime = 5f;
 
+    [Header("Armor Penetration")]
+    public bool isAP = false;
+    public float penetration = 0f;
+
     private void Start()
     {
         Destroy(gameObject, lifetime);
@@ -19,10 +23,15 @@ public class Shell : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Shell hit: " + other.gameObject.name);
-
         EnemyShip enemy = other.GetComponent<EnemyShip>();
 
+        if (isAP && penetration < enemy.armor)
+        {
+            Debug.Log("AP shell failed to penetrate armor.");
+            Destroy(gameObject);
+            return;
+        }
+        
         if (enemy != null)
         {
             Debug.Log("Shell dealing " + damage + " damage.");

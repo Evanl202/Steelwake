@@ -7,6 +7,9 @@ public class EnemyShip : MonoBehaviour
 
     private float currentHealth;
 
+    [Header ("Armor")]
+    public float armor = 0f;
+
     [Header ("Experience")]
     public int experienceReward = 10;
     public GameObject xpPickupPrefab;
