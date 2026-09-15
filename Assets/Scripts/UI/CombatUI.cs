@@ -78,8 +78,20 @@ public class CombatUI : MonoBehaviour
 
     private void UpdateTorpedoReload()
     {
+        // Ship has no torpedo
+        if (weapon.torpedoPrefab == null ||
+            weapon.torpedoReloadTime <= 0f)
+        {
+            torpedoName.text = "TORPEDO";
+            torpedoReloadText.text = "NO TORPEDOES";
+            torpedoReloadBar.value = 0f;
+            return;
+        }
+
         float reloadTime = weapon.torpedoReloadTime;
         float remainingTime = weapon.TorpedoReloadTimer;
+
+        torpedoName.text = "TORPEDO";
 
         if (remainingTime <= 0f)
         {
@@ -92,6 +104,7 @@ public class CombatUI : MonoBehaviour
                 "RELOAD: " + remainingTime.ToString("0.0") + "s";
 
             float progress = 1f - (remainingTime / reloadTime);
+
             torpedoReloadBar.value = progress;
         }
     }
