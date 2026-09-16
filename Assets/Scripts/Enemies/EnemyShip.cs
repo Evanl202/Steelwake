@@ -44,6 +44,14 @@ public class EnemyShip : MonoBehaviour
         {
             maxHealth *= 1.5f;
             armor *= 1.25f;
+
+            maxSpeed *= 1.15f;
+            acceleration *= 1.15f;
+            deceleration *= 1.15f;
+            reverseSpeed *= 1.15f;
+            turnSpeed *= 1.15f;
+
+            experienceReward *= 2;
         }
 
         currentHealth = maxHealth;
