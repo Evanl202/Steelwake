@@ -5,6 +5,9 @@ public class PlayerShip : MonoBehaviour
     [Header ("Health")]
     public float maxHealth = 100f;
 
+    [Header ("Armor")]
+    public float armor = 40f;
+
     private float currentHealth;
 
     public float CurrentHealth => currentHealth;
