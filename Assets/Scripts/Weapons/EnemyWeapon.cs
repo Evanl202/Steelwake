@@ -31,7 +31,7 @@ public class EnemyWeapon : MonoBehaviour
     [Header ("Gun Combat")]
     public float gunDamage = 10f;
     public float apDamage = 20f;
-    public float apPenetration = 25f;
+    public float penetration = 25f;
 
     public float gunReloadTime = 2f;
     public float gunFiringRange = 25f;
