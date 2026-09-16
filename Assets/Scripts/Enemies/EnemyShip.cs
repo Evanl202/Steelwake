@@ -12,6 +12,7 @@ public class EnemyShip : MonoBehaviour
 
     [Header ("Elite")]
     public bool isElite = false;
+    public GameObject eliteGlow;
 
     [Header ("Experience")]
     public int experienceReward = 10;
@@ -52,6 +53,10 @@ public class EnemyShip : MonoBehaviour
             turnSpeed *= 1.15f;
 
             experienceReward *= 2;
+            if (eliteGlow != null)
+            {
+                eliteGlow.SetActive(true);
+            }
         }
 
         currentHealth = maxHealth;
