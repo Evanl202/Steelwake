@@ -480,6 +480,8 @@ public class EnemyWeapon : MonoBehaviour
 
         isAP = Random.value < apChance;
 
+        EnemyShip enemyShip = shipTransform.GetComponent<EnemyShip>();
+
         for (int i = 0; i < gunCount; i++)
         {
             if (guns[i] == null ||
@@ -520,6 +522,11 @@ public class EnemyWeapon : MonoBehaviour
             if (shell != null)
             {
                 shell.damage = isAP ? apDamage : gunDamage;
+                if (enemyShip != null && enemyShip.isElite)
+                {
+                    shell.damage *= 1.25f;
+                }
+
                 shell.isAP = isAP;
                 shell.penetration = penetration;
             }
