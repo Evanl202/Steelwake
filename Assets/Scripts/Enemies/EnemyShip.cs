@@ -53,6 +53,7 @@ public class EnemyShip : MonoBehaviour
             turnSpeed *= 1.15f;
 
             experienceReward *= 2;
+            
             if (eliteGlow != null)
             {
                 eliteGlow.SetActive(true);
