@@ -23,7 +23,7 @@ public class Weapon : MonoBehaviour
 
     [Header ("Gun Combat")]
     public float damage = 25f;
-    public float damage = 40f;
+    public float apDamage = 40f;
     public float penetration = 25f;
 
     public float reloadTime = 1f;
