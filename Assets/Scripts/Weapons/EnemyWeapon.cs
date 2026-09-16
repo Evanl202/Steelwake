@@ -594,6 +594,14 @@ public class EnemyWeapon : MonoBehaviour
             if (torpedo != null)
             {
                 torpedo.damage = torpedoDamage;
+
+                EnemyShip enemyShip =
+                    shipTransform.GetComponent<EnemyShip>();
+                
+                if (enemyShip != null && enemyShip.isElite)
+                {
+                    torpedo.damage *= 1.25f
+                }
             }
 
             fired = true;
