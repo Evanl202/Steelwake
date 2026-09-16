@@ -31,6 +31,11 @@ public class EnemyWeapon : MonoBehaviour
     public float gunFiringRange = 25f;
     public float shellSpeed = 20f;
 
+    [Header ("Ammo")]
+    public float isAP = false;
+    public float apDamage = 20f;
+    public float apPenetration = 25f;
+
     [Header ("Torpedo Combat")]
     public float torpedoDamage = 50f;
     public float torpedoReloadTime = 8f;
