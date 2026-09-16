@@ -23,6 +23,9 @@ public class Weapon : MonoBehaviour
 
     [Header ("Gun Combat")]
     public float damage = 25f;
+    public float damage = 40f;
+    public float penetration = 25f;
+
     public float reloadTime = 1f;
     private float reloadTimer = 0f;
 
@@ -297,8 +300,9 @@ public class Weapon : MonoBehaviour
 
             if (shell != null)
             {
-                shell.damage = damage;
+                shell.damage = isAP ? apDamage : damage;
                 shell.isAP = isAP;
+                shell.penetration = penetration;
             }
         }
         reloadTimer = reloadTime;
