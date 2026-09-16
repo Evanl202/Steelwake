@@ -4,6 +4,7 @@ public class EnemyWeapon : MonoBehaviour
 {
     [Header ("Weapon")]
     public GameObject shellPrefab;
+    public GameObject apShellPrefab;
     public Transform[] guns;
     public Transform[] firingPoints;
 
@@ -27,6 +28,7 @@ public class EnemyWeapon : MonoBehaviour
     
     [Header ("Ammo Type")]
     public bool isAP = false;
+    public float apChance = 0.5f;
 
     [Header ("Gun Combat")]
     public float gunDamage = 10f;
@@ -476,6 +478,8 @@ public class EnemyWeapon : MonoBehaviour
 
         bool fired = false;
 
+        isAP = Random.value < apChance;
+
         for (int i = 0; i < gunCount; i++)
         {
             if (guns[i] == null ||
@@ -493,17 +497,26 @@ public class EnemyWeapon : MonoBehaviour
             {
                 continue;
             }
+            
+            GameObject selectedShell =
+                isAP ? apShellPrefab : shellPrefab;
+
+            if (selectedShell == null)
+            {
+                Debug.LogWarning("Missing enemy shell prefab.");
+                return;
+            }
 
             GameObject shellObject =
                 Instantiate(
-                    shellPrefab,
+                    selectedShell,
                     firingPoints[i].position,
                     firingPoints[i].rotation
                 );
 
             EnemyShell shell =
                 shellObject.GetComponent<EnemyShell>();
-
+            
             if (shell != null)
             {
                 shell.damage = isAP ? apDamage : gunDamage;
