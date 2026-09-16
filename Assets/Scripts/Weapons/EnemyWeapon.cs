@@ -600,7 +600,7 @@ public class EnemyWeapon : MonoBehaviour
                 
                 if (enemyShip != null && enemyShip.isElite)
                 {
-                    torpedo.damage *= 1.25f
+                    torpedo.damage *= 1.25f;
                 }
             }
 
