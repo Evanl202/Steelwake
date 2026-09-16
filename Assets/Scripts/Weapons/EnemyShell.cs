@@ -7,6 +7,10 @@ public class EnemyShell : MonoBehaviour
     public float damage = 10f;
     public float lifetime = 5f;
 
+    [Header("Armor Penetration")]
+    public bool isAP = false;
+    public float penetration = 0f;
+
     private void Start()
     {
         Destroy(gameObject, lifetime);
@@ -23,6 +27,13 @@ public class EnemyShell : MonoBehaviour
 
         if (player != null)
         {
+            if (isAP && penetration < player.armor)
+            {
+                Debug.Log("Enemy AP shell failed to penetrate armor.");
+                Destroy(gameObject);
+                return;
+            }
+            
             Debug.Log("Enemy shell hit player");
             Debug.Log("Enemy shell dealing " + damage + " damage.");
             

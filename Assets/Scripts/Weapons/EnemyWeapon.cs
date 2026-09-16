@@ -24,17 +24,18 @@ public class EnemyWeapon : MonoBehaviour
     public float[] torpedoMaxAngles;
 
     private float[] torpedoBaseAngles;
+    
+    [Header ("Ammo Type")]
+    public float isAP = false;
 
     [Header ("Gun Combat")]
     public float gunDamage = 10f;
+    public float apDamage = 20f;
+    public float apPenetration = 25f;
+
     public float gunReloadTime = 2f;
     public float gunFiringRange = 25f;
     public float shellSpeed = 20f;
-
-    [Header ("Ammo")]
-    public float isAP = false;
-    public float apDamage = 20f;
-    public float apPenetration = 25f;
 
     [Header ("Torpedo Combat")]
     public float torpedoDamage = 50f;
@@ -505,7 +506,9 @@ public class EnemyWeapon : MonoBehaviour
 
             if (shell != null)
             {
-                shell.damage = gunDamage;
+                shell.damage = isAP ? apDamage : gunDamage;
+                shell.isAP = isAP;
+                shell.penetration = penetration;
             }
 
             fired = true;
