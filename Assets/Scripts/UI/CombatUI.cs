@@ -54,7 +54,14 @@ public class CombatUI : MonoBehaviour
     private void UpdateWeaponInfo()
     {
         weaponName.text = "MAIN BATTERY";
-        ammoType.text = "AMMO: HE";
+        if (weapon.isAP)
+        {
+            ammoType.text = "AMMO: AP";
+        }
+        else
+        {
+            ammoType.text = "AMMO: HE";
+        }
     }
 
     private void UpdateReload()
