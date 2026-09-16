@@ -10,6 +10,9 @@ public class EnemyShip : MonoBehaviour
     [Header ("Armor")]
     public float armor = 0f;
 
+    [Header ("Elite")]
+    public bool isElite = false;
+
     [Header ("Experience")]
     public int experienceReward = 10;
     public GameObject xpPickupPrefab;
@@ -37,6 +40,12 @@ public class EnemyShip : MonoBehaviour
 
     private void Start()
     {
+        if (isElite)
+        {
+            maxHealth *= 1.5f;
+            armor *= 1.25f;
+        }
+
         currentHealth = maxHealth;
 
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
