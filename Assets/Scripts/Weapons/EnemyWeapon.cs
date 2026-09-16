@@ -26,7 +26,7 @@ public class EnemyWeapon : MonoBehaviour
     private float[] torpedoBaseAngles;
     
     [Header ("Ammo Type")]
-    public float isAP = false;
+    public bool isAP = false;
 
     [Header ("Gun Combat")]
     public float gunDamage = 10f;
