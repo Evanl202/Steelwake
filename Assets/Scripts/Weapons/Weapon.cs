@@ -99,6 +99,11 @@ public class Weapon : MonoBehaviour
         {
             torpedoReloadTimer -=Time.deltaTime;
         }
+        
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            isAP = !isAP;
+        }
 
         if (Input.GetMouseButton(0) && reloadTimer <= 0f)
         {
