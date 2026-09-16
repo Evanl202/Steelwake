@@ -17,6 +17,10 @@ public class EnemySpawner : MonoBehaviour
 
     private float spawnTimer;
 
+    [Header ("Elite Enemies")]
+    [Range(0f, 1f)]
+    public float eliteChance = 0.10f;
+
     private void Start()
     {
         spawnTimer = spawnInterval;
@@ -58,9 +62,22 @@ public class EnemySpawner : MonoBehaviour
 
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
 
-        Vector3 spawnPosition = player.position + new Vector3(randomDirection.x, 0f, randomDirection.y) * spawnDistance;
+        Vector3 spawnPosition =
+            player.position + 
+            new Vector3(randomDirection.x, 0f, randomDirection.y) * spawnDistance;
 
-        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        GameObject spawnedEnemy = Instantiate (
+            enemyPrefab,
+            spawnPosition, 
+            Quaternion.identity
+        );
+
+        EnemyShip enemyShip = spawnedEnemy.GetComponent<EnemyShip>();
+
+        if (enemyShip != null)
+        {
+            enemyShip.isElite = Random.value < eliteChance;
+        }
     }
 
     private GameObject GetEnemyPrefab()
