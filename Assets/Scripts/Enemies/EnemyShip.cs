@@ -120,7 +120,7 @@ public class EnemyShip : MonoBehaviour
 
         orbitDirectionVector *= orbitDirection;
 
-        Vector3 movementDirection;
+        Vector3 movementDirection = Vector3.zero;
 
         switch (aiBehavior)
         {
