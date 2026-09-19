@@ -271,16 +271,6 @@ public class EnemyShip : MonoBehaviour
             }
         }
 
-        if (distanceToCombat < 5f &&
-            distance >= minimumDistance)
-        {
-            currentSpeed = Mathf.MoveTowards(
-                currentSpeed,
-                0f,
-                deceleration * Time.deltaTime
-            );
-        }
-
         movementDirection.y = 0f;
 
         if (movementDirection.sqrMagnitude > 0.01f)
@@ -303,16 +293,16 @@ public class EnemyShip : MonoBehaviour
 
             
             if (directionDot > 0.1f)
-                {
-                    // Moving in the direction the ship is facing
-                    currentSpeed += acceleration * Time.deltaTime;
+            {
+                // Moving in the direction the ship is facing
+                currentSpeed += acceleration * Time.deltaTime;
 
-                    currentSpeed = Mathf.Clamp(
-                        currentSpeed,
-                        0f,
-                        maxSpeed
-                    );
-                }
+                currentSpeed = Mathf.Clamp(
+                    currentSpeed,
+                    0f,
+                    maxSpeed
+                );
+            }
             else
             {
                 // Turn first instead of immediately reversing
