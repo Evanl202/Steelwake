@@ -47,7 +47,7 @@ public class EnemyShip : MonoBehaviour
 
     [Header ("Spacing")]
     public float enemySpacing = 8f;
-    public float spacingStrength = 2f;
+    public float spacingStrength = 1f;
 
     protected Transform player;
 
