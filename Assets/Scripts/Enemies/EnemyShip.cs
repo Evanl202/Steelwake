@@ -288,17 +288,18 @@ public class EnemyShip : MonoBehaviour
             float directionDot = 
                 Vector3.Dot(transform.forward, movementDirection);
 
+            
             if (directionDot > 0.1f)
-            {
-                // Moving in the direction the ship is facing
-                currentSpeed += acceleration * Time.deltaTime;
+                {
+                    // Moving in the direction the ship is facing
+                    currentSpeed += acceleration * Time.deltaTime;
 
-                currentSpeed = Mathf.Clamp(
-                    currentSpeed,
-                    0f,
-                    maxSpeed
-                );
-            }
+                    currentSpeed = Mathf.Clamp(
+                        currentSpeed,
+                        0f,
+                        maxSpeed
+                    );
+                }
             else
             {
                 // Turn first instead of immediately reversing
@@ -307,6 +308,7 @@ public class EnemyShip : MonoBehaviour
                     0f,
                     deceleration * Time.deltaTime
                 );
+            }
         }
         //Slow down if no movement choice
         else
