@@ -146,9 +146,9 @@ public class UpgradeManager : MonoBehaviour
             playerWeapon.reloadTime * (1f - reloadPercentReduction)
         );
 
-        playerWeapon.reloadTime = Mathf.Max(
+        playerWeapon.torpedoReloadTime = Mathf.Max(
             0.1f,
-            playerWeapon.reloadTime * (1f - reloadPercentReduction)
+            playerWeapon.torpedoReloadTime * (1f - reloadPercentReduction)
         );
         
         Debug.Log("Universal Reload +%!");
@@ -201,7 +201,7 @@ public class UpgradeManager : MonoBehaviour
         playerWeapon.damage += heDamageFlatIncrease;
 
         Debug.Log(
-            "HE Damage +FLat! New damage: " + heDamageFlatIncrease
+            "HE Damage +FLat! New damage: " + 
             playerWeapon.damage
         );
     }
@@ -287,7 +287,7 @@ public class UpgradeManager : MonoBehaviour
         );
     }
 
-    public void UpgradeAPPenetrationPercent()
+    public void UpgradeAPPenetrationFlat()
     {
         if (playerWeapon == null)
         {
@@ -380,7 +380,7 @@ public class UpgradeManager : MonoBehaviour
         
         playerWeapon.reloadTime = Mathf.Max(
             0.1f,
-            playerWeapon.reloadTime *= 1f - reloadPercentReduction
+            playerWeapon.reloadTime * (1f - reloadPercentReduction)
         );
 
         Debug.Log(
@@ -397,7 +397,7 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         
-        playerWeapon.reloadTime = Mathf.Max(
+        playerWeapon.torpedoReloadTime = Mathf.Max(
             0.1f,
             playerWeapon.torpedoReloadTime - reloadFlatReduction
         );
@@ -416,9 +416,9 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         
-        playerWeapon.reloadTime = Mathf.Max(
+        playerWeapon.torpedoReloadTime = Mathf.Max(
             0.1f,
-            playerWeapon.torpedoReloadTime *= 1f - reloadPercentReduction
+            playerWeapon.torpedoReloadTime * (1f - reloadPercentReduction)
         );
         
         Debug.Log(
