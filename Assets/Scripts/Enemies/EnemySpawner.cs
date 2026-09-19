@@ -92,7 +92,7 @@ public class EnemySpawner : MonoBehaviour
         GameObject spawnedEnemy = Instantiate (
             enemyPrefab,
             spawnPosition, 
-            Quaternion.identity
+            spawnRotation
         );
 
         EnemyShip enemyShip = spawnedEnemy.GetComponent<EnemyShip>();
