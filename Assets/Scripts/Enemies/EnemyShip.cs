@@ -297,7 +297,7 @@ public class EnemyShip : MonoBehaviour
                 {
                     currentSpeed = Mathf.MoveTowards(
                         currentSpeed,
-                        maxSpeed * 0.35f,
+                        maxSpeed * 0.70f,
                         deceleration * Time.deltaTime
                     );
                 }
@@ -311,6 +311,17 @@ public class EnemyShip : MonoBehaviour
                         maxSpeed
                     );
                 }
+            }
+            else
+            {
+                // Slow down while the ship is turning away
+                // from its current direction of travel.
+                currentSpeed = Mathf.MoveTowards(
+                    currentSpeed,
+                    0f,
+                    deceleration * Time.deltaTime
+                );
+            }
             }
             
         }
