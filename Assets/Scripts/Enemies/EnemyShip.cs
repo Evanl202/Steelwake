@@ -116,6 +116,9 @@ public class EnemyShip : MonoBehaviour
         float distance = toPlayer.magnitude;
         float combatDistance = GetCombatDistance();
 
+        float distanceToCombat =
+            Mathf.Abs(distance - combatDistance);   
+
         if (toPlayer.sqrMagnitude < 0.1f)
             return;
 
@@ -266,6 +269,16 @@ public class EnemyShip : MonoBehaviour
                 movementDirection +=
                     awayFromEnemy.normalized * strength * spacingStrength;
             }
+        }
+
+        if (distanceToCombat < 5f &&
+            distance >= minimumDistance)
+        {
+            currentSpeed = Mathf.MoveTowards(
+                currentSpeed,
+                0f,
+                deceleration * Time.deltaTime
+            );
         }
 
         movementDirection.y = 0f;
