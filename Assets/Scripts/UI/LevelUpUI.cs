@@ -24,35 +24,148 @@ public class LevelUpUI : MonoBehaviour
 
     private UpgradeData[] upgrades =
     {
+        // SPEED
         new UpgradeData(
-            "SPEED",
-            "Increase maximum ship speed by 10%",
+            "SPEED +FLAT",
+            "Increase maximum ship speed by 1",
             0
         ),
 
         new UpgradeData(
-            "HE DAMAGE",
-            "Increase HE shell damage by 20%",
+            "SPEED +%",
+            "Increase maximum ship speed by 10%",
             1
         ),
 
+        // UNIVERSAL DAMAGE
         new UpgradeData(
-            "RELOAD",
-            "Reduce reload time by 10%",
+            "DAMAGE +FLAT",
+            "Increase HE, AP, and torpedo damage by 10",
             2
         ),
 
         new UpgradeData(
-            "HEALTH",
-            "Increase maximum health by 20",
+            "DAMAGE +%",
+            "Increase HE, AP, and torpedo damage by 10%",
             3
         ),
 
+        // UNIVERSAL RELOAD
         new UpgradeData(
-            "DAMAGE",
-            "Increase all weapon damage by 10%",
+            "RELOAD +FLAT",
+            "Reduce main battery and torpedo reload time by 0.05 seconds",
             4
         ),
+
+        new UpgradeData(
+            "RELOAD +%",
+            "Reduce main battery and torpedo reload time by 5%",
+            5
+        ),
+
+        // HEALTH
+        new UpgradeData(
+            "HEALTH +FLAT",
+            "Increase maximum health by 20",
+            6
+        ),
+
+        new UpgradeData(
+            "HEALTH +%",
+            "Increase maximum health by 10%",
+            7
+        ),
+
+        // HE DAMAGE
+        new UpgradeData(
+            "HE DAMAGE +FLAT",
+            "Increase HE shell damage by 10",
+            8
+        ),
+
+        new UpgradeData(
+            "HE DAMAGE +%",
+            "Increase HE shell damage by 10%",
+            9
+        ),
+
+        // AP DAMAGE
+        new UpgradeData(
+            "AP DAMAGE +FLAT",
+            "Increase AP shell damage by 10",
+            10
+        ),
+
+        new UpgradeData(
+            "AP DAMAGE +%",
+            "Increase AP shell damage by 10%",
+            11
+        ),
+
+        // TORPEDO DAMAGE
+        new UpgradeData(
+            "TORPEDO DAMAGE +FLAT",
+            "Increase torpedo damage by 10",
+            12
+        ),
+
+        new UpgradeData(
+            "TORPEDO DAMAGE +%",
+            "Increase torpedo damage by 10%",
+            13
+        ),
+
+        // AP PENETRATION
+        new UpgradeData(
+            "AP PENETRATION +FLAT",
+            "Increase AP penetration by 5",
+            14
+        ),
+
+        new UpgradeData(
+            "AP PENETRATION +%",
+            "Increase AP penetration by 10%",
+            15
+        ),
+
+        // ARMOR
+        new UpgradeData(
+            "ARMOR +FLAT",
+            "Increase armor by 5",
+            16
+        ),
+
+        new UpgradeData(
+            "ARMOR +%",
+            "Increase armor by 10%",
+            17
+        ),
+
+        // MAIN BATTERY RELOAD
+        new UpgradeData(
+            "MAIN RELOAD +FLAT",
+            "Reduce main battery reload time by 0.05 seconds",
+            18
+        ),
+
+        new UpgradeData(
+            "MAIN RELOAD +%",
+            "Reduce main battery reload time by 5%",
+            19
+        ),
+
+        // TORPEDO RELOAD
+        new UpgradeData(
+            "TORPEDO RELOAD +FLAT",
+            "Reduce torpedo reload time by 0.05 seconds",
+            20
+        ),
+
+        new UpgradeData(
+            "TORPEDO RELOAD +%",
+            "Reduce torpedo reload time by 5%",
+            21
+        )
     };
 
     private UpgradeData choice1;
@@ -148,24 +261,103 @@ public class LevelUpUI : MonoBehaviour
 
         switch (upgrade.upgradeType)
         {
+            // SPEED
             case 0:
-                UpgradeManager.Instance.UpgradeSpeed();
+                UpgradeManager.Instance.UpgradeSpeedFlat();
                 break;
 
             case 1:
-                UpgradeManager.Instance.UpgradeDamage();
+                UpgradeManager.Instance.UpgradeSpeedPercent();
                 break;
 
+            // UNIVERSAL DAMAGE
             case 2:
-                UpgradeManager.Instance.UpgradeReload();
+                UpgradeManager.Instance.UpgradeDamageFlat();
                 break;
 
             case 3:
-                UpgradeManager.Instance.UpgradeHealth();
+                UpgradeManager.Instance.UpgradeDamagePercent();
                 break;
 
+            // UNIVERSAL RELOAD
             case 4:
-                UpgradeManager.Instance.UpgradeDamage();
+                UpgradeManager.Instance.UpgradeReloadFlat();
+                break;
+
+            case 5:
+                UpgradeManager.Instance.UpgradeReloadPercent();
+                break;
+
+            // HEALTH
+            case 6:
+                UpgradeManager.Instance.UpgradeHealthFlat();
+                break;
+
+            case 7:
+                UpgradeManager.Instance.UpgradeHealthPercent();
+                break;
+
+            // HE DAMAGE
+            case 8:
+                UpgradeManager.Instance.UpgradeHEDamageFlat();
+                break;
+
+            case 9:
+                UpgradeManager.Instance.UpgradeHEDamagePercent();
+                break;
+
+            // AP DAMAGE
+            case 10:
+                UpgradeManager.Instance.UpgradeAPDamageFlat();
+                break;
+
+            case 11:
+                UpgradeManager.Instance.UpgradeAPDamagePercent();
+                break;
+
+            // TORPEDO DAMAGE
+            case 12:
+                UpgradeManager.Instance.UpgradeTorpedoDamageFlat();
+                break;
+
+            case 13:
+                UpgradeManager.Instance.UpgradeTorpedoDamagePercent();
+                break;
+
+            // AP PENETRATION
+            case 14:
+                UpgradeManager.Instance.UpgradeAPPenetrationFlat();
+                break;
+
+            case 15:
+                UpgradeManager.Instance.UpgradeAPPenetrationPercent();
+                break;
+
+            // ARMOR
+            case 16:
+                UpgradeManager.Instance.UpgradeArmorFlat();
+                break;
+
+            case 17:
+                UpgradeManager.Instance.UpgradeArmorPercent();
+                break;
+
+            // MAIN BATTERY RELOAD
+            case 18:
+                UpgradeManager.Instance.UpgradeWeaponReloadFlat();
+                break;
+
+            case 19:
+                UpgradeManager.Instance.UpgradeWeaponReloadPercent();
+                break;
+
+            // TORPEDO RELOAD
+            case 20:
+                UpgradeManager.Instance.UpgradeTorpedoReloadFlat();
+                break;
+
+            case 21:
+                UpgradeManager.Instance.UpgradeTorpedoReloadPercent();
                 break;
         }
 
