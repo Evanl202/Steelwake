@@ -251,6 +251,8 @@ public class EnemyShip : MonoBehaviour
         }
 
         // Enemy spacing
+        Vector3 spacingDirection = Vector3.zero;
+
         GameObject[] enemies =
             GameObject.FindGameObjectsWithTag("Enemy");
 
@@ -273,46 +275,19 @@ public class EnemyShip : MonoBehaviour
                 float strength =
                     1f - (enemyDistance / enemySpacing);
 
-               // Enemy spacing
-                Vector3 spacingDirection = Vector3.zero;
-
-                GameObject[] enemies =
-                    GameObject.FindGameObjectsWithTag("Enemy");
-
-                foreach (GameObject enemy in enemies)
-                {
-                    if (enemy == gameObject)
-                        continue;
-
-                    Vector3 awayFromEnemy =
-                        transform.position - enemy.transform.position;
-
-                    awayFromEnemy.y = 0f;
-
-                    float enemyDistance =
-                        awayFromEnemy.magnitude;
-
-                    if (enemyDistance < enemySpacing &&
-                        enemyDistance > 0.01f)
-                    {
-                        float strength =
-                            1f - (enemyDistance / enemySpacing);
-
-                        spacingDirection +=
-                            awayFromEnemy.normalized *
-                            strength;
-                    }
-                }
-
-                // Limit how strongly spacing can affect orbit movement
-                if (spacingDirection.sqrMagnitude > 0.01f)
-                {
-                    spacingDirection.Normalize();
-
-                    movementDirection +=
-                        spacingDirection * 0.35f;
-                }
+                spacingDirection +=
+                    awayFromEnemy.normalized *
+                    strength;
             }
+        }
+
+        // Limit how strongly spacing can affect orbit movement
+        if (spacingDirection.sqrMagnitude > 0.01f)
+        {
+            spacingDirection.Normalize();
+
+            movementDirection +=
+                spacingDirection * 0.35f;
         }
 
         movementDirection.y = 0f;
