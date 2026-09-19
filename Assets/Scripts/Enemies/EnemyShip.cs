@@ -276,30 +276,36 @@ public class EnemyShip : MonoBehaviour
                     1f - (enemyDistance / enemySpacing);
 
                 spacingDirection +=
-                    awayFromEnemy.normalized *
-                    strength;
+                    awayFromEnemy.normalized * strength;
             }
         }
 
-        // Limit how strongly spacing can affect orbit movement
         if (spacingDirection.sqrMagnitude > 0.01f)
         {
             spacingDirection.Normalize();
 
-            movementDirection +=
-                spacingDirection * 0.35f;
+            // Only allow spacing to affect the orbit direction.
+            // It cannot push the ship farther away from the player.
+            Vector3 spacingOrbitDirection =
+                Vector3.ProjectOnPlane(
+                    spacingDirection,
+                    directionToPlayer
+                );
+
+            if (spacingOrbitDirection.sqrMagnitude > 0.01f)
+            {
+                movementDirection +=
+                    spacingOrbitDirection.normalized * 0.35f;
+            }
         }
 
         movementDirection.y = 0f;
-        if (Vector3.Dot(movementDirection, directionToPlayer) < 0f)
+
+        if (movementDirection.sqrMagnitude > 0.01f)
         {
-            movementDirection =
-                Vector3.ProjectOnPlane(
-                    movementDirection,
-                    directionToPlayer
-                );
+            movementDirection.Normalize();
         }
-        
+
         if (movementDirection.sqrMagnitude > 0.01f)
         {
             movementDirection.Normalize();
