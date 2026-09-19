@@ -135,9 +135,19 @@ public class EnemyShip : MonoBehaviour
 
         if (!canFireGun)
         {
+            float gunCorrection =
+                enemyWeapon.GetGunPositioningAngle();
+
+            float correctionDirection =
+                Mathf.Sign(gunCorrection);
+
+            Vector3 repositionDirection =
+                orbitDirectionVector *
+                correctionDirection;
+
             movementDirection =
-                directionToPlayer +
-                orbitDirectionVector * orbitSpeed;
+                repositionDirection +
+                directionToPlayer * 0.25f;
         }
         else
         {

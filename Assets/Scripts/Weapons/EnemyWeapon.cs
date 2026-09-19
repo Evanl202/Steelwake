@@ -493,6 +493,79 @@ public class EnemyWeapon : MonoBehaviour
 
         return false;
     }
+
+    public float GetGunPositioningAngle()
+    {
+        if (player == null ||
+            guns == null ||
+            firingPoints == null ||
+            gunBaseAngles == null ||
+            gunMinAngles == null ||
+            gunMaxAngles == null)
+        {
+            return 0f;
+        }
+
+        int gunCount = Mathf.Min(
+            firingPoints.Length,
+            guns.Length,
+            gunBaseAngles.Length,
+            gunMinAngles.Length,
+            gunMaxAngles.Length
+        );
+
+        float bestCorrection = 0f;
+        float smallestCorrection = Mathf.Infinity;
+
+        for (int i = 0; i < gunCount; i++)
+        {
+            if (guns[i] == null || firingPoints[i] == null)
+                continue;
+
+            float targetAngle =
+                GetTargetAngle(
+                    guns[i],
+                    shellSpeed
+                );
+
+            float relativeAngle =
+                Mathf.DeltaAngle(
+                    gunBaseAngles[i],
+                    targetAngle
+                );
+
+            float correction = 0f;
+
+            if (relativeAngle < gunMinAngles[i])
+            {
+                correction =
+                    gunMinAngles[i] -
+                    relativeAngle;
+            }
+            else if (relativeAngle > gunMaxAngles[i])
+            {
+                correction =
+                    gunMaxAngles[i] -
+                    relativeAngle;
+            }
+            else
+            {
+                return 0f;
+            }
+
+            if (Mathf.Abs(correction) <
+                smallestCorrection)
+            {
+                smallestCorrection =
+                    Mathf.Abs(correction);
+
+                bestCorrection = correction;
+            }
+        }
+
+        return bestCorrection;
+    }
+
     // Firing
     private void FireGun()
     {
