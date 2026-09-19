@@ -108,35 +108,35 @@ public class EnemyShip : MonoBehaviour
     {
         if (player == null)
             return;
-        
+
         Vector3 toPlayer = player.position - transform.position;
-
         toPlayer.y = 0f;
-
-        float distance = toPlayer.magnitude;
-        float combatDistance = GetCombatDistance();
-
-        float distanceToCombat =
-            Mathf.Abs(distance - combatDistance);   
 
         if (toPlayer.sqrMagnitude < 0.1f)
             return;
 
+        float distance = toPlayer.magnitude;
+        float combatDistance = GetCombatDistance();
+
         Vector3 directionToPlayer = toPlayer.normalized;
 
-        //Surround and Orbit
+        // Direction tangent to the player
         Vector3 orbitDirectionVector = new Vector3(
-            -directionToPlayer.z, 0f, directionToPlayer.x);
+            -directionToPlayer.z,
+            0f,
+            directionToPlayer.x
+        );
 
         orbitDirectionVector *= orbitDirection;
 
-        Vector3 movementDirection = Vector3.zero;
+        Vector3 movementDirection;
 
+        // Stay aware of the enemy's weapon firing arc
         bool canFireGun =
             enemyWeapon != null &&
             enemyWeapon.CanCurrentlyFireGun();
 
-        if (!canFireGun)
+        if (!canFireGun && enemyWeapon != null)
         {
             float gunCorrection =
                 enemyWeapon.GetGunPositioningAngle();
@@ -145,8 +145,7 @@ public class EnemyShip : MonoBehaviour
                 Mathf.Sign(gunCorrection);
 
             Vector3 repositionDirection =
-                orbitDirectionVector *
-                correctionDirection;
+                orbitDirectionVector * correctionDirection;
 
             movementDirection =
                 repositionDirection +
@@ -158,18 +157,16 @@ public class EnemyShip : MonoBehaviour
             {
                 case AIBehavior.Aggressive:
 
-                    // Stay close and constantly pressure the player
                     if (distance > combatDistance)
                     {
                         movementDirection =
                             directionToPlayer +
-                            orbitDirectionVector * orbitSpeed;
+                            orbitDirectionVector;
                     }
                     else
                     {
                         movementDirection =
-                            directionToPlayer * 0.5f +
-                            orbitDirectionVector * orbitSpeed * 1.5f;
+                            orbitDirectionVector;
                     }
 
                     break;
@@ -177,22 +174,22 @@ public class EnemyShip : MonoBehaviour
 
                 case AIBehavior.Flanker:
 
-                    // Try to circle around the player
                     if (distance > combatDistance)
                     {
                         movementDirection =
                             directionToPlayer +
-                            orbitDirectionVector * orbitSpeed;
+                            orbitDirectionVector;
                     }
                     else if (distance < minimumDistance)
                     {
                         movementDirection =
-                            orbitDirectionVector * orbitSpeed;
+                            directionToPlayer +
+                            orbitDirectionVector;
                     }
                     else
                     {
                         movementDirection =
-                            orbitDirectionVector * orbitSpeed * 1.5f;
+                            orbitDirectionVector;
                     }
 
                     break;
@@ -200,22 +197,22 @@ public class EnemyShip : MonoBehaviour
 
                 case AIBehavior.Balanced:
 
-                    // Normal current behavior
                     if (distance > combatDistance)
                     {
                         movementDirection =
                             directionToPlayer +
-                            orbitDirectionVector * orbitSpeed;
+                            orbitDirectionVector;
                     }
                     else if (distance < minimumDistance)
                     {
                         movementDirection =
-                            orbitDirectionVector * orbitSpeed;
+                            directionToPlayer +
+                            orbitDirectionVector;
                     }
                     else
                     {
                         movementDirection =
-                            orbitDirectionVector * orbitSpeed;
+                            orbitDirectionVector;
                     }
 
                     break;
@@ -223,49 +220,63 @@ public class EnemyShip : MonoBehaviour
 
                 case AIBehavior.Defensive:
 
-                    // Stay farther away and avoid closing in
                     if (distance < minimumDistance)
                     {
                         movementDirection =
                             -directionToPlayer +
-                            orbitDirectionVector * orbitSpeed;
+                            orbitDirectionVector;
                     }
                     else if (distance > combatDistance)
                     {
                         movementDirection =
-                            directionToPlayer * 0.5f +
-                            orbitDirectionVector * orbitSpeed * 0.5f;
+                            directionToPlayer +
+                            orbitDirectionVector;
                     }
                     else
                     {
                         movementDirection =
-                            orbitDirectionVector * orbitSpeed * 0.5f;
+                            orbitDirectionVector;
                     }
+
+                    break;
+
+
+                default:
+
+                    movementDirection =
+                        orbitDirectionVector;
 
                     break;
             }
         }
 
-        //Spacing
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        // Enemy spacing
+        GameObject[] enemies =
+            GameObject.FindGameObjectsWithTag("Enemy");
 
         foreach (GameObject enemy in enemies)
         {
             if (enemy == gameObject)
                 continue;
-            
-            Vector3 awayFromEnemy = transform.position - enemy.transform.position;
+
+            Vector3 awayFromEnemy =
+                transform.position - enemy.transform.position;
 
             awayFromEnemy.y = 0f;
 
-            float enemyDistance = awayFromEnemy.magnitude;
+            float enemyDistance =
+                awayFromEnemy.magnitude;
 
-            if (enemyDistance < enemySpacing && enemyDistance > 0.01f)
+            if (enemyDistance < enemySpacing &&
+                enemyDistance > 0.01f)
             {
-                float strength = 1f - (enemyDistance / enemySpacing);
+                float strength =
+                    1f - (enemyDistance / enemySpacing);
 
                 movementDirection +=
-                    awayFromEnemy.normalized * strength * spacingStrength;
+                    awayFromEnemy.normalized *
+                    strength *
+                    spacingStrength;
             }
         }
 
@@ -275,92 +286,53 @@ public class EnemyShip : MonoBehaviour
         {
             movementDirection.Normalize();
 
-            //Turn toward movement direction
+            // Continuously turn toward the desired sailing direction
             Quaternion targetRotation =
                 Quaternion.LookRotation(movementDirection);
-            
-            transform.rotation = Quaternion.RotateTowards(
-                transform.rotation,
-                targetRotation,
-                turnSpeed * Time.deltaTime
-            );
 
-            //Determine direction
-            float directionDot = 
-                Vector3.Dot(transform.forward, movementDirection);
-
-            
-            if (directionDot > 0.1f)
-            {
-                // Slow down when approaching combat distance
-                if (distance < combatDistance + 5f)
-                {
-                    currentSpeed = Mathf.MoveTowards(
-                        currentSpeed,
-                        maxSpeed * 0.70f,
-                        deceleration * Time.deltaTime
-                    );
-                }
-                else
-                {
-                    currentSpeed += acceleration * Time.deltaTime;
-
-                    currentSpeed = Mathf.Clamp(
-                        currentSpeed,
-                        0f,
-                        maxSpeed
-                    );
-                }
-            }
-            else
-            {
-                // Slow down while the ship is turning away
-                // from its current direction of travel.
-                currentSpeed = Mathf.MoveTowards(
-                    currentSpeed,
-                    0f,
-                    deceleration * Time.deltaTime
+            transform.rotation =
+                Quaternion.RotateTowards(
+                    transform.rotation,
+                    targetRotation,
+                    turnSpeed * Time.deltaTime
                 );
+        }
+
+        // CONSTANT MOVEMENT
+        // The ship never intentionally stops.
+        currentSpeed = Mathf.MoveTowards(
+            currentSpeed,
+            maxSpeed,
+            acceleration * Time.deltaTime
+        );
+
+        transform.position +=
+            transform.forward *
+            currentSpeed *
+            Time.deltaTime;
+    }
+
+        private float GetCombatDistance()
+        {
+            if (enemyWeapon == null)
+                return preferredDistance;
+
+            if (enemyWeapon.gunFiringRange <= 0f)
+                return preferredDistance;
+
+            return enemyWeapon.gunFiringRange * weaponRangeBuffer;
+        }
+
+        public void TakeDamage(float damage)
+        {
+            currentHealth -= damage;
+            Debug.Log("Enemy HP: " + currentHealth);
+
+            if (currentHealth <= 0f)
+            {
+                Die();
             }
-            
         }
-        //Slow down if no movement choice
-        else
-        {
-            currentSpeed = Mathf.MoveTowards(
-                currentSpeed,
-                0f,
-                deceleration * Time.deltaTime
-            );
-        }
-
-        //Move
-        transform.position += 
-            transform.forward * currentSpeed * Time.deltaTime;
-        
-    }
-
-    private float GetCombatDistance()
-    {
-        if (enemyWeapon == null)
-            return preferredDistance;
-
-        if (enemyWeapon.gunFiringRange <= 0f)
-            return preferredDistance;
-
-        return enemyWeapon.gunFiringRange * weaponRangeBuffer;
-    }
-
-    public void TakeDamage(float damage)
-    {
-        currentHealth -= damage;
-        Debug.Log("Enemy HP: " + currentHealth);
-
-        if (currentHealth <= 0f)
-        {
-            Die();
-        }
-    }
 
     private void Die()
     {
