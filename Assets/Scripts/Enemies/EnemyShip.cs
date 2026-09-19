@@ -291,7 +291,15 @@ public class EnemyShip : MonoBehaviour
         }
 
         movementDirection.y = 0f;
-
+        if (Vector3.Dot(movementDirection, directionToPlayer) < 0f)
+        {
+            movementDirection =
+                Vector3.ProjectOnPlane(
+                    movementDirection,
+                    directionToPlayer
+                );
+        }
+        
         if (movementDirection.sqrMagnitude > 0.01f)
         {
             movementDirection.Normalize();
