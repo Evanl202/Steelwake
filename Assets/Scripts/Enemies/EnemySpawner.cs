@@ -81,6 +81,14 @@ public class EnemySpawner : MonoBehaviour
             player.position + 
             new Vector3(randomDirection.x, 0f, randomDirection.y) * spawnDistance;
 
+        Vector3 directionToPlayer =
+            player.position - spawnPosition;
+
+        directionToPlayer.y = 0f;
+
+        Quaternion spawnRotation =
+            Quaternion.LookRotation(directionToPlayer);
+
         GameObject spawnedEnemy = Instantiate (
             enemyPrefab,
             spawnPosition, 
