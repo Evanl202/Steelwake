@@ -1,5 +1,13 @@
 using UnityEngine;
 
+public enum AIBehavior
+{
+    Aggressive,
+    Flanker,
+    Balanced,
+    Defensive
+}
+
 public class EnemyShip : MonoBehaviour
 {
     [Header ("Health")]
@@ -24,6 +32,9 @@ public class EnemyShip : MonoBehaviour
     public float deceleration = 4f;
     public float reverseSpeed = 5f;
     public float turnSpeed = 60f;
+
+    [Header ("AI Behavior")]
+    public AIBehavior aiBehavior = AIBehavior.Balanced;
 
     [Header ("AI Distance")]
     public float preferredDistance = 25f;
@@ -111,20 +122,97 @@ public class EnemyShip : MonoBehaviour
 
         Vector3 movementDirection;
 
-        if (distance > preferredDistance)
+        switch (aiBehavior)
         {
-            //Too far: Move toward player while orbit
-            movementDirection = directionToPlayer + orbitDirectionVector * orbitSpeed;
-        }
-        else if (distance < minimumDistance)
-        {
-            //Too close: Move away while orbiting
-            movementDirection = -directionToPlayer + orbitDirectionVector * orbitSpeed;
-        }
-        else
-        {
-            //Maintain distance
-            movementDirection = orbitDirectionVector * orbitSpeed;
+            case AIBehavior.Aggressive:
+
+                // Stay close and constantly pressure the player
+                if (distance > preferredDistance)
+                {
+                    movementDirection =
+                        directionToPlayer +
+                        orbitDirectionVector * orbitSpeed;
+                }
+                else
+                {
+                    movementDirection =
+                        directionToPlayer * 0.5f +
+                        orbitDirectionVector * orbitSpeed * 1.5f;
+                }
+
+                break;
+
+
+            case AIBehavior.Flanker:
+
+                // Try to circle around the player
+                if (distance > preferredDistance)
+                {
+                    movementDirection =
+                        directionToPlayer +
+                        orbitDirectionVector * orbitSpeed;
+                }
+                else if (distance < minimumDistance)
+                {
+                    movementDirection =
+                        -directionToPlayer +
+                        orbitDirectionVector * orbitSpeed;
+                }
+                else
+                {
+                    movementDirection =
+                        orbitDirectionVector * orbitSpeed * 1.5f;
+                }
+
+                break;
+
+
+            case AIBehavior.Balanced:
+
+                // Normal current behavior
+                if (distance > preferredDistance)
+                {
+                    movementDirection =
+                        directionToPlayer +
+                        orbitDirectionVector * orbitSpeed;
+                }
+                else if (distance < minimumDistance)
+                {
+                    movementDirection =
+                        -directionToPlayer +
+                        orbitDirectionVector * orbitSpeed;
+                }
+                else
+                {
+                    movementDirection =
+                        orbitDirectionVector * orbitSpeed;
+                }
+
+                break;
+
+
+            case AIBehavior.Defensive:
+
+                // Stay farther away and avoid closing in
+                if (distance < minimumDistance)
+                {
+                    movementDirection =
+                        -directionToPlayer +
+                        orbitDirectionVector * orbitSpeed;
+                }
+                else if (distance > preferredDistance)
+                {
+                    movementDirection =
+                        directionToPlayer * 0.5f +
+                        orbitDirectionVector * orbitSpeed * 0.5f;
+                }
+                else
+                {
+                    movementDirection =
+                        orbitDirectionVector * orbitSpeed * 0.5f;
+                }
+
+                break;
         }
 
         //Spacing
