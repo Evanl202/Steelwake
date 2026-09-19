@@ -41,6 +41,10 @@ public class EnemyShip : MonoBehaviour
     public float minimumDistance = 10f;
     public float orbitSpeed = 1f;
 
+    [Header("AI Weapon Awareness")]
+    private EnemyWeapon enemyWeapon;
+    public float weaponRangeBuffer = 0.9f;
+
     [Header ("Spacing")]
     public float enemySpacing = 8f;
     public float spacingStrength = 2f;
@@ -86,6 +90,8 @@ public class EnemyShip : MonoBehaviour
 
         //clockwise or counterclockwise
         orbitDirection = Random.value < 0.5f ? -1f : 1f;
+
+        enemyWeapon = GetComponentInChildren<EnemyWeapon>();
     }
 
     protected virtual void Update()
@@ -108,6 +114,7 @@ public class EnemyShip : MonoBehaviour
         toPlayer.y = 0f;
 
         float distance = toPlayer.magnitude;
+        float combatDistance = GetCombatDistance();
 
         if (toPlayer.sqrMagnitude < 0.1f)
             return;
@@ -127,7 +134,7 @@ public class EnemyShip : MonoBehaviour
             case AIBehavior.Aggressive:
 
                 // Stay close and constantly pressure the player
-                if (distance > preferredDistance)
+                if (distance > combatDistance)
                 {
                     movementDirection =
                         directionToPlayer +
@@ -146,7 +153,7 @@ public class EnemyShip : MonoBehaviour
             case AIBehavior.Flanker:
 
                 // Try to circle around the player
-                if (distance > preferredDistance)
+                if (distance > combatDistance)
                 {
                     movementDirection =
                         directionToPlayer +
@@ -170,7 +177,7 @@ public class EnemyShip : MonoBehaviour
             case AIBehavior.Balanced:
 
                 // Normal current behavior
-                if (distance > preferredDistance)
+                if (distance > combatDistance)
                 {
                     movementDirection =
                         directionToPlayer +
@@ -200,7 +207,7 @@ public class EnemyShip : MonoBehaviour
                         -directionToPlayer +
                         orbitDirectionVector * orbitSpeed;
                 }
-                else if (distance > preferredDistance)
+                else if (distance > combatDistance)
                 {
                     movementDirection =
                         directionToPlayer * 0.5f +
@@ -287,6 +294,17 @@ public class EnemyShip : MonoBehaviour
         transform.position += 
             transform.forward * currentSpeed * Time.deltaTime;
         
+    }
+
+    private float GetCombatDistance()
+    {
+        if (enemyWeapon == null)
+            return preferredDistance;
+
+        if (enemyWeapon.gunFiringRange <= 0f)
+            return preferredDistance;
+
+        return enemyWeapon.gunFiringRange * weaponRangeBuffer;
     }
 
     public void TakeDamage(float damage)
