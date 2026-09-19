@@ -454,6 +454,45 @@ public class EnemyWeapon : MonoBehaviour
                relativeAngle <= maxAngle;
     }
 
+    // Check if gun can hit player
+    public bool CanCurrentlyFireGun()
+    {
+        if (player == null ||
+            guns == null ||
+            firingPoints == null ||
+            gunBaseAngles == null ||
+            gunMinAngles == null ||
+            gunMaxAngles == null)
+        {
+            return false;
+        }
+
+        int gunCount = Mathf.Min(
+            firingPoints.Length,
+            guns.Length,
+            gunBaseAngles.Length,
+            gunMinAngles.Length,
+            gunMaxAngles.Length
+        );
+
+        for (int i = 0; i < gunCount; i++)
+        {
+            if (guns[i] == null || firingPoints[i] == null)
+                continue;
+
+            if (IsTargetInArc(
+                guns[i],
+                gunBaseAngles[i],
+                gunMinAngles[i],
+                gunMaxAngles[i],
+                shellSpeed))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
     // Firing
     private void FireGun()
     {

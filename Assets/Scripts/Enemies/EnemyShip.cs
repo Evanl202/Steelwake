@@ -129,97 +129,110 @@ public class EnemyShip : MonoBehaviour
 
         Vector3 movementDirection = Vector3.zero;
 
-        switch (aiBehavior)
+        bool canFireGun =
+            enemyWeapon != null &&
+            enemyWeapon.CanCurrentlyFireGun();
+
+        if (!canFireGun)
         {
-            case AIBehavior.Aggressive:
+            movementDirection =
+                directionToPlayer +
+                orbitDirectionVector * orbitSpeed;
+        }
+        else
+        {
+            switch (aiBehavior)
+            {
+                case AIBehavior.Aggressive:
 
-                // Stay close and constantly pressure the player
-                if (distance > combatDistance)
-                {
-                    movementDirection =
-                        directionToPlayer +
-                        orbitDirectionVector * orbitSpeed;
-                }
-                else
-                {
-                    movementDirection =
-                        directionToPlayer * 0.5f +
-                        orbitDirectionVector * orbitSpeed * 1.5f;
-                }
+                    // Stay close and constantly pressure the player
+                    if (distance > combatDistance)
+                    {
+                        movementDirection =
+                            directionToPlayer +
+                            orbitDirectionVector * orbitSpeed;
+                    }
+                    else
+                    {
+                        movementDirection =
+                            directionToPlayer * 0.5f +
+                            orbitDirectionVector * orbitSpeed * 1.5f;
+                    }
 
-                break;
-
-
-            case AIBehavior.Flanker:
-
-                // Try to circle around the player
-                if (distance > combatDistance)
-                {
-                    movementDirection =
-                        directionToPlayer +
-                        orbitDirectionVector * orbitSpeed;
-                }
-                else if (distance < minimumDistance)
-                {
-                    movementDirection =
-                        -directionToPlayer +
-                        orbitDirectionVector * orbitSpeed;
-                }
-                else
-                {
-                    movementDirection =
-                        orbitDirectionVector * orbitSpeed * 1.5f;
-                }
-
-                break;
+                    break;
 
 
-            case AIBehavior.Balanced:
+                case AIBehavior.Flanker:
 
-                // Normal current behavior
-                if (distance > combatDistance)
-                {
-                    movementDirection =
-                        directionToPlayer +
-                        orbitDirectionVector * orbitSpeed;
-                }
-                else if (distance < minimumDistance)
-                {
-                    movementDirection =
-                        -directionToPlayer +
-                        orbitDirectionVector * orbitSpeed;
-                }
-                else
-                {
-                    movementDirection =
-                        orbitDirectionVector * orbitSpeed;
-                }
+                    // Try to circle around the player
+                    if (distance > combatDistance)
+                    {
+                        movementDirection =
+                            directionToPlayer +
+                            orbitDirectionVector * orbitSpeed;
+                    }
+                    else if (distance < minimumDistance)
+                    {
+                        movementDirection =
+                            -directionToPlayer +
+                            orbitDirectionVector * orbitSpeed;
+                    }
+                    else
+                    {
+                        movementDirection =
+                            orbitDirectionVector * orbitSpeed * 1.5f;
+                    }
 
-                break;
+                    break;
 
 
-            case AIBehavior.Defensive:
+                case AIBehavior.Balanced:
 
-                // Stay farther away and avoid closing in
-                if (distance < minimumDistance)
-                {
-                    movementDirection =
-                        -directionToPlayer +
-                        orbitDirectionVector * orbitSpeed;
-                }
-                else if (distance > combatDistance)
-                {
-                    movementDirection =
-                        directionToPlayer * 0.5f +
-                        orbitDirectionVector * orbitSpeed * 0.5f;
-                }
-                else
-                {
-                    movementDirection =
-                        orbitDirectionVector * orbitSpeed * 0.5f;
-                }
+                    // Normal current behavior
+                    if (distance > combatDistance)
+                    {
+                        movementDirection =
+                            directionToPlayer +
+                            orbitDirectionVector * orbitSpeed;
+                    }
+                    else if (distance < minimumDistance)
+                    {
+                        movementDirection =
+                            -directionToPlayer +
+                            orbitDirectionVector * orbitSpeed;
+                    }
+                    else
+                    {
+                        movementDirection =
+                            orbitDirectionVector * orbitSpeed;
+                    }
 
-                break;
+                    break;
+
+
+                case AIBehavior.Defensive:
+
+                    // Stay farther away and avoid closing in
+                    if (distance < minimumDistance)
+                    {
+                        movementDirection =
+                            -directionToPlayer +
+                            orbitDirectionVector * orbitSpeed;
+                    }
+                    else if (distance > combatDistance)
+                    {
+                        movementDirection =
+                            directionToPlayer * 0.5f +
+                            orbitDirectionVector * orbitSpeed * 0.5f;
+                    }
+                    else
+                    {
+                        movementDirection =
+                            orbitDirectionVector * orbitSpeed * 0.5f;
+                    }
+
+                    break;
+            }
         }
 
         //Spacing
