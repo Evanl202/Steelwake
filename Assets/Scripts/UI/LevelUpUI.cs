@@ -31,8 +31,8 @@ public class LevelUpUI : MonoBehaviour
         ),
 
         new UpgradeData(
-            "DAMAGE",
-            "Increase shell damage by 10%",
+            "HE DAMAGE",
+            "Increase HE shell damage by 20%",
             1
         ),
 
@@ -46,6 +46,12 @@ public class LevelUpUI : MonoBehaviour
             "HEALTH",
             "Increase maximum health by 20",
             3
+        ),
+
+        new UpgradeData(
+            "DAMAGE",
+            "Increase all weapon damage by 10%",
+            4
         ),
     };
 
@@ -156,6 +162,10 @@ public class LevelUpUI : MonoBehaviour
 
             case 3:
                 UpgradeManager.Instance.UpgradeHealth();
+                break;
+
+            case 4:
+                UpgradeManager.Instance.UpgradeDamage();
                 break;
         }
 

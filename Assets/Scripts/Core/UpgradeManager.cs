@@ -12,7 +12,11 @@ public class UpgradeManager : MonoBehaviour
     [Header ("Upgrade Amount")]
     public float speedIncrease = .10f;
     public float reloadReduction = .10f;
-    public float healthIncrease = 20f;
+    public float healthIncrease = 50f;
+
+    public float damageIncrease = .10f;
+    public float penetrationIncrease = .10f;
+    public float armorIncrease = .10f;
 
     private void Awake()
     {
@@ -26,6 +30,8 @@ public class UpgradeManager : MonoBehaviour
         }
     }
     
+
+    // Universal Upgrades
     public void UpgradeSpeed()
     {
         if (playerMovement == null)
@@ -46,10 +52,12 @@ public class UpgradeManager : MonoBehaviour
             Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
             return;
         }
-        
-        playerWeapon.damage *= 1.10f;
 
-        Debug.Log("Damage Upgrade! New damage: " );
+        playerWeapon.damage *= 1f + damageIncrease;
+        playerWeapon.apDamage *= 1f + damageIncrease;
+        playerWeapon.torpedoDamage *= 1f + damageIncrease;
+
+        Debug.Log("Universal Damage Upgrade!");
     }
 
     public void UpgradeReload()
@@ -61,8 +69,9 @@ public class UpgradeManager : MonoBehaviour
         }
         
         playerWeapon.reloadTime *= 1f - reloadReduction;
+        playerWeapon.torpedoReloadTime *= 1f - reloadReduction;
         
-        Debug.Log("Weapon Upgrade! New reload time: " + playerWeapon.reloadTime);
+        Debug.Log("Weapon Upgrade! New reload time: " + playerWeapon.reloadTime + " Torpedo: " + playerWeaon.torpedoReloadTime);
         
     }
 
@@ -77,6 +86,111 @@ public class UpgradeManager : MonoBehaviour
         playerShip.maxHealth += healthIncrease;
         
         Debug.Log("Health Upgrade! New Max Health: " + playerShip.maxHealth);
+        
+    }
+
+    // Specific Upgrades
+
+    public void UpgradeHEDamage()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+        
+        playerWeapon.damage *= 1f + (damageIncrease + .1f);
+
+        Debug.Log("HE Damage Upgrade! New damage: " + playerWeapon.damage);
+    }
+
+    public void UpgradeAPDamage()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+        
+        playerWeapon.apDamage *= 1f + (damageIncrease + .1f);
+
+        Debug.Log("AP Damage Upgrade! New damage: " + playerWeapon.apDamage);
+    }
+
+    public void UpgradeTorpedoDamage()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.torpedoDamage *= 1f + (damageIncrease + .1f);
+
+        Debug.Log(
+            "Torpedo Damage Upgrade! New torpedo damage: " +
+            playerWeapon.torpedoDamage
+        );
+    }
+
+    public void UpgradeAPPenetration()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.penetration *= 1f + penetrationIncrease;
+
+        Debug.Log(
+            "AP Penetration Upgrade! New penetration: " +
+            playerWeapon.penetration
+        );
+    }
+
+    public void UpgradeArmor()
+    {
+        if (playerShip == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Ship not assigned");
+            return;
+        }
+
+        playerShip.armor *= 1f + armorIncrease;
+
+        Debug.Log(
+            "Armor Upgrade! New armor: " +
+            playerShip.armor
+        );
+    }
+
+
+    public void UpgradeWeaponReload()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+        
+        playerWeapon.reloadTime *= 1f - (reloadReduction + .05f);
+        
+        Debug.Log("Weapon Upgrade! New reload time: " + playerWeapon.reloadTime);
+        
+    }
+
+    public void UpgradeTorpedoReload()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+        
+        playerWeapon.torpedoReloadTime *= 1f - (reloadReduction + .05f);
+        
+        Debug.Log("Torpedo Upgrade! New reload time: " + playerWeapon.torpedoReloadTime);
         
     }
 }
