@@ -12,10 +12,15 @@ public class EnemySpawner : MonoBehaviour
     public Transform player;
 
     [Header ("Spawning")]
-    public float spawnDistance = 30f;
+    public float spawnDistance = 45f;
     public float spawnInterval = 3f;
 
     private float spawnTimer;
+    private float waveTimer;
+
+    [Header("Waves")]
+    public int currentWave = 1;
+    public float waveDuration = 60f;
 
     [Header ("Elite Enemies")]
     [Range(0f, 1f)]
@@ -24,6 +29,7 @@ public class EnemySpawner : MonoBehaviour
     private void Start()
     {
         spawnTimer = spawnInterval;
+        waveTimer = waveDuration;
     }
 
     private void Update()
@@ -32,6 +38,15 @@ public class EnemySpawner : MonoBehaviour
             !GameManager.Instance.gameRunning)
         {
             return;
+        }
+        waveTimer -= Time.deltaTime;
+
+        if (waveTimer <= 0f)
+        {
+            currentWave++;
+            waveTimer = waveDuration;
+
+            Debug.Log("Wave " + currentWave + " started!");
         }
 
         spawnTimer -= Time.deltaTime;
