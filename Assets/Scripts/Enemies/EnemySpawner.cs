@@ -97,50 +97,41 @@ public class EnemySpawner : MonoBehaviour
 
     private GameObject GetEnemyPrefab()
     {
-        GameTimer timer = FindAnyObjectByType<GameTimer>();
+        float roll = Random.value;
 
-        if (timer == null)
+        switch (currentWave)
         {
-            return frigatePrefab;
-        }
-
-        float time = timer.elapsedTime;
-
-        //0:00 - 2:00 120f
-        if (time < 10f)
-        {
-            return frigatePrefab;
-        }
-
-        //2:00 - 5:00 300f
-        if (time < 30)
-        {
-            return Random.value < 0.7f ? frigatePrefab : destroyerPrefab;
-        }
-
-        //8:00 - 12:00 720f
-        if (time < 40)
-        {
-            float roll = Random.value;
-
-            if (roll < 0.5f)
+            // Wave 1: Frigates only
+            case 1:
                 return frigatePrefab;
 
-            if (roll < 0.8f)
-                return destroyerPrefab;
+            // Wave 2: Frigates + Destroyers
+            case 2:
+                return roll < 0.7f
+                    ? frigatePrefab
+                    : destroyerPrefab;
 
-            return cruiserPrefab;
+            // Wave 3: Destroyers + Frigates
+            case 3:
+                return roll < 0.6f
+                    ? destroyerPrefab
+                    : frigatePrefab;
+
+            // Wave 4: Destroyers + Cruisers
+            case 4:
+                return roll < 0.6f
+                    ? destroyerPrefab
+                    : cruiserPrefab;
+
+            // Wave 5+: Destroyers + Cruisers + Battleships
+            default:
+                if (roll < 0.45f)
+                    return destroyerPrefab;
+
+                if (roll < 0.80f)
+                    return cruiserPrefab;
+
+                return battleshipPrefab;
         }
-        //12:00+
-        float lateRoll = Random.value;
-
-        if (lateRoll < 0.45f)
-            return destroyerPrefab;
-
-        if (lateRoll < 0.8f)
-            return cruiserPrefab;
-                
-        return battleshipPrefab;
-        
     }
 }
