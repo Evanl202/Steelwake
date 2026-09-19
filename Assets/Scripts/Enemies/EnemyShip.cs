@@ -187,7 +187,6 @@ public class EnemyShip : MonoBehaviour
                     else if (distance < minimumDistance)
                     {
                         movementDirection =
-                            -directionToPlayer +
                             orbitDirectionVector * orbitSpeed;
                     }
                     else
@@ -211,7 +210,6 @@ public class EnemyShip : MonoBehaviour
                     else if (distance < minimumDistance)
                     {
                         movementDirection =
-                            -directionToPlayer +
                             orbitDirectionVector * orbitSpeed;
                     }
                     else
@@ -294,24 +292,27 @@ public class EnemyShip : MonoBehaviour
             
             if (directionDot > 0.1f)
             {
-                // Moving in the direction the ship is facing
-                currentSpeed += acceleration * Time.deltaTime;
+                // Slow down when approaching combat distance
+                if (distance < combatDistance + 5f)
+                {
+                    currentSpeed = Mathf.MoveTowards(
+                        currentSpeed,
+                        maxSpeed * 0.35f,
+                        deceleration * Time.deltaTime
+                    );
+                }
+                else
+                {
+                    currentSpeed += acceleration * Time.deltaTime;
 
-                currentSpeed = Mathf.Clamp(
-                    currentSpeed,
-                    0f,
-                    maxSpeed
-                );
+                    currentSpeed = Mathf.Clamp(
+                        currentSpeed,
+                        0f,
+                        maxSpeed
+                    );
+                }
             }
-            else
-            {
-                // Turn first instead of immediately reversing
-                currentSpeed = Mathf.MoveTowards(
-                    currentSpeed,
-                    0f,
-                    deceleration * Time.deltaTime
-                );
-            }
+            
         }
         //Slow down if no movement choice
         else
