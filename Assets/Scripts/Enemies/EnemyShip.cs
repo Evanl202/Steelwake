@@ -322,7 +322,6 @@ public class EnemyShip : MonoBehaviour
                     deceleration * Time.deltaTime
                 );
             }
-            }
             
         }
         //Slow down if no movement choice
