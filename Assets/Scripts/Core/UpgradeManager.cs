@@ -195,8 +195,7 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         
-        playerShip.currentHealth = 
-            Mathf.Min(playerShip.currentHealth + 100f, maxHealth);
+        playerShip.RepairFlat;
         
         Debug.Log("Ship Repaired +Flat!");
     }
@@ -209,8 +208,7 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         
-        playerShip.currentHealth = 
-            Mathf.Min(playerShip.currentHealth + (maxHealth / 2f), maxHealth);
+        playerShip.RepairHalf;
         
         Debug.Log("Ship Repaired +Half!");
     }
@@ -223,7 +221,7 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         
-        playerShip.currentHealth = maxHealth;
+        playerShip.RepairFull;
         
         Debug.Log("Ship Repaired +Full!");
     }

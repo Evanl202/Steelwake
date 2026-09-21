@@ -42,4 +42,20 @@ public class PlayerShip : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // Repairs
+    public void RepairFlat()
+    {
+        currentHealth = Mathf.Min(currentHealth + 100f, maxHealth);
+    }
+
+    public void RepairHalf()
+    {
+        currentHealth = Mathf.Min(currentHealth + (maxHealth / 2f), maxHealth);
+    }
+
+    public void RepairFull()
+    {
+        currentHealth = maxHealth;
+    }
+
 }
