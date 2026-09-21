@@ -195,7 +195,7 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         
-        playerShip.RepairFlat;
+        playerShip.RepairFlat();
         
         Debug.Log("Ship Repaired +Flat!");
     }
@@ -208,7 +208,7 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         
-        playerShip.RepairHalf;
+        playerShip.RepairHalf();
         
         Debug.Log("Ship Repaired +Half!");
     }
@@ -221,7 +221,7 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         
-        playerShip.RepairFull;
+        playerShip.RepairFull();
         
         Debug.Log("Ship Repaired +Full!");
     }
