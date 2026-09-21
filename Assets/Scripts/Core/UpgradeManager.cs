@@ -168,7 +168,6 @@ public class UpgradeManager : MonoBehaviour
             "Health +Flat! New Max Health: " + 
             playerShip.maxHealth
         );
-        
     }
 
     public void UpgradeHealthPercent()
@@ -185,7 +184,48 @@ public class UpgradeManager : MonoBehaviour
             "Health +%! New Max Health: " + 
             playerShip.maxHealth
         );
+    }
+
+    // Repair Ship
+    public void RepairFlat()
+    {
+        if (playerShip == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Health not assigned");
+            return;
+        }
         
+        playerShip.currentHealth = 
+            Mathf.Min(playerShip.currentHealth + 100f, maxHealth);
+        
+        Debug.Log("Ship Repaired +Flat!");
+    }
+    
+    public void RepairHalf()
+    {
+        if (playerShip == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Health not assigned");
+            return;
+        }
+        
+        playerShip.currentHealth = 
+            Mathf.Min(playerShip.currentHealth + (maxHealth / 2f), maxHealth);
+        
+        Debug.Log("Ship Repaired +Half!");
+    }
+
+    public void RepairFull()
+    {
+        if (playerShip == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Health not assigned");
+            return;
+        }
+        
+        playerShip.currentHealth = maxHealth;
+        
+        Debug.Log("Ship Repaired +Full!");
     }
 
     // Specific Upgrades
