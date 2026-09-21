@@ -165,20 +165,20 @@ public class LevelUpUI : MonoBehaviour
             "TORPEDO RELOAD +%",
             "Reduce torpedo reload time by 5%",
             21
-        )
+        ),
 
         // REPAIR 
         new UpgradeData(
             "SHIP REPAIR +Flat",
             "Repair ship +100 HP",
             22
-        )
+        ),
 
         new UpgradeData(
             "SHIP REPAIR +Half",
             "Repair half of max ship HP",
             23
-        )
+        ),
 
         new UpgradeData(
             "SHIP REPAIR +FULL",
