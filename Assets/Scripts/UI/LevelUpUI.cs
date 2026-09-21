@@ -166,6 +166,25 @@ public class LevelUpUI : MonoBehaviour
             "Reduce torpedo reload time by 5%",
             21
         )
+
+        // REPAIR 
+        new UpgradeData(
+            "SHIP REPAIR +Flat",
+            "Repair ship +100 HP",
+            22
+        )
+
+        new UpgradeData(
+            "SHIP REPAIR +Half",
+            "Repair half of max ship HP",
+            23
+        )
+
+        new UpgradeData(
+            "SHIP REPAIR +FULL",
+            "Repair ship Full HP",
+            24
+        )
     };
 
     private UpgradeData choice1;
@@ -358,6 +377,19 @@ public class LevelUpUI : MonoBehaviour
 
             case 21:
                 UpgradeManager.Instance.UpgradeTorpedoReloadPercent();
+                break;
+
+            // REPAIR
+            case 22:
+                UpgradeManager.Instance.RepairFlat();
+                break;
+
+            case 23:
+                UpgradeManager.Instance.RepairHalf();
+                break;
+            
+            case 24:
+                UpgradeManager.Instance.RepairFull();
                 break;
         }
 
