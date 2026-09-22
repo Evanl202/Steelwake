@@ -29,6 +29,8 @@ public class EnemySpawner : MonoBehaviour
     public int extraEnemiesPerWave = 2;
     public int maximumEnemyLimit = 25;
 
+    public WaveAnnouncementUI waveAnnouncementUI;
+
     [Header ("Elite Enemies")]
     [Range(0f, 1f)]
     public float eliteChance = 0.10f;
@@ -74,6 +76,12 @@ public class EnemySpawner : MonoBehaviour
 
             spawnTimer = GetCurrentSpawnInterval();
         }
+
+        if (waveAnnouncementUI != null)
+        {
+            waveAnnouncementUI.ShowWave(currentWave);
+        }
+
     }
 
     private void SpawnEnemy()
