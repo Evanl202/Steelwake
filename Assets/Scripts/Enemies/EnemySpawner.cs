@@ -13,7 +13,7 @@ public class EnemySpawner : MonoBehaviour
 
     [Header ("Spawning")]
     public float spawnDistance = 45f;
-    public float spawnInterval = 3f;
+    public float spawnInterval = 5f;
 
     private float spawnTimer;
     private float waveTimer;
@@ -21,6 +21,9 @@ public class EnemySpawner : MonoBehaviour
     [Header("Waves")]
     public int currentWave = 1;
     public float waveDuration = 60f;
+
+    public float spawnIntervalReductionPerWave = 0.25f;
+    public float minimumSpawnInterval = 0.5f;
 
     [Header ("Elite Enemies")]
     [Range(0f, 1f)]
@@ -45,6 +48,7 @@ public class EnemySpawner : MonoBehaviour
         {
             currentWave++;
             waveTimer = waveDuration;
+            spawnTimer = GetCurrentSpawnInterval();
 
             Debug.Log("Wave " + currentWave + " started!");
         }
@@ -55,7 +59,7 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnEnemy();
 
-            spawnTimer = spawnInterval;
+            spawnTimer = GetCurrentSpawnInterval();
         }
     }
 
@@ -142,4 +146,14 @@ public class EnemySpawner : MonoBehaviour
                 return battleshipPrefab;
         }
     }
+
+    private float GetCurrentSpawnInterval()
+    {
+        float interval =
+            spawnInterval -
+            (currentWave - 1) * spawnIntervalReductionPerWave;
+
+        return Mathf.Max(interval, minimumSpawnInterval);
+    }
+
 }
