@@ -27,7 +27,7 @@ public class EnemySpawner : MonoBehaviour
 
     public int startingEnemyLimit = 5;
     public int extraEnemiesPerWave = 2;
-    public int maximumEnemyLimit = 25f;
+    public int maximumEnemyLimit = 25;
 
     [Header ("Elite Enemies")]
     [Range(0f, 1f)]
