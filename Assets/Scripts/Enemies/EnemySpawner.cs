@@ -13,7 +13,7 @@ public class EnemySpawner : MonoBehaviour
 
     [Header ("Spawning")]
     public float spawnDistance = 45f;
-    public float spawnInterval = 5f;
+    public float spawnInterval = 4f;
 
     private float spawnTimer;
     private float waveTimer;
