@@ -39,6 +39,11 @@ public class EnemySpawner : MonoBehaviour
     {
         spawnTimer = spawnInterval;
         waveTimer = waveDuration;
+
+        if (waveAnnouncementUI != null)
+        {
+            waveAnnouncementUI.ShowWave(currentWave);
+        }
     }
 
     private int GetEnemyLimit()
