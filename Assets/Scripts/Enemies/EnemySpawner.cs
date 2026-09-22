@@ -157,11 +157,21 @@ public class EnemySpawner : MonoBehaviour
                 out speedMultiplier
             );
 
-            enemyShip.ApplyWaveScaling(
-                healthMultiplier,
-                damageMultiplier,
-                speedMultiplier
-            );
+            enemyShip.maxHealth *= healthMultiplier;
+
+            enemyShip.maxSpeed *= speedMultiplier;
+            enemyShip.acceleration *= speedMultiplier;
+            enemyShip.deceleration *= speedMultiplier;
+            enemyShip.reverseSpeed *= speedMultiplier;
+
+            EnemyWeapon enemyWeapon =
+                spawnedEnemy.GetComponentInChildren<EnemyWeapon>();
+
+            if (enemyWeapon != null)
+            {
+                enemyWeapon.gunDamage *= damageMultiplier;
+                enemyWeapon.torpedoDamage *= damageMultiplier;
+            }
         }
     }
 

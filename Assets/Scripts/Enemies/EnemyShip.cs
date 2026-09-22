@@ -13,7 +13,7 @@ public class EnemyShip : MonoBehaviour
     [Header ("Health")]
     public float maxHealth = 50f;
 
-    private float currentHealth;
+    public float currentHealth;
 
     [Header ("Armor")]
     public float armor = 0f;
