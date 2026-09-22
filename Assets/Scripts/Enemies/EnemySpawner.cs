@@ -29,6 +29,15 @@ public class EnemySpawner : MonoBehaviour
     public int extraEnemiesPerWave = 2;
     public int maximumEnemyLimit = 25;
 
+    [Header("Wave Scaling")]
+    public float enemyHealthIncreasePerWave = 0.10f;
+    public float enemyDamageIncreasePerWave = 0.10f;
+    public float enemySpeedIncreasePerWave = 0.05f;
+
+    public float maximumEnemyHealthMultiplier = 2f;
+    public float maximumEnemyDamageMultiplier = 2f;
+    public float maximumEnemySpeedMultiplier = 1.5f;
+
     public WaveAnnouncementUI waveAnnouncementUI;
 
     [Header ("Elite Enemies")]
@@ -137,6 +146,22 @@ public class EnemySpawner : MonoBehaviour
         if (enemyShip != null)
         {
             enemyShip.isElite = Random.value < eliteChance;
+        
+            float healthMultiplier;
+            float damageMultiplier;
+            float speedMultiplier;
+
+            GetEnemyMultipliers(
+                out healthMultiplier,
+                out damageMultiplier,
+                out speedMultiplier
+            );
+
+            enemyShip.ApplyWaveScaling(
+                healthMultiplier,
+                damageMultiplier,
+                speedMultiplier
+            );
         }
     }
 
@@ -187,6 +212,27 @@ public class EnemySpawner : MonoBehaviour
             (currentWave - 1) * spawnIntervalReductionPerWave;
 
         return Mathf.Max(interval, minimumSpawnInterval);
+    }
+
+    private void GetEnemyMultipliers(
+        out float healthMultiplier,
+        out float damageMultiplier,
+        out float speedMultiplier)
+    {
+        healthMultiplier = Mathf.Min(
+            1f + (currentWave - 1) * enemyHealthIncreasePerWave,
+            maximumEnemyHealthMultiplier
+        );
+
+        damageMultiplier = Mathf.Min(
+            1f + (currentWave - 1) * enemyDamageIncreasePerWave,
+            maximumEnemyDamageMultiplier
+        );
+
+        speedMultiplier = Mathf.Min(
+            1f + (currentWave - 1) * enemySpeedIncreasePerWave,
+            maximumEnemySpeedMultiplier
+        );
     }
 
 }
