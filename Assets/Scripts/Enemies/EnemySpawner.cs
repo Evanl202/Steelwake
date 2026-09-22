@@ -71,6 +71,11 @@ public class EnemySpawner : MonoBehaviour
             spawnTimer = GetCurrentSpawnInterval();
 
             Debug.Log("Wave " + currentWave + " started!");
+
+            if (waveAnnouncementUI != null)
+            {
+                waveAnnouncementUI.ShowWave(currentWave);
+            }
         }
 
         spawnTimer -= Time.deltaTime;
@@ -81,12 +86,6 @@ public class EnemySpawner : MonoBehaviour
 
             spawnTimer = GetCurrentSpawnInterval();
         }
-
-        if (waveAnnouncementUI != null)
-        {
-            waveAnnouncementUI.ShowWave(currentWave);
-        }
-
     }
 
     private void SpawnEnemy()
