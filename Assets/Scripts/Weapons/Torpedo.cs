@@ -19,7 +19,6 @@ public class Torpedo : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Torpedo hit: " + other.gameObject.name);
 
         EnemyShip enemy = other.GetComponent<EnemyShip>();
 
