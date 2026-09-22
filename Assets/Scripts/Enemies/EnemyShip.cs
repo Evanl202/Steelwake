@@ -75,8 +75,6 @@ public class EnemyShip : MonoBehaviour
             }
         }
 
-        currentHealth = maxHealth;
-
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
 
         if (playerObject != null)
