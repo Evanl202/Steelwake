@@ -191,8 +191,6 @@ public class EnemySpawner : MonoBehaviour
             enemyWeapon.gunDamage *= damageMultiplier;
             enemyWeapon.torpedoDamage *= damageMultiplier;
         }
-
-        enemyShip.currentHealth = enemyShip.maxHealth;
     }
 
     private GameObject GetEnemyPrefab()
