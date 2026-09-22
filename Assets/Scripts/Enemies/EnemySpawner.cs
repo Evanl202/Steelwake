@@ -146,35 +146,53 @@ public class EnemySpawner : MonoBehaviour
         if (enemyShip != null)
         {
             enemyShip.isElite = Random.value < eliteChance;
-        
-            float healthMultiplier;
-            float damageMultiplier;
-            float speedMultiplier;
-
-            GetEnemyMultipliers(
-                out healthMultiplier,
-                out damageMultiplier,
-                out speedMultiplier
-            );
-
-            enemyShip.maxHealth *= healthMultiplier;
-
-            enemyShip.maxSpeed *= speedMultiplier;
-            enemyShip.acceleration *= speedMultiplier;
-            enemyShip.deceleration *= speedMultiplier;
-            enemyShip.reverseSpeed *= speedMultiplier;
-
-            EnemyWeapon enemyWeapon =
-                spawnedEnemy.GetComponentInChildren<EnemyWeapon>();
-
-            if (enemyWeapon != null)
-            {
-                enemyWeapon.gunDamage *= damageMultiplier;
-                enemyWeapon.torpedoDamage *= damageMultiplier;
-            }
-
-            enemyShip.currentHealth = enemyShip.maxHealth;
         }
+
+        StartCoroutine(ApplyWaveScaling(spawnedEnemy));
+    }
+
+    private System.Collections.IEnumerator ApplyWaveScaling(
+        GameObject spawnedEnemy)
+    {
+        yield return null;
+
+        EnemyShip enemyShip =
+            spawnedEnemy.GetComponent<EnemyShip>();
+
+        if (enemyShip == null)
+            yield break;
+
+        float healthMultiplier;
+        float damageMultiplier;
+        float speedMultiplier;
+
+        GetEnemyMultipliers(
+            out healthMultiplier,
+            out damageMultiplier,
+            out speedMultiplier
+        );
+
+        // Health
+        enemyShip.maxHealth *= healthMultiplier;
+        enemyShip.currentHealth = enemyShip.maxHealth;
+
+        // Speed
+        enemyShip.maxSpeed *= speedMultiplier;
+        enemyShip.acceleration *= speedMultiplier;
+        enemyShip.deceleration *= speedMultiplier;
+        enemyShip.reverseSpeed *= speedMultiplier;
+
+        // Damage
+        EnemyWeapon enemyWeapon =
+            spawnedEnemy.GetComponentInChildren<EnemyWeapon>();
+
+        if (enemyWeapon != null)
+        {
+            enemyWeapon.gunDamage *= damageMultiplier;
+            enemyWeapon.torpedoDamage *= damageMultiplier;
+        }
+
+        enemyShip.currentHealth = enemyShip.maxHealth;
     }
 
     private GameObject GetEnemyPrefab()
