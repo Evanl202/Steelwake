@@ -25,6 +25,10 @@ public class EnemySpawner : MonoBehaviour
     public float spawnIntervalReductionPerWave = 0.25f;
     public float minimumSpawnInterval = 0.5f;
 
+    public int startingEnemyLimit = 5;
+    public int extraEnemiesPerWave = 2;
+    public int maximumEnemyLimit = 25f;
+
     [Header ("Elite Enemies")]
     [Range(0f, 1f)]
     public float eliteChance = 0.10f;
@@ -33,6 +37,15 @@ public class EnemySpawner : MonoBehaviour
     {
         spawnTimer = spawnInterval;
         waveTimer = waveDuration;
+    }
+
+    private int GetEnemyLimit()
+    {
+        int limit =
+            startingEnemyLimit +
+            (currentWave - 1) * extraEnemiesPerWave;
+
+        return Mathf.Min(limit, maximumEnemyLimit);
     }
 
     private void Update()
@@ -65,6 +78,14 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
+        GameObject[] enemies =
+            GameObject.FindGameObjectsWithTag("Enemy");
+
+        if (enemies.Length >= GetEnemyLimit())
+        {
+            return;
+        }
+
         if (player == null)
         {
             Debug.LogWarning("EnemySpawner missing player reference");
