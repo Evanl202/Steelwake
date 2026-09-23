@@ -38,6 +38,16 @@ public class EnemySpawner : MonoBehaviour
     public float maximumEnemyDamageMultiplier = 2f;
     public float maximumEnemySpeedMultiplier = 1.5f;
 
+    [Header("Boss Waves")]
+    public int bossWaveInterval = 5;
+
+    public float bossSpawnInterval = 5f;
+    public int bossEnemyLimit = 5;
+
+    private bool bossSpawnedThisWave = false;
+
+    public GameObject bossPrefab;
+
     public WaveAnnouncementUI waveAnnouncementUI;
 
     [Header ("Elite Enemies")]
@@ -57,6 +67,11 @@ public class EnemySpawner : MonoBehaviour
 
     private int GetEnemyLimit()
     {
+        if (IsBossWave())
+        {
+            return bossEnemyLimit;
+        }
+
         int limit =
             startingEnemyLimit +
             (currentWave - 1) * extraEnemiesPerWave;
@@ -79,11 +94,18 @@ public class EnemySpawner : MonoBehaviour
             waveTimer = waveDuration;
             spawnTimer = GetCurrentSpawnInterval();
 
+            bossSpawnedThisWave = false;
+
             Debug.Log("Wave " + currentWave + " started!");
 
             if (waveAnnouncementUI != null)
             {
                 waveAnnouncementUI.ShowWave(currentWave);
+            }
+
+            if (IsBossWave())
+            {
+                SpawnBoss();
             }
         }
 
@@ -149,6 +171,53 @@ public class EnemySpawner : MonoBehaviour
         }
 
         StartCoroutine(ApplyWaveScaling(spawnedEnemy));
+    }
+
+    private void SpawnBoss()
+    {
+        if (bossSpawnedThisWave)
+            return;
+
+        if (bossPrefab == null)
+        {
+            Debug.LogWarning("Boss Spawner: No boss prefab assigned.");
+            return;
+        }
+
+        if (player == null)
+        {
+            Debug.LogWarning("Boss Spawner: No player reference.");
+            return;
+        }
+
+        Vector2 randomDirection =
+            Random.insideUnitCircle.normalized;
+
+        Vector3 spawnPosition =
+            player.position +
+            new Vector3(
+                randomDirection.x,
+                0f,
+                randomDirection.y
+            ) * spawnDistance;
+
+        Vector3 directionToPlayer =
+            player.position - spawnPosition;
+
+        directionToPlayer.y = 0f;
+
+        Quaternion spawnRotation =
+            Quaternion.LookRotation(directionToPlayer);
+
+        Instantiate(
+            bossPrefab,
+            spawnPosition,
+            spawnRotation
+        );
+
+        bossSpawnedThisWave = true;
+
+        Debug.Log("BOSS spawned for Wave " + currentWave);
     }
 
     private System.Collections.IEnumerator ApplyWaveScaling(
@@ -235,6 +304,11 @@ public class EnemySpawner : MonoBehaviour
 
     private float GetCurrentSpawnInterval()
     {
+        if (IsBossWave())
+        {
+            return bossSpawnInterval;
+        }
+
         float interval =
             spawnInterval -
             (currentWave - 1) * spawnIntervalReductionPerWave;
