@@ -40,6 +40,8 @@ public class EnemyShip : MonoBehaviour
     public float preferredDistance = 25f;
     public float minimumDistance = 10f;
     public float orbitSpeed = 1f;
+    public float maximumDistance = 60f;
+    public float returnTurnSpeedMultiplier = 2f;
 
     [Header("AI Weapon Awareness")]
     private EnemyWeapon enemyWeapon;
@@ -129,122 +131,129 @@ public class EnemyShip : MonoBehaviour
 
         Vector3 movementDirection;
 
-        // Stay aware of the enemy's weapon firing arc
-        bool canFireGun =
-            enemyWeapon != null &&
-            enemyWeapon.CanCurrentlyFireGun();
-
-        if (!canFireGun && enemyWeapon != null)
+        if (distance > maximumDistance)
         {
-            float gunCorrection =
-                enemyWeapon.GetGunPositioningAngle();
-
-            float correctionDirection =
-                Mathf.Sign(gunCorrection);
-
-            Vector3 repositionDirection =
-                orbitDirectionVector * correctionDirection;
-
-            movementDirection =
-                repositionDirection +
-                directionToPlayer * 0.25f;
+            movementDirection = directionToPlayer;
         }
         else
         {
-            switch (aiBehavior)
+            // Stay aware of the enemy's weapon firing arc
+            bool canFireGun =
+                enemyWeapon != null &&
+                enemyWeapon.CanCurrentlyFireGun();
+
+            if (!canFireGun && enemyWeapon != null)
             {
-                case AIBehavior.Aggressive:
+                float gunCorrection =
+                    enemyWeapon.GetGunPositioningAngle();
 
-                    if (distance > combatDistance)
-                    {
+                float correctionDirection =
+                    Mathf.Sign(gunCorrection);
+
+                Vector3 repositionDirection =
+                    orbitDirectionVector * correctionDirection;
+
+                movementDirection =
+                    repositionDirection +
+                    directionToPlayer * 0.25f;
+            }
+            else
+            {
+                switch (aiBehavior)
+                {
+                    case AIBehavior.Aggressive:
+
+                        if (distance > combatDistance)
+                        {
+                            movementDirection =
+                                directionToPlayer +
+                                orbitDirectionVector;
+                        }
+                        else
+                        {
+                            movementDirection =
+                                orbitDirectionVector;
+                        }
+
+                        break;
+
+
+                    case AIBehavior.Flanker:
+
+                        if (distance > combatDistance)
+                        {
+                            movementDirection =
+                                directionToPlayer +
+                                orbitDirectionVector;
+                        }
+                        else if (distance < minimumDistance)
+                        {
+                            movementDirection =
+                                directionToPlayer +
+                                orbitDirectionVector;
+                        }
+                        else
+                        {
+                            movementDirection =
+                                orbitDirectionVector;
+                        }
+
+                        break;
+
+
+                    case AIBehavior.Balanced:
+
+                        if (distance > combatDistance)
+                        {
+                            movementDirection =
+                                directionToPlayer +
+                                orbitDirectionVector;
+                        }
+                        else if (distance < minimumDistance)
+                        {
+                            movementDirection =
+                                directionToPlayer +
+                                orbitDirectionVector;
+                        }
+                        else
+                        {
+                            movementDirection =
+                                orbitDirectionVector;
+                        }
+
+                        break;
+
+
+                    case AIBehavior.Defensive:
+
+                        if (distance < minimumDistance)
+                        {
+                            movementDirection =
+                                -directionToPlayer +
+                                orbitDirectionVector;
+                        }
+                        else if (distance > combatDistance)
+                        {
+                            movementDirection =
+                                directionToPlayer +
+                                orbitDirectionVector;
+                        }
+                        else
+                        {
+                            movementDirection =
+                                orbitDirectionVector;
+                        }
+
+                        break;
+
+
+                    default:
+
                         movementDirection =
-                            directionToPlayer +
                             orbitDirectionVector;
-                    }
-                    else
-                    {
-                        movementDirection =
-                            orbitDirectionVector;
-                    }
 
-                    break;
-
-
-                case AIBehavior.Flanker:
-
-                    if (distance > combatDistance)
-                    {
-                        movementDirection =
-                            directionToPlayer +
-                            orbitDirectionVector;
-                    }
-                    else if (distance < minimumDistance)
-                    {
-                        movementDirection =
-                            directionToPlayer +
-                            orbitDirectionVector;
-                    }
-                    else
-                    {
-                        movementDirection =
-                            orbitDirectionVector;
-                    }
-
-                    break;
-
-
-                case AIBehavior.Balanced:
-
-                    if (distance > combatDistance)
-                    {
-                        movementDirection =
-                            directionToPlayer +
-                            orbitDirectionVector;
-                    }
-                    else if (distance < minimumDistance)
-                    {
-                        movementDirection =
-                            directionToPlayer +
-                            orbitDirectionVector;
-                    }
-                    else
-                    {
-                        movementDirection =
-                            orbitDirectionVector;
-                    }
-
-                    break;
-
-
-                case AIBehavior.Defensive:
-
-                    if (distance < minimumDistance)
-                    {
-                        movementDirection =
-                            -directionToPlayer +
-                            orbitDirectionVector;
-                    }
-                    else if (distance > combatDistance)
-                    {
-                        movementDirection =
-                            directionToPlayer +
-                            orbitDirectionVector;
-                    }
-                    else
-                    {
-                        movementDirection =
-                            orbitDirectionVector;
-                    }
-
-                    break;
-
-
-                default:
-
-                    movementDirection =
-                        orbitDirectionVector;
-
-                    break;
+                        break;
+                }
             }
         }
 
@@ -312,15 +321,24 @@ public class EnemyShip : MonoBehaviour
             Quaternion targetRotation =
                 Quaternion.LookRotation(movementDirection);
 
+            float currentTurnSpeed =
+                turnSpeed;
+
+            // Turn back ship when too far
+            if (distance > maximumDistance)
+            {
+                currentTurnSpeed *=
+                    returnTurnSpeedMultiplier;
+            }
+
             transform.rotation =
                 Quaternion.RotateTowards(
                     transform.rotation,
                     targetRotation,
-                    turnSpeed * Time.deltaTime
+                    currentTurnSpeed * Time.deltaTime
                 );
         }
 
-        // CONSTANT MOVEMENT
         // The ship never intentionally stops.
         currentSpeed = Mathf.MoveTowards(
             currentSpeed,
