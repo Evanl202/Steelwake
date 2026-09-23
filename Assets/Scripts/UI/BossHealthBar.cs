@@ -11,7 +11,7 @@ public class BossHealthBar : MonoBehaviour
 
     private void Update()
     {
-        FindBoss()
+        FindBoss();
 
         if (boss == null)
         {
