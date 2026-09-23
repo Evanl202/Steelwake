@@ -47,6 +47,12 @@ public class EnemyWeapon : MonoBehaviour
     private float reloadTimer = 0f;
     private float torpedoReloadTimer = 0f;
 
+    [Header("Aim Accuracy")]
+    [Range(0f, 1f)]
+    public float predictionAccuracy = 1f;
+
+    public float aimError = 0f;
+
     private Transform player;
 
     private void Awake()
@@ -262,6 +268,32 @@ public class EnemyWeapon : MonoBehaviour
                 player.forward * GetPlayerSpeed(),
                 projectileSpeed
             );
+        Vector3 target = Vector3.Lerp(
+            player.position,
+            predictedTarget,
+            predictionAccuracy
+        );
+
+        if (aimError > 0f)
+        {
+            Vector3 direction =
+                target - weapon.position;
+
+            direction.y = 0f;
+
+            if (direction.sqrMagnitude > 0.01f)
+            {
+                float error =
+                    Random.Range(-aimError, aimError);
+
+                direction =
+                    Quaternion.Euler(0f, error, 0f) *
+                    direction;
+
+                target =
+                    weapon.position + direction;
+            }
+        }
 
         return GetTargetAngle(
             weapon,
