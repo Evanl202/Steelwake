@@ -39,14 +39,19 @@ public class EnemySpawner : MonoBehaviour
     public float maximumEnemySpeedMultiplier = 1.5f;
 
     [Header("Boss Waves")]
-    public int bossWaveInterval = 5;
-
     public float bossSpawnInterval = 5f;
     public int bossEnemyLimit = 5;
 
+    public BossWave[] bossWaves;
+
     private bool bossSpawnedThisWave = false;
 
-    public GameObject bossPrefab;
+    [System.Serializable]
+    public class BossWave
+    {
+        public int wave;
+        public GameObject bossPrefab;
+    }
 
     public WaveAnnouncementUI waveAnnouncementUI;
 
@@ -77,6 +82,19 @@ public class EnemySpawner : MonoBehaviour
             (currentWave - 1) * extraEnemiesPerWave;
 
         return Mathf.Min(limit, maximumEnemyLimit);
+    }
+
+    private GameObject GetBossForCurrentWave()
+    {
+        foreach (BossWave bossWave in bossWaves)
+        {
+            if (bossWave.wave == currentWave)
+            {
+                return bossWave.bossPrefab;
+            }
+        }
+
+        return null;
     }
 
     private void Update()
@@ -175,13 +193,15 @@ public class EnemySpawner : MonoBehaviour
 
     private bool IsBossWave()
     {
-        return currentWave % bossWaveInterval == 0;
+        return GetBossForCurrentWave() != null;
     }
 
     private void SpawnBoss()
     {
         if (bossSpawnedThisWave)
             return;
+
+        GameObject bossPrefab = GetBossForCurrentWave();
 
         if (bossPrefab == null)
         {
@@ -222,7 +242,12 @@ public class EnemySpawner : MonoBehaviour
 
         bossSpawnedThisWave = true;
 
-        Debug.Log("BOSS spawned for Wave " + currentWave);
+        Debug.Log(
+            "Boss spawned for Wave " +
+            currentWave +
+            ": " +
+            spawnedBoss.name
+        );
     }
 
     private System.Collections.IEnumerator ApplyWaveScaling(
