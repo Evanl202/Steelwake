@@ -261,13 +261,14 @@ public class EnemyWeapon : MonoBehaviour
         Transform weapon,
         float projectileSpeed)
     {
-        Vector3 target =
+        Vector3 predictedTarget =
             CalculateInterceptPoint(
                 weapon.position,
                 player.position,
                 player.forward * GetPlayerSpeed(),
                 projectileSpeed
             );
+
         Vector3 target = Vector3.Lerp(
             player.position,
             predictedTarget,
