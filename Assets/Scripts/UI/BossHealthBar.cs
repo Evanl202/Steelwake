@@ -7,10 +7,12 @@ public class BossHealthBar : MonoBehaviour
     public Slider healthSlider;
     public TMP_Text healthText;
 
-    public EnemyShip boss;
+    private  EnemyShip boss;
 
     private void Update()
     {
+        FindBoss()
+
         if (boss == null)
             return;
 
@@ -20,9 +22,19 @@ public class BossHealthBar : MonoBehaviour
         UpdateHealthBar();
     }
 
-    public void SetBoss(EnemyShip newBoss)
+    private void FindBoss()
     {
-        boss = newBoss;
+        GameObject bossObject =
+            GameObject.FindGameObjectWithTag("Boss");
+
+        if (bossObject != null)
+        {
+            boss = bossObject.GetComponent<EnemyShip>();
+        }
+        else
+        {
+            boss = null;
+        }
     }
 
     private void UpdateHealthBar()
