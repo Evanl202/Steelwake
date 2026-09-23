@@ -14,10 +14,14 @@ public class BossHealthBar : MonoBehaviour
         FindBoss()
 
         if (boss == null)
+        {
+            healthSlider.gameObject.SetActive(false);
+            healthText.gameObject.SetActive(false);
             return;
+        }
 
-        if (healthSlider == null || healthText == null)
-            return;
+        healthSlider.gameObject.SetActive(true);
+        healthText.gameObject.SetActive(true);
 
         UpdateHealthBar();
     }
