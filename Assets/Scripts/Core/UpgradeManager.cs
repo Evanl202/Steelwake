@@ -5,9 +5,9 @@ public class UpgradeManager : MonoBehaviour
     public static UpgradeManager Instance;
 
     [Header ("Player")]
-    public ShipMovement playerMovement;
-    public PlayerShip playerShip;
-    public Weapon playerWeapon;
+    private ShipMovement playerMovement;
+    private PlayerShip playerShip;
+    private Weapon playerWeapon;
 
     [Header ("Flat Upgrades")]
     public float healthFlatIncrease = 20f;
@@ -44,6 +44,19 @@ public class UpgradeManager : MonoBehaviour
         else
         {
           Destroy(gameObject);  
+        }
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player != null)
+        {
+            playerMovement = player.GetComponent<ShipMovement>();
+            playerShip = player.GetComponent<PlayerShip>();
+            playerWeapon = player.GetComponentInChildren<Weapon>();
+        }
+        else
+        {
+            Debug.LogWarning("UpgradeManager: No Player found.");
         }
     }
     
