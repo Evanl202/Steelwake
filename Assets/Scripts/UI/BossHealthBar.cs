@@ -27,7 +27,7 @@ public class BossHealthBar : MonoBehaviour
 
     private void UpdateHealthBar()
     {
-        float currentHealth = boss.CurrentHealth;
+        float currentHealth = boss.currentHealth;
         float maxHealth = boss.maxHealth;
 
         healthSlider.maxValue = maxHealth;
