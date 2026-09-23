@@ -5,13 +5,15 @@ public class GameSettings : MonoBehaviour
 {
     public TMP_Dropdown fpsDropdown;
 
+    public GameObject optionsPanel;
+
     private int[] fpsOptions = { 30, 60, 120, 144 };
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
     }
-    
+
     private void Start()
     {
         LoadFPS();
@@ -48,5 +50,15 @@ public class GameSettings : MonoBehaviour
         fpsDropdown.RefreshShownValue();
 
         Application.targetFrameRate = savedFPS;
+    }
+
+    public void OpenOptions()
+    {
+        optionsPanel.SetActive(true);
+    }
+
+    public void CloseOptions()
+    {
+        optionsPanel.SetActive(false);
     }
 }
