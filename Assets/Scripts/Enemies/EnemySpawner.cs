@@ -173,6 +173,11 @@ public class EnemySpawner : MonoBehaviour
         StartCoroutine(ApplyWaveScaling(spawnedEnemy));
     }
 
+    private bool IsBossWave()
+    {
+        return currentWave % bossWaveInterval == 0;
+    }
+
     private void SpawnBoss()
     {
         if (bossSpawnedThisWave)
