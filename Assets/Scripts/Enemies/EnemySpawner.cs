@@ -234,7 +234,7 @@ public class EnemySpawner : MonoBehaviour
         Quaternion spawnRotation =
             Quaternion.LookRotation(directionToPlayer);
 
-        Instantiate(
+        GameObject spawnedBoss = Instantiate(
             bossPrefab,
             spawnPosition,
             spawnRotation
