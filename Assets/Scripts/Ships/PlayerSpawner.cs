@@ -17,7 +17,7 @@ public class PlayerSpawner : MonoBehaviour
             selectedShip = 0;
         }
 
-        Instantiate(
+        GameObject spawnedPlayer = Instantiate(
             shipPrefabs[selectedShip],
             spawnPoint.position,
             spawnPoint.rotation
