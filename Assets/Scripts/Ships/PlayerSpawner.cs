@@ -5,6 +5,9 @@ public class PlayerSpawner : MonoBehaviour
     public GameObject[] shipPrefabs;
     public Transform spawnPoint;
 
+    public CameraFollow cameraFollow;
+    public EnemySpawner enemySpawner;
+
     private void Start()
     {
         int selectedShip = PlayerPrefs.GetInt("SelectedShip", 0);
@@ -19,5 +22,15 @@ public class PlayerSpawner : MonoBehaviour
             spawnPoint.position,
             spawnPoint.rotation
         );
+
+        if (cameraFollow != null)
+        {
+            cameraFollow.target = spawnedPlayer.transform;
+        }
+
+        if (enemySpawner != null)
+        {
+            enemySpawner.player = spawnedPlayer.transform;
+        }
     }
 }
