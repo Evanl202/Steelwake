@@ -132,6 +132,11 @@ public class EnemyWeapon : MonoBehaviour
         {
             torpedoReloadTimer -= Time.deltaTime;
         }
+
+        if (IsPlayerInSmoke())
+        {
+            return;
+        }
         
         AimAtPlayer();
 
@@ -254,6 +259,24 @@ public class EnemyWeapon : MonoBehaviour
                 );
             }
         }
+    }
+
+    private bool IsPlayerInSmoke()
+    {
+        if (player == null)
+        {
+            return false;
+        }
+
+        ShipAbilities abilities =
+            player.GetComponent<ShipAbilities>();
+
+        if (abilities == null)
+        {
+            return false;
+        }
+
+        return abilities.IsInSmoke;
     }
 
     // Helper Functions
