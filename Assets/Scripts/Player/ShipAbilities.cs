@@ -18,7 +18,6 @@ public class ShipAbilities : MonoBehaviour
     public float smokeCooldown = 20f;
 
     [Header("Repair")]
-    public float repairAmount = 50f;
     public float repairCooldown = 20f;
 
     private float smokeCooldownTimer = 0f;
