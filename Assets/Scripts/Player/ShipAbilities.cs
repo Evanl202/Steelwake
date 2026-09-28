@@ -9,8 +9,9 @@ public class ShipAbilities : MonoBehaviour
         Repair
     }
 
-    [Header("Ability")]
-    public AbilityType ability = AbilityType.None;
+    [Header("Abilities")]
+    public bool hasSmoke = false;
+    public bool hasRepair = false;
 
     [Header("Smoke")]
     public float smokeDuration = 8f;
@@ -27,6 +28,11 @@ public class ShipAbilities : MonoBehaviour
 
     public bool IsInSmoke { get; private set; }
 
+    private void Start()
+    {
+        playerShip = GetComponent<PlayerShip>();
+    }
+
     private void Update()
     {
         if (smokeCooldownTimer > 0f)
@@ -41,7 +47,7 @@ public class ShipAbilities : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            UseAbility();
+            UseSmoke();
         }
         
         if (Input.GetKeyDown(KeyCode.R))
@@ -52,7 +58,7 @@ public class ShipAbilities : MonoBehaviour
 
     private void UseRepair()
     {
-        if (ability != AbilityType.Repair)
+        if (!hasRepair)
         {
             return;
         }
@@ -82,9 +88,9 @@ public class ShipAbilities : MonoBehaviour
 
     private void UseSmoke()
     {
-        if (ability == AbilityType.Smoke)
+        if (!hasSmoke)
         {
-            UseSmoke();
+            return;
         }
 
         if (smokeCooldownTimer > 0f)
