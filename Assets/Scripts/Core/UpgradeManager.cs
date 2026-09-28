@@ -45,7 +45,15 @@ public class UpgradeManager : MonoBehaviour
         {
           Destroy(gameObject);  
         }
+    }
 
+    private void Start()
+    {
+        Invoke(nameof(FindPlayer), 0.1f);
+    }
+
+    private void FindPlayer()
+    {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
 
         if (player != null)
