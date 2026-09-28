@@ -11,7 +11,6 @@ public class GameSettings : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
     }
-
     private void Start()
     {
         LoadFPS();
