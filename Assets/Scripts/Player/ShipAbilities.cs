@@ -23,6 +23,7 @@ public class ShipAbilities : MonoBehaviour
 
     private float smokeCooldownTimer = 0f;
     private float repairCooldownTimer = 0f;
+    private float smokeDurationTimer = 0f;
 
     private PlayerShip playerShip;
 
@@ -40,6 +41,11 @@ public class ShipAbilities : MonoBehaviour
             smokeCooldownTimer -= Time.deltaTime;
         }
 
+        if (smokeDurationTimer > 0f)
+        {
+            smokeDurationTimer -= Time.deltaTime;
+        }
+
         if (repairCooldownTimer > 0f)
         {
             repairCooldownTimer -= Time.deltaTime;
@@ -54,6 +60,27 @@ public class ShipAbilities : MonoBehaviour
         {
             UseRepair();
         }
+    }
+
+    private void UseSmoke()
+    {
+        if (!hasSmoke)
+        {
+            return;
+        }
+
+        if (smokeCooldownTimer > 0f)
+        {
+            return;
+        }
+
+        smokeCooldownTimer = smokeCooldown;
+        smokeDurationTimer = smokeDuration;
+        IsInSmoke = true;
+
+        Debug.Log("Smoke activated!");
+
+        StartCoroutine(SmokeRoutine());
     }
 
     private void UseRepair()
@@ -86,32 +113,28 @@ public class ShipAbilities : MonoBehaviour
         Debug.Log("Repair activated!");
     }
 
-    private void UseSmoke()
-    {
-        if (!hasSmoke)
-        {
-            return;
-        }
-
-        if (smokeCooldownTimer > 0f)
-        {
-            return;
-        }
-
-        smokeCooldownTimer = smokeCooldown;
-        IsInSmoke = true;
-
-        Debug.Log("Smoke activated!");
-
-        StartCoroutine(SmokeRoutine());
-    }
-
     private System.Collections.IEnumerator SmokeRoutine()
     {
         yield return new WaitForSeconds(smokeDuration);
 
+        smokeDurationTimer = 0f;
         IsInSmoke = false;
 
         Debug.Log("Smoke ended!");
+    }
+
+    public float GetSmokeCooldownRemaining()
+    {
+        return Mathf.Max(0f, smokeCooldownTimer);
+    }
+
+    public float GetRepairCooldownRemaining()
+    {
+        return Mathf.Max(0f, repairCooldownTimer);
+    }
+
+    public float GetSmokeDurationRemaining()
+    {
+        return Mathf.Max(0f, smokeDurationTimer);
     }
 }
