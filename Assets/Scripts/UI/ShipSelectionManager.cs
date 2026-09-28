@@ -11,7 +11,7 @@ public class ShipSelectionManager : MonoBehaviour
 
     private int selectedShip = 0;
 
-    private void Start();
+    private void Start()
     {
         UpdateShipDisplay();
     }
