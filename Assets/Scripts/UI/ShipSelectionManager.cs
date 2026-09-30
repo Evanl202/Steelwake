@@ -65,6 +65,15 @@ public class ShipSelectionManager : MonoBehaviour
             previewPoint.position,
             previewPoint.rotation
         );
+
+        MonoBehaviour[] scripts =
+            previewShip.GetComponentsInChildren<MonoBehaviour>();
+
+        foreach (MonoBehaviour script in scripts)
+        {
+            script.enabled = false;
+        }
+
         if (selectedShip == 0)
         {
             shipName.text = "DESTROYER";
