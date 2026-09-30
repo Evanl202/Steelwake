@@ -104,7 +104,6 @@ public class EnemyShip : MonoBehaviour
                     tintedColor;
             }
         }
-        }
 
         currentHealth = maxHealth;
 
