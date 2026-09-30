@@ -93,6 +93,11 @@ public class EnemyShip : MonoBehaviour
 
         currentHealth = maxHealth;
 
+        if (CombatFeedbackManager.Instance != null)
+        {
+            CombatFeedbackManager.Instance.CreateEnemyHealthBar(this);
+        }
+
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
 
         if (playerObject != null)
@@ -385,9 +390,9 @@ public class EnemyShip : MonoBehaviour
 
         HitFlash();
 
-        if (DamageNumberManager.Instance != null)
+        if (CombatFeedbackManager.Instance != null)
         {
-            DamageNumberManager.Instance.ShowDamage(
+            CombatFeedbackManager.Instance.ShowDamage(
                 damage,
                 transform.position
             );

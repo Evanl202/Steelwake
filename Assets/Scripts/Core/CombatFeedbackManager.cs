@@ -1,10 +1,16 @@
 using UnityEngine;
 
-public class DamageNumberManager : MonoBehaviour
+public class CombatFeedbackManager  : MonoBehaviour
 {
-    public static DamageNumberManager Instance;
+    public static CombatFeedbackManager  Instance;
 
+    [Header ("Damage Numbers")]
     public GameObject damageNumberPrefab;
+
+    [Header ("Enemy Health Bars")]
+    public GameObject enemyHealthBarPrefab;
+
+    [Header ("UI")]
     public Canvas canvas;
     public Camera mainCamera;
 
@@ -46,6 +52,29 @@ public class DamageNumberManager : MonoBehaviour
         if (damageNumber != null)
         {
             damageNumber.SetDamage(damage);
+        }
+    }
+
+    public void CreateEnemyHealthBar(EnemyShip enemy)
+    {
+        if (enemyHealthBarPrefab == null || canvas == null)
+        {
+            return;
+        }
+
+        GameObject healthBarObject =
+            Instantiate(
+                enemyHealthBarPrefab,
+                canvas.transform
+            );
+
+        EnemyHealthBarUI healthBar =
+            healthBarObject.GetComponent<EnemyHealthBarUI>();
+
+        if (healthBar != null)
+        {
+            healthBar.enemy = enemy;
+            healthBar.mainCamera = mainCamera;
         }
     }
 }
