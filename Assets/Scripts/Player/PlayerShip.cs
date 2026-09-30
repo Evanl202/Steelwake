@@ -21,9 +21,9 @@ public class PlayerShip : MonoBehaviour
     {
         currentHealth -= damage;
 
-        if (DamageNumberManager.Instance != null)
+        if (CombatFeedbackManager.Instance != null)
         {
-            DamageNumberManager.Instance.ShowDamage(
+            CombatFeedbackManager.Instance.ShowDamage(
                 damage,
                 transform.position
             );
