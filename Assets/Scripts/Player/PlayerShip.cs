@@ -21,6 +21,14 @@ public class PlayerShip : MonoBehaviour
     {
         currentHealth -= damage;
 
+        if (DamageNumberManager.Instance != null)
+        {
+            DamageNumberManager.Instance.ShowDamage(
+                damage,
+                transform.position
+            );
+        }
+
         Debug.Log("Player HP: " + currentHealth);
 
         if (currentHealth <= 0)

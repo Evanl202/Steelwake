@@ -368,6 +368,14 @@ public class EnemyShip : MonoBehaviour
         public void TakeDamage(float damage)
         {
             currentHealth -= damage;
+
+            if (DamageNumberManager.Instance != null)
+            {
+                DamageNumberManager.Instance.ShowDamage(
+                    damage,
+                    transform.position
+                );
+            }
             Debug.Log("Enemy HP: " + currentHealth);
 
             if (currentHealth <= 0f)
