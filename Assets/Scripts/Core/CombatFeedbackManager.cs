@@ -12,7 +12,7 @@ public class CombatFeedbackManager  : MonoBehaviour
 
     [Header ("UI")]
     public Canvas canvas;
-    private Camera mainCamera;
+    public Camera mainCamera;
 
     private void Awake()
     {
