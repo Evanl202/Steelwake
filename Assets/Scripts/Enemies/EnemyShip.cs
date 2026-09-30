@@ -63,13 +63,31 @@ public class EnemyShip : MonoBehaviour
 
     private void Start()
     {
-        shipRenderers = GetComponentsInChildren<Renderer>();
+        Renderer[] allRenderers =
+            GetComponentsInChildren<Renderer>();
+
+        System.Collections.Generic.List<Renderer> validRenderers =
+            new System.Collections.Generic.List<Renderer>();
+
+        foreach (Renderer renderer in allRenderers)
+        {
+            if (eliteGlow != null &&
+                renderer.transform.IsChildOf(eliteGlow.transform))
+            {
+                continue;
+            }
+
+            validRenderers.Add(renderer);
+        }
+
+        shipRenderers = validRenderers.ToArray();
 
         originalColors = new Color[shipRenderers.Length];
 
         for (int i = 0; i < shipRenderers.Length; i++)
         {
-            originalColors[i] = shipRenderers[i].material.color;
+            originalColors[i] =
+                shipRenderers[i].material.color;
         }
 
         if (isElite)
