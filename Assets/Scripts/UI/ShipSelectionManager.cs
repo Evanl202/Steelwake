@@ -9,6 +9,10 @@ public class ShipSelectionManager : MonoBehaviour
     public TMP_Text shipName;
     public TMP_Text shipStats;
 
+    public Transform previewPoint;
+
+    private GameObject previewShip;
+
     private int selectedShip = 0;
 
     private void Start()
@@ -51,6 +55,16 @@ public class ShipSelectionManager : MonoBehaviour
 
     private void UpdateShipDisplay()
     {
+        if (previewShip != null)
+        {
+            Destroy(previewShip);
+        }
+
+        previewShip = Instantiate(
+            shipPrefabs[selectedShip],
+            previewPoint.position,
+            previewPoint.rotation
+        );
         if (selectedShip == 0)
         {
             shipName.text = "DESTROYER";

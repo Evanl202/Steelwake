@@ -20,7 +20,7 @@ public class EnemyShip : MonoBehaviour
 
     [Header ("Elite")]
     public bool isElite = false;
-    public Color eliteColor = Color.yellow;
+    public Color eliteColor = Color.black;
 
     [Header ("Experience")]
     public int experienceReward = 10;
@@ -94,7 +94,7 @@ public class EnemyShip : MonoBehaviour
                     Color.Lerp(
                         baseColor,
                         eliteColor,
-                        0.35f
+                        0.5f
                     );
 
                 shipRenderers[i].material.color =
