@@ -20,7 +20,7 @@ public class EnemyShip : MonoBehaviour
 
     [Header ("Elite")]
     public bool isElite = false;
-    public GameObject eliteGlow;
+    public Color eliteColor = Color.yellow;
 
     [Header ("Experience")]
     public int experienceReward = 10;
@@ -63,24 +63,7 @@ public class EnemyShip : MonoBehaviour
 
     private void Start()
     {
-        Renderer[] allRenderers =
-            GetComponentsInChildren<Renderer>();
-
-        System.Collections.Generic.List<Renderer> validRenderers =
-            new System.Collections.Generic.List<Renderer>();
-
-        foreach (Renderer renderer in allRenderers)
-        {
-            if (eliteGlow != null &&
-                renderer.transform.IsChildOf(eliteGlow.transform))
-            {
-                continue;
-            }
-
-            validRenderers.Add(renderer);
-        }
-
-        shipRenderers = validRenderers.ToArray();
+        shipRenderers = GetComponentsInChildren<Renderer>();
 
         originalColors = new Color[shipRenderers.Length];
 
@@ -102,11 +85,25 @@ public class EnemyShip : MonoBehaviour
             turnSpeed *= 1.15f;
 
             experienceReward *= 2;
-            
-            if (eliteGlow != null)
+
+            for (int i = 0; i < shipRenderers.Length; i++)
             {
-                eliteGlow.SetActive(true);
+                Color baseColor = originalColors[i];
+
+                Color tintedColor =
+                    Color.Lerp(
+                        baseColor,
+                        eliteColor,
+                        0.35f
+                    );
+
+                shipRenderers[i].material.color =
+                    tintedColor;
+
+                originalColors[i] =
+                    tintedColor;
             }
+        }
         }
 
         currentHealth = maxHealth;
