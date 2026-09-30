@@ -33,6 +33,11 @@ public class EnemyShip : MonoBehaviour
     public float reverseSpeed = 5f;
     public float turnSpeed = 60f;
 
+    private Renderer[] shipRenderers;
+    private Color[] originalColors;
+
+    private bool isFlashing = false;
+
     [Header ("AI Behavior")]
     public AIBehavior aiBehavior = AIBehavior.Balanced;
 
@@ -58,6 +63,15 @@ public class EnemyShip : MonoBehaviour
 
     private void Start()
     {
+        shipRenderers = GetComponentsInChildren<Renderer>();
+
+        originalColors = new Color[shipRenderers.Length];
+
+        for (int i = 0; i < shipRenderers.Length; i++)
+        {
+            originalColors[i] = shipRenderers[i].material.color;
+        }
+
         if (isElite)
         {
             maxHealth *= 1.5f;
@@ -354,35 +368,64 @@ public class EnemyShip : MonoBehaviour
             Time.deltaTime;
     }
 
-        private float GetCombatDistance()
+    private float GetCombatDistance()
+    {
+        if (enemyWeapon == null)
+            return preferredDistance;
+
+        if (enemyWeapon.gunFiringRange <= 0f)
+            return preferredDistance;
+
+        return enemyWeapon.gunFiringRange * weaponRangeBuffer;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+
+        HitFlash();
+
+        if (DamageNumberManager.Instance != null)
         {
-            if (enemyWeapon == null)
-                return preferredDistance;
+            DamageNumberManager.Instance.ShowDamage(
+                damage,
+                transform.position
+            );
+        }
+        Debug.Log("Enemy HP: " + currentHealth);
 
-            if (enemyWeapon.gunFiringRange <= 0f)
-                return preferredDistance;
+        if (currentHealth <= 0f)
+        {
+            Die();
+        }
+    }
 
-            return enemyWeapon.gunFiringRange * weaponRangeBuffer;
+    private void HitFlash()
+    {
+        if (isFlashing)
+            return;
+
+        StartCoroutine(HitFlashRoutine());
+    }
+
+    private System.Collections.IEnumerator HitFlashRoutine()
+    {
+        isFlashing = true;
+
+        for (int i = 0; i < shipRenderers.Length; i++)
+        {
+            shipRenderers[i].material.color = Color.white;
         }
 
-        public void TakeDamage(float damage)
+        yield return new WaitForSeconds(0.08f);
+
+        for (int i = 0; i < shipRenderers.Length; i++)
         {
-            currentHealth -= damage;
-
-            if (DamageNumberManager.Instance != null)
-            {
-                DamageNumberManager.Instance.ShowDamage(
-                    damage,
-                    transform.position
-                );
-            }
-            Debug.Log("Enemy HP: " + currentHealth);
-
-            if (currentHealth <= 0f)
-            {
-                Die();
-            }
+            shipRenderers[i].material.color = originalColors[i];
         }
+
+        isFlashing = false;
+    }
 
     private void Die()
     {
