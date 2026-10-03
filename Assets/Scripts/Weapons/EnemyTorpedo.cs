@@ -6,7 +6,8 @@ public class EnemyTorpedo : MonoBehaviour
     public float speed = 15f;
     public float damage = 50f;
     public float maxDistance = 35f;
-
+    public float torpedoSpeed = 15f;
+    
     private float distanceTravelled = 0f;
 
     private void Update()

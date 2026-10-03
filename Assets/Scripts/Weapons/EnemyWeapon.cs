@@ -697,6 +697,9 @@ public class EnemyWeapon : MonoBehaviour
 
                 shell.isAP = isAP;
                 shell.penetration = penetration;
+
+                shell.maxDistance = gunFiringRange;
+                shell.speed = shellSpeed;
             }
 
             fired = true;
@@ -744,7 +747,7 @@ public class EnemyWeapon : MonoBehaviour
                 torpedoBaseAngles[i],
                 torpedoMinAngles[i],
                 torpedoMaxAngles[i],
-                15f))
+                torpedoSpeed))
             {
                 continue;
             }
@@ -762,6 +765,9 @@ public class EnemyWeapon : MonoBehaviour
             if (torpedo != null)
             {
                 torpedo.damage = torpedoDamage;
+
+                torpedo.maxDistance = torpedoFiringRange;
+                torpedo.speed = torpedoSpeed;
 
                 EnemyShip enemyShip =
                     shipTransform.GetComponent<EnemyShip>();
