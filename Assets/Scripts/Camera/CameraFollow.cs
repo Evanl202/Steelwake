@@ -30,6 +30,8 @@ public class CameraFollow : MonoBehaviour
         if (target == null)
             return;
 
+        HandleZoom();
+
         Vector3 targetPosition = target.position + offset;
 
         transform.position = Vector3.Lerp(
@@ -38,12 +40,11 @@ public class CameraFollow : MonoBehaviour
             followSpeed * Time.deltaTime
         );
 
-        HandleZoom();
     }
 
     private void HandleZoom()
     {
-        float scroll = Input.mouseScrollDelta.y;
+        float scroll = Mouse.current.scroll.ReadValue().y;
 
         if (Mathf.Abs(scroll) > 0.01f)
         {
