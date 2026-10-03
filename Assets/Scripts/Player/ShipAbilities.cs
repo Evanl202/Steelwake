@@ -78,17 +78,6 @@ public class ShipAbilities : MonoBehaviour
 
         Debug.Log("Smoke activated!");
 
-        if (smokeTimer > 0f)
-        {
-            smokeTimer -= Time.deltaTime;
-
-            if (smokeTimer <= 0f)
-            {
-                smokeTimer = 0f;
-                smokeCooldownTimer = smokeCooldown;
-            }
-        }
-
         StartCoroutine(SmokeRoutine());
     }
 
@@ -128,6 +117,8 @@ public class ShipAbilities : MonoBehaviour
 
         smokeDurationTimer = 0f;
         IsInSmoke = false;
+
+        smokeCooldownTimer = smokeCooldown;
 
         Debug.Log("Smoke ended!");
     }
