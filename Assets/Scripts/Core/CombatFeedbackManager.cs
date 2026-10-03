@@ -83,6 +83,29 @@ public class CombatFeedbackManager  : MonoBehaviour
         }
     }
 
+    public void ApplyEliteVisual(GameObject ship, Color eliteColor)
+    {
+        if (ship == null)
+            return;
+
+        Renderer[] renderers =
+            ship.GetComponentsInChildren<Renderer>();
+
+        foreach (Renderer renderer in renderers)
+        {
+            Color baseColor = renderer.material.color;
+
+            Color tintedColor =
+                Color.Lerp(
+                    baseColor,
+                    eliteColor,
+                    0.5f
+                );
+
+            renderer.material.color = tintedColor;
+        }
+    }
+
     // Combat Flash
     public void HitFlash(GameObject ship)
     {

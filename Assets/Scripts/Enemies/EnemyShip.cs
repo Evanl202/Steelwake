@@ -71,22 +71,12 @@ public class EnemyShip : MonoBehaviour
 
             experienceReward *= 2;
 
-            for (int i = 0; i < shipRenderers.Length; i++)
+            if (CombatFeedbackManager.Instance != null)
             {
-                Color baseColor = originalColors[i];
-
-                Color tintedColor =
-                    Color.Lerp(
-                        baseColor,
-                        eliteColor,
-                        0.5f
-                    );
-
-                shipRenderers[i].material.color =
-                    tintedColor;
-
-                originalColors[i] =
-                    tintedColor;
+                CombatFeedbackManager.Instance.ApplyEliteVisual(
+                    gameObject,
+                    eliteColor
+                );
             }
         }
 
