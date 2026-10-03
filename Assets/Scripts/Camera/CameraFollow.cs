@@ -11,6 +11,20 @@ public class CameraFollow : MonoBehaviour
     [Header ("Camera Movement")]
     public float followSpeed = 5f;
 
+    [Header("Zoom")]
+    public float zoomStep = 1f;
+    public float minZoom = 5f;
+    public float maxZoom = 20f;
+
+    private Camera cam;
+    private float baseZoom;
+
+    void Start()
+    {
+        cam = GetComponent<Camera>();
+        baseZoom = cam.orthographicSize;
+    }
+
     private void LateUpdate()
     {
         if (target == null)
@@ -23,5 +37,22 @@ public class CameraFollow : MonoBehaviour
             targetPosition,
             followSpeed * Time.deltaTime
         );
+
+        HandleZoom();
+    }
+
+    private void HandleZoom()
+    {
+        float scroll = Input.mouseScrollDelta.y;
+
+        if (Mathf.Abs(scroll) > 0.01f)
+        {
+            cam.orthographicSize -= scroll * zoomStep;
+            cam.orthographicSize = Mathf.Clamp(
+                cam.orthographicSize,
+                minZoom,
+                maxZoom
+            );
+        }
     }
 }
