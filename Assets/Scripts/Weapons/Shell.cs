@@ -5,7 +5,9 @@ public class Shell : MonoBehaviour
     [Header ("Shell settings")]
     public float speed = 30f;
     public float damage = 25f;
-    public float lifetime = 5f;
+    public float maxDistance = 30f;
+
+    private float distanceTravelled = 0f;
 
     [Header("Armor Penetration")]
     public bool isAP = false;
@@ -18,7 +20,16 @@ public class Shell : MonoBehaviour
 
     private void Update()
     {
-        transform.position += transform.forward * speed * Time.deltaTime;
+        float movement = speed * Time.deltaTime;
+
+        transform.position += transform.forward * movement;
+
+        distanceTravelled += movement;
+
+        if (distanceTravelled >= maxDistance)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

@@ -5,7 +5,9 @@ public class EnemyTorpedo : MonoBehaviour
     [Header ("Torpedo settings")]
     public float speed = 15f;
     public float damage = 50f;
-    public float lifetime = 5f;
+    public float maxDistance = 35f;
+
+    private float distanceTravelled = 0f;
 
     private void Start()
     {
@@ -14,7 +16,16 @@ public class EnemyTorpedo : MonoBehaviour
 
     private void Update()
     {
-        transform.position += transform.forward * speed * Time.deltaTime;
+        float movement = speed * Time.deltaTime;
+
+        transform.position += transform.forward * movement;
+
+        distanceTravelled += movement;
+
+        if (distanceTravelled >= maxDistance)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
