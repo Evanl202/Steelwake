@@ -73,11 +73,21 @@ public class ShipAbilities : MonoBehaviour
             return;
         }
 
-        smokeCooldownTimer = smokeCooldown;
         smokeDurationTimer = smokeDuration;
         IsInSmoke = true;
 
         Debug.Log("Smoke activated!");
+
+        if (smokeTimer > 0f)
+        {
+            smokeTimer -= Time.deltaTime;
+
+            if (smokeTimer <= 0f)
+            {
+                smokeTimer = 0f;
+                smokeCooldownTimer = smokeCooldown;
+            }
+        }
 
         StartCoroutine(SmokeRoutine());
     }
