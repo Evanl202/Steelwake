@@ -29,6 +29,9 @@ public class Weapon : MonoBehaviour
     public float reloadTime = 1f;
     private float reloadTimer = 0f;
 
+    public float gunRange = 30f;
+    public float shellSpeed = 30f;
+
     public float ReloadTimer => reloadTimer;
 
     [Header("Ammo Type")]
@@ -49,6 +52,9 @@ public class Weapon : MonoBehaviour
     public float torpedoDamage = 50f;
     public float torpedoReloadTime = 5f;
     private float torpedoReloadTimer = 0f;
+
+    public float torpedoRange = 35f;
+    public float torpedoSpeed = 20f;
 
     public float TorpedoReloadTimer => torpedoReloadTimer;
 
