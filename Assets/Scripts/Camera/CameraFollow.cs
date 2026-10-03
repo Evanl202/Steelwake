@@ -28,15 +28,18 @@ public class CameraFollow : MonoBehaviour
             return;
         }
 
-        baseZoom = cam.orthographicSize;
+        startingZoom = cam.orthographicSize;
     }
 
     private void LateUpdate()
     {
-        if (target == null)
+        if (cam == null)
             return;
 
         HandleZoom();
+
+        if (target == null)
+            return;
 
         Vector3 targetPosition = target.position + offset;
 
@@ -58,8 +61,8 @@ public class CameraFollow : MonoBehaviour
 
             cam.orthographicSize = Mathf.Clamp(
                 cam.orthographicSize,
-                baseZoom,
-                baseZoom + zoomOutAmount
+                startingZoom,
+                startingZoom + zoomOutAmount
             );
         }
     }
