@@ -13,8 +13,7 @@ public class CameraFollow : MonoBehaviour
 
     [Header("Zoom")]
     public float zoomStep = 1f;
-    public float minZoom = 5f;
-    public float maxZoom = 20f;
+    public float zoomOutAmount = 10f;
 
     private Camera cam;
     private float baseZoom;
@@ -22,6 +21,13 @@ public class CameraFollow : MonoBehaviour
     void Start()
     {
         cam = GetComponent<Camera>();
+
+        if (cam == null)
+        {
+            Debug.LogError("CameraFollow must be attached to a Camera.");
+            return;
+        }
+
         baseZoom = cam.orthographicSize;
     }
 
@@ -49,10 +55,11 @@ public class CameraFollow : MonoBehaviour
         if (Mathf.Abs(scroll) > 0.01f)
         {
             cam.orthographicSize -= scroll * zoomStep;
+
             cam.orthographicSize = Mathf.Clamp(
                 cam.orthographicSize,
-                minZoom,
-                maxZoom
+                baseZoom,
+                baseZoom + zoomOutAmount
             );
         }
     }
