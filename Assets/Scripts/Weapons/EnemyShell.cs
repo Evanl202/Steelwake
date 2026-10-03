@@ -36,8 +36,14 @@ public class EnemyShell : MonoBehaviour
             if (isAP && penetration < player.armor)
             {
                 Debug.Log("Enemy AP shell failed to penetrate armor.");
+                
+                if (CombatFeedbackManager.Instance != null)
+                {
+                    CombatFeedbackManager.Instance.ArmorBlockedFlash(
+                        player.gameObject
+                    );
+                }
 
-                player.ArmorBlockedFlash();
                 Destroy(gameObject);
                 return;
             }

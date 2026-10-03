@@ -14,6 +14,9 @@ public class CombatFeedbackManager  : MonoBehaviour
     public Canvas canvas;
     public Camera mainCamera;
 
+    private Dictionary<GameObject, Coroutine> activeFlashes =
+        new Dictionary<GameObject, Coroutine>();
+
     private void Awake()
     {
         if (Instance == null)
@@ -76,5 +79,71 @@ public class CombatFeedbackManager  : MonoBehaviour
             healthBar.enemy = enemy;
             healthBar.mainCamera = mainCamera;
         }
+    }
+
+    // Combat Flash
+    public void HitFlash(GameObject ship)
+    {
+        FlashShip(ship, Color.white);
+    }
+
+    public void ArmorBlockedFlash(GameObject ship)
+    {
+        FlashShip(ship, Color.red);
+    }
+
+    private void FlashShip(GameObject ship, Color flashColor)
+    {
+        if (ship == null)
+        {
+            return;
+        }
+
+        if (activeFlashes.ContainsKey(ship))
+        {
+            StopCoroutine(activeFlashes[ship]);
+            activeFlashes.Remove(ship);
+        }
+
+        Coroutine flash =
+            StartCoroutine(
+                FlashRoutine(ship, flashColor)
+            );
+
+        activeFlashes.Add(ship, flash);
+    }
+
+    private IEnumerator FlashRoutine(
+        GameObject ship,
+        Color flashColor
+    )
+    {
+        Renderer[] renderers =
+            ship.GetComponentsInChildren<Renderer>();
+
+        Color[] originalColors =
+            new Color[renderers.Length];
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            originalColors[i] =
+                renderers[i].material.color;
+
+            renderers[i].material.color =
+                flashColor;
+        }
+
+        yield return new WaitForSeconds(0.08f);
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            if (renderers[i] != null)
+            {
+                renderers[i].material.color =
+                    originalColors[i];
+            }
+        }
+
+        activeFlashes.Remove(ship);
     }
 }

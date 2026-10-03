@@ -33,11 +33,6 @@ public class EnemyShip : MonoBehaviour
     public float reverseSpeed = 5f;
     public float turnSpeed = 60f;
 
-    private Renderer[] shipRenderers;
-    private Color[] originalColors;
-
-    private bool isFlashing = false;
-
     [Header ("AI Behavior")]
     public AIBehavior aiBehavior = AIBehavior.Balanced;
 
@@ -402,10 +397,10 @@ public class EnemyShip : MonoBehaviour
     {
         currentHealth -= damage;
 
-        HitFlash();
-
         if (CombatFeedbackManager.Instance != null)
         {
+            CombatFeedbackManager.Instance.HitFlash(gameObject);
+            
             CombatFeedbackManager.Instance.ShowDamage(
                 damage,
                 transform.position
@@ -417,33 +412,6 @@ public class EnemyShip : MonoBehaviour
         {
             Die();
         }
-    }
-
-    private void HitFlash()
-    {
-        if (isFlashing)
-            return;
-
-        StartCoroutine(HitFlashRoutine());
-    }
-
-    private System.Collections.IEnumerator HitFlashRoutine()
-    {
-        isFlashing = true;
-
-        for (int i = 0; i < shipRenderers.Length; i++)
-        {
-            shipRenderers[i].material.color = Color.white;
-        }
-
-        yield return new WaitForSeconds(0.08f);
-
-        for (int i = 0; i < shipRenderers.Length; i++)
-        {
-            shipRenderers[i].material.color = originalColors[i];
-        }
-
-        isFlashing = false;
     }
 
     private void Die()

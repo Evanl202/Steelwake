@@ -12,35 +12,19 @@ public class PlayerShip : MonoBehaviour
 
     public float CurrentHealth => currentHealth;
 
-    private Renderer[] shipRenderers;
-    private Color[] originalColors;
-
-    private bool isFlashing = false;
-
     void Start()
     {
         currentHealth = maxHealth;
-
-        // Find all renderers on the player ship and its children
-        shipRenderers = GetComponentsInChildren<Renderer>();
-
-        originalColors = new Color[shipRenderers.Length];
-
-        for (int i = 0; i < shipRenderers.Length; i++)
-        {
-            originalColors[i] =
-                shipRenderers[i].material.color;
-        }
     }
 
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
 
-        HitFlash();
-
         if (CombatFeedbackManager.Instance != null)
         {
+            CombatFeedbackManager.Instance.HitFlash(gameObject);
+            
             CombatFeedbackManager.Instance.ShowDamage(
                 damage,
                 transform.position
@@ -54,60 +38,6 @@ public class PlayerShip : MonoBehaviour
             Die();
         }
         
-    }
-
-    public void ArmorBlockedFlash()
-    {
-        if (isFlashing)
-            return;
-
-        StartCoroutine(RedFlashRoutine());
-    }
-
-    private void HitFlash()
-    {
-        if (isFlashing)
-            return;
-
-        StartCoroutine(HitFlashRoutine());
-    }
-
-    private IEnumerator HitFlashRoutine()
-    {
-        isFlashing = true;
-
-        for (int i = 0; i < shipRenderers.Length; i++)
-        {
-            shipRenderers[i].material.color = Color.white;
-        }
-
-        yield return new WaitForSeconds(0.08f);
-
-        for (int i = 0; i < shipRenderers.Length; i++)
-        {
-            shipRenderers[i].material.color = originalColors[i];
-        }
-
-        isFlashing = false;
-    }
-
-    private IEnumerator RedFlashRoutine()
-    {
-        isFlashing = true;
-
-        for (int i = 0; i < shipRenderers.Length; i++)
-        {
-            shipRenderers[i].material.color = Color.red;
-        }
-
-        yield return new WaitForSeconds(0.08f);
-
-        for (int i = 0; i < shipRenderers.Length; i++)
-        {
-            shipRenderers[i].material.color = originalColors[i];
-        }
-
-        isFlashing = false;
     }
 
     private void Die()
