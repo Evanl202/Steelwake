@@ -15,7 +15,7 @@ public class EnemyShell : MonoBehaviour
 
     private void Start()
     {
-        Destroy(gameObject, lifetime);
+        Destroy(gameObject);
     }
 
     private void Update()
