@@ -9,11 +9,6 @@ public class Torpedo : MonoBehaviour
 
     private float distanceTravelled = 0f;
 
-    private void Start()
-    {
-        Destroy(gameObject);
-    }
-
     private void Update()
     {
         float movement = speed * Time.deltaTime;

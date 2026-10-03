@@ -13,11 +13,6 @@ public class Shell : MonoBehaviour
     public bool isAP = false;
     public float penetration = 0f;
 
-    private void Start()
-    {
-        Destroy(gameObject);
-    }
-
     private void Update()
     {
         float movement = speed * Time.deltaTime;
