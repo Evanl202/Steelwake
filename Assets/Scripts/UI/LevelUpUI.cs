@@ -207,6 +207,58 @@ public class LevelUpUI : MonoBehaviour
             "REPAIR COOLDOWN",
             "Reduce repair cooldown by 1.5 seconds",
             28
+        ),
+
+        // MAIN BATTERY RANGE
+        new UpgradeData(
+            "MAIN RANGE +FLAT",
+            "Increase main battery range by 5",
+            29
+        ),
+
+        new UpgradeData(
+            "MAIN RANGE +%",
+            "Increase main battery range by 10%",
+            30
+        ),
+
+        // SHELL SPEED
+        new UpgradeData(
+            "SHELL SPEED +FLAT",
+            "Increase shell speed by 3",
+            31
+        ),
+
+        new UpgradeData(
+            "SHELL SPEED +%",
+            "Increase shell speed by 10%",
+            32
+        ),
+
+        // TORPEDO RANGE
+        new UpgradeData(
+            "TORPEDO RANGE +FLAT",
+            "Increase torpedo range by 5",
+            33
+        ),
+
+        new UpgradeData(
+            "TORPEDO RANGE +%",
+            "Increase torpedo range by 10%",
+            34
+        ),
+
+        // TORPEDO SPEED
+        new UpgradeData(
+            "TORPEDO SPEED +FLAT",
+            "Increase torpedo speed by 3",
+            35
+        ),
+
+        new UpgradeData(
+            "TORPEDO SPEED +%",
+            "Increase torpedo speed by 10%",
+            36
         )
     };
 
@@ -273,6 +325,14 @@ public class LevelUpUI : MonoBehaviour
         availableUpgrades.Add(upgrades[18]);
         availableUpgrades.Add(upgrades[19]);
 
+        // Main battery range
+        availableUpgrades.Add(upgrades[29]);
+        availableUpgrades.Add(upgrades[30]);
+
+        // Shell speed
+        availableUpgrades.Add(upgrades[31]);
+        availableUpgrades.Add(upgrades[32]);
+
         // Destroyer / Cruiser only
         bool hasTorpedoes =
             weapon != null &&
@@ -280,10 +340,21 @@ public class LevelUpUI : MonoBehaviour
 
         if (hasTorpedoes)
         {
+            // Torpedo damage
             availableUpgrades.Add(upgrades[12]);
             availableUpgrades.Add(upgrades[13]);
+
+            // Torpedo reload
             availableUpgrades.Add(upgrades[20]);
             availableUpgrades.Add(upgrades[21]);
+
+            // Torpedo range
+            availableUpgrades.Add(upgrades[33]);
+            availableUpgrades.Add(upgrades[34]);
+
+            // Torpedo speed
+            availableUpgrades.Add(upgrades[35]);
+            availableUpgrades.Add(upgrades[36]);
         }
 
         // Destroyer / Cruiser only
@@ -533,6 +604,42 @@ public class LevelUpUI : MonoBehaviour
 
             case 28:
                 UpgradeManager.Instance.UpgradeRepairCooldown();
+                break;
+
+            // MAIN BATTERY RANGE
+            case 29:
+                UpgradeManager.Instance.UpgradeGunRangeFlat();
+                break;
+
+            case 30:
+                UpgradeManager.Instance.UpgradeGunRangePercent();
+                break;
+
+            // SHELL SPEED
+            case 31:
+                UpgradeManager.Instance.UpgradeShellSpeedFlat();
+                break;
+
+            case 32:
+                UpgradeManager.Instance.UpgradeShellSpeedPercent();
+                break;
+
+            // TORPEDO RANGE
+            case 33:
+                UpgradeManager.Instance.UpgradeTorpedoRangeFlat();
+                break;
+
+            case 34:
+                UpgradeManager.Instance.UpgradeTorpedoRangePercent();
+                break;
+
+            // TORPEDO SPEED
+            case 35:
+                UpgradeManager.Instance.UpgradeTorpedoSpeedFlat();
+                break;
+
+            case 36:
+                UpgradeManager.Instance.UpgradeTorpedoSpeedPercent();
                 break;
         }
 

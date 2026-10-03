@@ -22,6 +22,11 @@ public class UpgradeManager : MonoBehaviour
     public float reloadFlatReduction = 0.05f;
     public float speedFlatIncrease = 1f;
 
+    public float gunRangeFlatIncrease = 5f;
+    public float shellSpeedFlatIncrease = 3f;
+    public float torpedoRangeFlatIncrease = 5f;
+    public float torpedoSpeedFlatIncrease = 3f;
+
     [Header ("Percentage Upgrades")]
     public float healthPercentIncrease = 0.10f;
     public float armorPercentIncrease = 0.10f;
@@ -34,6 +39,11 @@ public class UpgradeManager : MonoBehaviour
     public float penetrationPercentIncrease = 0.10f;
     public float reloadPercentReduction = 0.05f;
     public float speedPercentIncrease = 0.10f;
+
+    public float gunRangePercentIncrease = 0.10f;
+    public float shellSpeedPercentIncrease = 0.10f;
+    public float torpedoRangePercentIncrease = 0.10f;
+    public float torpedoSpeedPercentIncrease = 0.10f;
 
     [Header("Ability Upgrades")]
     public float smokeDurationIncrease = 1f;
@@ -571,6 +581,141 @@ public class UpgradeManager : MonoBehaviour
         Debug.Log(
             "Repair Cooldown upgraded! New cooldown: " +
             playerAbilities.repairCooldown
+        );
+    }
+
+    public void UpgradeGunRangeFlat()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.gunRange += gunRangeFlatIncrease;
+
+        Debug.Log(
+            "Main Battery Range +Flat! New range: " +
+            playerWeapon.gunRange
+        );
+    }
+
+    public void UpgradeGunRangePercent()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.gunRange *=
+            1f + gunRangePercentIncrease;
+
+        Debug.Log(
+            "Main Battery Range +%! New range: " +
+            playerWeapon.gunRange
+        );
+    }
+
+    public void UpgradeShellSpeedFlat()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.shellSpeed +=
+            shellSpeedFlatIncrease;
+
+        Debug.Log(
+            "Shell Speed +Flat! New speed: " +
+            playerWeapon.shellSpeed
+        );
+    }
+
+    public void UpgradeShellSpeedPercent()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.shellSpeed *=
+            1f + shellSpeedPercentIncrease;
+
+        Debug.Log(
+            "Shell Speed +%! New speed: " +
+            playerWeapon.shellSpeed
+        );
+    }
+
+    public void UpgradeTorpedoRangeFlat()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.torpedoRange +=
+            torpedoRangeFlatIncrease;
+
+        Debug.Log(
+            "Torpedo Range +Flat! New range: " +
+            playerWeapon.torpedoRange
+        );
+    }
+
+    public void UpgradeTorpedoRangePercent()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.torpedoRange *=
+            1f + torpedoRangePercentIncrease;
+
+        Debug.Log(
+            "Torpedo Range +%! New range: " +
+            playerWeapon.torpedoRange
+        );
+    }
+
+    public void UpgradeTorpedoSpeedFlat()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.torpedoSpeed +=
+            torpedoSpeedFlatIncrease;
+
+        Debug.Log(
+            "Torpedo Speed +Flat! New speed: " +
+            playerWeapon.torpedoSpeed
+        );
+    }
+
+    public void UpgradeTorpedoSpeedPercent()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.torpedoSpeed *=
+            1f + torpedoSpeedPercentIncrease;
+
+        Debug.Log(
+            "Torpedo Speed +%! New speed: " +
+            playerWeapon.torpedoSpeed
         );
     }
 }
