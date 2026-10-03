@@ -43,6 +43,7 @@ public class EnemyWeapon : MonoBehaviour
     public float torpedoDamage = 50f;
     public float torpedoReloadTime = 8f;
     public float torpedoFiringRange = 35f;
+    public float torpedoSpeed = 15f;
 
     private float reloadTimer = 0f;
     private float torpedoReloadTimer = 0f;
