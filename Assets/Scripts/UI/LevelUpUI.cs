@@ -194,7 +194,7 @@ public class LevelUpUI : MonoBehaviour
 
         new UpgradeData(
             "SMOKE COOLDOWN",
-            "Reduce smoke cooldown by 2 seconds",
+            "Reduce smoke cooldown by 1 seconds",
             26
         ),
 
@@ -205,7 +205,7 @@ public class LevelUpUI : MonoBehaviour
         ),
         new UpgradeData(
             "REPAIR COOLDOWN",
-            "Reduce repair cooldown by 3 seconds",
+            "Reduce repair cooldown by 1.5 seconds",
             28
         )
     };
@@ -213,6 +213,7 @@ public class LevelUpUI : MonoBehaviour
     private UpgradeData choice1;
     private UpgradeData choice2;
     private UpgradeData choice3;
+    private ShipAbilities abilities;
 
     private void Start()
     {
@@ -307,7 +308,7 @@ public class LevelUpUI : MonoBehaviour
                 availableUpgrades.Add(upgrades[27]);
             }
 
-            if (abilities.repairCooldown > 15f)
+            if (abilities.repairCooldown > 45f)
             {
                 availableUpgrades.Add(upgrades[28]);
             }
