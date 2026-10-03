@@ -16,7 +16,7 @@ public class CameraFollow : MonoBehaviour
     public float zoomOutAmount = 10f;
 
     private Camera cam;
-    private float baseZoom;
+    private float startingZoom;
 
     void Start()
     {
