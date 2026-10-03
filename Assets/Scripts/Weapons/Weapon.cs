@@ -29,6 +29,7 @@ public class Weapon : MonoBehaviour
     public float reloadTime = 1f;
     private float reloadTimer = 0f;
 
+    [Header ("Gun Range")]
     public float gunRange = 30f;
     public float shellSpeed = 30f;
 
@@ -53,6 +54,7 @@ public class Weapon : MonoBehaviour
     public float torpedoReloadTime = 5f;
     private float torpedoReloadTimer = 0f;
 
+    [Header ("Torpedo Range")]
     public float torpedoRange = 35f;
     public float torpedoSpeed = 20f;
 
@@ -309,6 +311,9 @@ public class Weapon : MonoBehaviour
                 shell.damage = isAP ? apDamage : damage;
                 shell.isAP = isAP;
                 shell.penetration = penetration;
+
+                shell.maxDistance = gunRange;
+                shell.speed = shellSpeed;
             }
         }
         reloadTimer = reloadTime;
@@ -344,6 +349,9 @@ public class Weapon : MonoBehaviour
             if (torpedo != null)
             {
                 torpedo.damage = torpedoDamage;
+
+                torpedo.maxDistance = torpedoRange;
+                torpedo.speed = torpedoSpeed;
             }
         }
 
