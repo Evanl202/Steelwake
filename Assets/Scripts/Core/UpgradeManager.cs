@@ -54,6 +54,13 @@ public class UpgradeManager : MonoBehaviour
 
     private ShipAbilities playerAbilities;
 
+    // Base stats used for upgrade caps
+    private float baseMaxSpeed;
+    private float baseMaxHealth;
+    private float baseArmor;
+    private float baseGunRange;
+    private float baseTorpedoRange;
+
     private void Awake()
     {
         if (Instance == null)
@@ -81,6 +88,28 @@ public class UpgradeManager : MonoBehaviour
             playerShip = player.GetComponent<PlayerShip>();
             playerWeapon = player.GetComponentInChildren<Weapon>();
             playerAbilities = player.GetComponent<ShipAbilities>();
+
+            // Save the original stats before any upgrades are applied
+            if (playerMovement != null)
+            {
+                baseMaxSpeed = playerMovement.maxSpeed;
+            }
+
+            if (playerShip != null)
+            {
+                baseMaxHealth = playerShip.maxHealth;
+                baseArmor = playerShip.armor;
+            }
+
+            if (playerWeapon != null)
+            {
+                baseGunRange = playerWeapon.gunRange;
+
+                if (playerWeapon.torpedoPrefab != null)
+                {
+                    baseTorpedoRange = playerWeapon.torpedoRange;
+                }
+            }
         }
         else
         {
@@ -99,7 +128,12 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         
-        playerMovement.maxSpeed += speedFlatIncrease;
+        float speedCap = baseMaxSpeed * 2f;
+
+        playerMovement.maxSpeed = Mathf.Min(
+            playerMovement.maxSpeed + speedFlatIncrease,
+            speedCap
+        );
 
         Debug.Log(
             "Speed +Flat! New Max Speed: " + 
@@ -115,7 +149,12 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         
-        playerMovement.maxSpeed *= 1f + speedPercentIncrease;
+        float speedCap = baseMaxSpeed * 2f;
+
+        playerMovement.maxSpeed = Mathf.Min(
+            playerMovement.maxSpeed * (1f + speedPercentIncrease),
+            speedCap
+        );
 
         Debug.Log(
             "Speed +%! New Max Speed: " + 
@@ -203,7 +242,13 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         
-        playerShip.maxHealth += healthFlatIncrease;
+        float healthCap = baseMaxHealth * 10f;
+
+        playerShip.maxHealth = Mathf.Min(
+            playerShip.maxHealth + healthFlatIncrease,
+            healthCap
+        );
+
         
         Debug.Log(
             "Health +Flat! New Max Health: " + 
@@ -219,11 +264,176 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         
-        playerShip.maxHealth *= 1f + healthPercentIncrease;
+        float healthCap = baseMaxHealth * 10f;
+
+        playerShip.maxHealth = Mathf.Min(
+            playerShip.maxHealth * (1f + healthPercentIncrease),
+            healthCap
+        );
         
         Debug.Log(
             "Health +%! New Max Health: " + 
             playerShip.maxHealth
+        );
+    }
+
+    public void UpgradeGunRangeFlat()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        float rangeCap = baseGunRange * 2f;
+
+        playerWeapon.gunRange = Mathf.Min(
+            playerWeapon.gunRange + gunRangeFlatIncrease,
+            rangeCap
+        );
+
+        Debug.Log(
+            "Main Battery Range +Flat! New range: " +
+            playerWeapon.gunRange
+        );
+    }
+
+    public void UpgradeGunRangePercent()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        float rangeCap = baseGunRange * 2f;
+
+        playerWeapon.gunRange = Mathf.Min(
+            playerWeapon.gunRange * (1f + gunRangePercentIncrease),
+            rangeCap
+        );
+
+        Debug.Log(
+            "Main Battery Range +%! New range: " +
+            playerWeapon.gunRange
+        );
+    }
+
+    public void UpgradeShellSpeedFlat()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.shellSpeed = Mathf.Min(
+            playerWeapon.shellSpeed + shellSpeedFlatIncrease,
+            50f
+        );
+
+        Debug.Log(
+            "Shell Speed +Flat! New speed: " +
+            playerWeapon.shellSpeed
+        );
+    }
+
+    public void UpgradeShellSpeedPercent()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.shellSpeed = Mathf.Min(
+            playerWeapon.shellSpeed * (1f + shellSpeedPercentIncrease),
+            50f
+        );
+
+        Debug.Log(
+            "Shell Speed +%! New speed: " +
+            playerWeapon.shellSpeed
+        );
+    }
+
+    public void UpgradeTorpedoRangeFlat()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        float rangeCap = baseTorpedoRange * 2f;
+
+        playerWeapon.torpedoRange = Mathf.Min(
+            playerWeapon.torpedoRange + torpedoRangeFlatIncrease,
+            rangeCap
+        );
+
+        Debug.Log(
+            "Torpedo Range +Flat! New range: " +
+            playerWeapon.torpedoRange
+        );
+    }
+
+    public void UpgradeTorpedoRangePercent()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        float rangeCap = baseTorpedoRange * 2f;
+
+        playerWeapon.torpedoRange = Mathf.Min(
+            playerWeapon.torpedoRange * (1f + torpedoRangePercentIncrease),
+            rangeCap
+        );
+
+        Debug.Log(
+            "Torpedo Range +%! New range: " +
+            playerWeapon.torpedoRange
+        );
+    }
+
+    public void UpgradeTorpedoSpeedFlat()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.torpedoSpeed = Mathf.Min(
+            playerWeapon.torpedoSpeed + torpedoSpeedFlatIncrease,
+            50f
+        );
+
+        Debug.Log(
+            "Torpedo Speed +Flat! New speed: " +
+            playerWeapon.torpedoSpeed
+        );
+    }
+
+    public void UpgradeTorpedoSpeedPercent()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.torpedoSpeed = Mathf.Min(
+            playerWeapon.torpedoSpeed * (1f + torpedoSpeedPercentIncrease),
+            50f
+        );
+
+        Debug.Log(
+            "Torpedo Speed +%! New speed: " +
+            playerWeapon.torpedoSpeed
         );
     }
 
@@ -406,7 +616,12 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
 
-        playerShip.armor += armorFlatIncrease;
+        float armorCap = baseArmor * 10f;
+
+        playerShip.armor = Mathf.Min(
+            playerShip.armor + armorFlatIncrease,
+            armorCap
+        );
 
         Debug.Log(
             "Armor +Flat! New armor: " +
@@ -422,7 +637,12 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
 
-        playerShip.armor *= 1f + armorPercentIncrease;
+        float armorCap = baseArmor * 10f;
+
+        playerShip.armor = Mathf.Min(
+            playerShip.armor * (1f + armorPercentIncrease),
+            armorCap
+        );
 
         Debug.Log(
             "Armor +%! New armor: " +
@@ -581,141 +801,6 @@ public class UpgradeManager : MonoBehaviour
         Debug.Log(
             "Repair Cooldown upgraded! New cooldown: " +
             playerAbilities.repairCooldown
-        );
-    }
-
-    public void UpgradeGunRangeFlat()
-    {
-        if (playerWeapon == null)
-        {
-            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
-            return;
-        }
-
-        playerWeapon.gunRange += gunRangeFlatIncrease;
-
-        Debug.Log(
-            "Main Battery Range +Flat! New range: " +
-            playerWeapon.gunRange
-        );
-    }
-
-    public void UpgradeGunRangePercent()
-    {
-        if (playerWeapon == null)
-        {
-            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
-            return;
-        }
-
-        playerWeapon.gunRange *=
-            1f + gunRangePercentIncrease;
-
-        Debug.Log(
-            "Main Battery Range +%! New range: " +
-            playerWeapon.gunRange
-        );
-    }
-
-    public void UpgradeShellSpeedFlat()
-    {
-        if (playerWeapon == null)
-        {
-            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
-            return;
-        }
-
-        playerWeapon.shellSpeed +=
-            shellSpeedFlatIncrease;
-
-        Debug.Log(
-            "Shell Speed +Flat! New speed: " +
-            playerWeapon.shellSpeed
-        );
-    }
-
-    public void UpgradeShellSpeedPercent()
-    {
-        if (playerWeapon == null)
-        {
-            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
-            return;
-        }
-
-        playerWeapon.shellSpeed *=
-            1f + shellSpeedPercentIncrease;
-
-        Debug.Log(
-            "Shell Speed +%! New speed: " +
-            playerWeapon.shellSpeed
-        );
-    }
-
-    public void UpgradeTorpedoRangeFlat()
-    {
-        if (playerWeapon == null)
-        {
-            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
-            return;
-        }
-
-        playerWeapon.torpedoRange +=
-            torpedoRangeFlatIncrease;
-
-        Debug.Log(
-            "Torpedo Range +Flat! New range: " +
-            playerWeapon.torpedoRange
-        );
-    }
-
-    public void UpgradeTorpedoRangePercent()
-    {
-        if (playerWeapon == null)
-        {
-            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
-            return;
-        }
-
-        playerWeapon.torpedoRange *=
-            1f + torpedoRangePercentIncrease;
-
-        Debug.Log(
-            "Torpedo Range +%! New range: " +
-            playerWeapon.torpedoRange
-        );
-    }
-
-    public void UpgradeTorpedoSpeedFlat()
-    {
-        if (playerWeapon == null)
-        {
-            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
-            return;
-        }
-
-        playerWeapon.torpedoSpeed +=
-            torpedoSpeedFlatIncrease;
-
-        Debug.Log(
-            "Torpedo Speed +Flat! New speed: " +
-            playerWeapon.torpedoSpeed
-        );
-    }
-
-    public void UpgradeTorpedoSpeedPercent()
-    {
-        if (playerWeapon == null)
-        {
-            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
-            return;
-        }
-
-        playerWeapon.torpedoSpeed *=
-            1f + torpedoSpeedPercentIncrease;
-
-        Debug.Log(
-            "Torpedo Speed +%! New speed: " +
-            playerWeapon.torpedoSpeed
         );
     }
 }
