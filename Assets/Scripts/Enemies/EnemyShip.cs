@@ -58,16 +58,6 @@ public class EnemyShip : MonoBehaviour
 
     private void Start()
     {
-        shipRenderers = GetComponentsInChildren<Renderer>();
-
-        originalColors = new Color[shipRenderers.Length];
-
-        for (int i = 0; i < shipRenderers.Length; i++)
-        {
-            originalColors[i] =
-                shipRenderers[i].material.color;
-        }
-
         if (isElite)
         {
             maxHealth *= 1.5f;
@@ -400,7 +390,7 @@ public class EnemyShip : MonoBehaviour
         if (CombatFeedbackManager.Instance != null)
         {
             CombatFeedbackManager.Instance.HitFlash(gameObject);
-            
+
             CombatFeedbackManager.Instance.ShowDamage(
                 damage,
                 transform.position
