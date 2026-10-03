@@ -13,7 +13,7 @@ public class CameraFollow : MonoBehaviour
 
     [Header("Zoom")]
     public float zoomStep = 1f;
-    public float zoomOutAmount = 10f;
+    public float zoomOutAmount = 15f;
 
     private Camera cam;
     private float startingZoom;
