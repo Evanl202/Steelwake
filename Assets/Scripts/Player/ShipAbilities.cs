@@ -18,7 +18,8 @@ public class ShipAbilities : MonoBehaviour
     public float smokeCooldown = 20f;
 
     [Header("Repair")]
-    public float repairCooldown = 20f;
+    public float repairCooldown = 60;
+    public float repairPercent = 0.25f;
 
     private float smokeCooldownTimer = 0f;
     private float repairCooldownTimer = 0f;
@@ -104,7 +105,7 @@ public class ShipAbilities : MonoBehaviour
             return;
         }
 
-        playerShip.RepairHalf();
+        playerShip.RepairPercent(repairPercent);
 
         repairCooldownTimer = repairCooldown;
 
@@ -136,5 +137,10 @@ public class ShipAbilities : MonoBehaviour
     public float GetSmokeDurationRemaining()
     {
         return Mathf.Max(0f, smokeDurationTimer);
+    }
+
+    public float GetRepairPercent()
+    {
+        return repairPercent;
     }
 }

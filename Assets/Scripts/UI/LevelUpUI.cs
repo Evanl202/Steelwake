@@ -184,6 +184,29 @@ public class LevelUpUI : MonoBehaviour
             "SHIP REPAIR +FULL",
             "Repair ship Full HP",
             24
+        ),
+
+        new UpgradeData(
+            "SMOKE DURATION",
+            "Increase smoke duration by 1 second",
+            25
+        ),
+
+        new UpgradeData(
+            "SMOKE COOLDOWN",
+            "Reduce smoke cooldown by 2 seconds",
+            26
+        ),
+
+        new UpgradeData(
+            "REPAIR AMOUNT",
+            "Increase repair amount by 5% of max HP",
+            27
+        ),
+        new UpgradeData(
+            "REPAIR COOLDOWN",
+            "Reduce repair cooldown by 3 seconds",
+            28
         )
     };
 
@@ -209,19 +232,120 @@ public class LevelUpUI : MonoBehaviour
 
     private void GenerateChoices()
     {
-        choice1 = upgrades[Random.Range(0, upgrades.Length)];
+        System.Collections.Generic.List<UpgradeData> availableUpgrades =
+            new System.Collections.Generic.List<UpgradeData>();
+
+        if (UpgradeManager.Instance == null)
+        {
+            return;
+        }
+
+        GameObject player =
+            GameObject.FindGameObjectWithTag("Player");
+
+        if (player == null)
+        {
+            Debug.LogWarning("LevelUpUI: Player not found.");
+            return;
+        }
+
+        abilities = player.GetComponent<ShipAbilities>();
+
+        Weapon weapon =
+            player.GetComponentInChildren<Weapon>();
+
+        // Add universal upgrades
+        for (int i = 0; i <= 11; i++)
+        {
+            availableUpgrades.Add(upgrades[i]);
+        }
+
+        // AP penetration
+        availableUpgrades.Add(upgrades[14]);
+        availableUpgrades.Add(upgrades[15]);
+
+        // Armor
+        availableUpgrades.Add(upgrades[16]);
+        availableUpgrades.Add(upgrades[17]);
+
+        // Main battery reload
+        availableUpgrades.Add(upgrades[18]);
+        availableUpgrades.Add(upgrades[19]);
+
+        // Destroyer / Cruiser only
+        bool hasTorpedoes =
+            weapon != null &&
+            weapon.torpedoPrefab != null;
+
+        if (hasTorpedoes)
+        {
+            availableUpgrades.Add(upgrades[12]);
+            availableUpgrades.Add(upgrades[13]);
+            availableUpgrades.Add(upgrades[20]);
+            availableUpgrades.Add(upgrades[21]);
+        }
+
+        // Destroyer / Cruiser only
+        if (abilities != null && abilities.hasSmoke)
+        {
+            if (abilities.smokeDuration < 15f)
+            {
+                availableUpgrades.Add(upgrades[25]);
+            }
+
+            if (abilities.smokeCooldown > 10f)
+            {
+                availableUpgrades.Add(upgrades[26]);
+            }
+        }
+
+        // Cruiser / Battleship only
+        if (abilities != null && abilities.hasRepair)
+        {
+            if (abilities.repairPercent < 0.75f)
+            {
+                availableUpgrades.Add(upgrades[27]);
+            }
+
+            if (abilities.repairCooldown > 15f)
+            {
+                availableUpgrades.Add(upgrades[28]);
+            }
+        }
+
+        // Safety check
+        if (availableUpgrades.Count < 3)
+        {
+            Debug.LogWarning(
+                "LevelUpUI: Fewer than 3 upgrades are available."
+            );
+
+            return;
+        }
+
+        // Pick 3 unique choices
+        choice1 = availableUpgrades[
+            Random.Range(0, availableUpgrades.Count)
+        ];
 
         do
         {
-            choice2 = upgrades[Random.Range(0, upgrades.Length)];
+            choice2 = availableUpgrades[
+                Random.Range(0, availableUpgrades.Count)
+            ];
         }
         while (choice2 == choice1);
 
         do
         {
-            choice3 = upgrades[Random.Range(0, upgrades.Length)];
+            choice3 = availableUpgrades[
+                Random.Range(0, availableUpgrades.Count)
+            ];
         }
-        while (choice3 == choice1 || choice3 == choice2);
+        while (
+            choice3 == choice1 ||
+            choice3 == choice2
+        );
 
         DisplayUpgrade(
             choice1,
@@ -390,6 +514,24 @@ public class LevelUpUI : MonoBehaviour
             
             case 24:
                 UpgradeManager.Instance.RepairFull();
+                break;
+
+            // SMOKE
+            case 25:
+                UpgradeManager.Instance.UpgradeSmokeDuration();
+                break;
+
+            case 26:
+                UpgradeManager.Instance.UpgradeSmokeCooldown();
+                break;
+
+            // REPAIR
+            case 27:
+                UpgradeManager.Instance.UpgradeRepairAmount();
+                break;
+
+            case 28:
+                UpgradeManager.Instance.UpgradeRepairCooldown();
                 break;
         }
 

@@ -66,4 +66,13 @@ public class PlayerShip : MonoBehaviour
         currentHealth = maxHealth;
     }
 
+    public void RepairPercent(float percent)
+    {
+        float repairAmount = maxHealth * percent;
+
+        currentHealth = Mathf.Min(
+            currentHealth + repairAmount,
+            maxHealth
+        );
+    }
 }

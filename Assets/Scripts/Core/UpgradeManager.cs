@@ -35,6 +35,15 @@ public class UpgradeManager : MonoBehaviour
     public float reloadPercentReduction = 0.05f;
     public float speedPercentIncrease = 0.10f;
 
+    [Header("Ability Upgrades")]
+    public float smokeDurationIncrease = 1f;
+    public float smokeCooldownReduction = 1f;
+
+    public float repairPercentIncrease = 0.05f;
+    public float repairCooldownReduction = 1.5f;
+
+    private ShipAbilities playerAbilities;
+
     private void Awake()
     {
         if (Instance == null)
@@ -61,6 +70,7 @@ public class UpgradeManager : MonoBehaviour
             playerMovement = player.GetComponent<ShipMovement>();
             playerShip = player.GetComponent<PlayerShip>();
             playerWeapon = player.GetComponentInChildren<Weapon>();
+            playerAbilities = player.GetComponent<ShipAbilities>();
         }
         else
         {
@@ -483,6 +493,84 @@ public class UpgradeManager : MonoBehaviour
         Debug.Log(
             "Torpedo +%! New reload time: " + 
             playerWeapon.torpedoReloadTime
+        );
+    }
+
+    // Ability Upgrades
+    public void UpgradeSmokeDuration()
+    {
+        if (playerAbilities == null)
+        {
+            Debug.LogWarning("UpgradeManager: ShipAbilities not assigned.");
+            return;
+        }
+
+        playerAbilities.smokeDuration = Mathf.Min(
+            15f,
+            playerAbilities.smokeDuration + smokeDurationIncrease
+        );
+
+        Debug.Log(
+            "Smoke Duration upgraded! New duration: " +
+            playerAbilities.smokeDuration
+        );
+    }
+
+    public void UpgradeSmokeCooldown()
+    {
+        if (playerAbilities == null)
+        {
+            Debug.LogWarning("UpgradeManager: ShipAbilities not assigned.");
+            return;
+        }
+
+        playerAbilities.smokeCooldown = Mathf.Max(
+            10f,
+            playerAbilities.smokeCooldown - smokeCooldownReduction
+        );
+
+        Debug.Log(
+            "Smoke Cooldown upgraded! New cooldown: " +
+            playerAbilities.smokeCooldown
+        );
+    }
+
+    public void UpgradeRepairAmount()
+    {
+        if (playerAbilities == null)
+        {
+            Debug.LogWarning("UpgradeManager: ShipAbilities not assigned.");
+            return;
+        }
+
+        playerAbilities.repairPercent = Mathf.Min(
+            0.75f,
+            playerAbilities.repairPercent + repairPercentIncrease
+        );
+
+        Debug.Log(
+            "Repair Amount upgraded! New repair: " +
+            (playerAbilities.repairPercent * 100f) +
+            "%"
+        );
+    }
+
+    public void UpgradeRepairCooldown()
+    {
+        if (playerAbilities == null)
+        {
+            Debug.LogWarning("UpgradeManager: ShipAbilities not assigned.");
+            return;
+        }
+
+        playerAbilities.repairCooldown = Mathf.Max(
+            45f,
+            playerAbilities.repairCooldown - repairCooldownReduction
+        );
+
+        Debug.Log(
+            "Repair Cooldown upgraded! New cooldown: " +
+            playerAbilities.repairCooldown
         );
     }
 }
