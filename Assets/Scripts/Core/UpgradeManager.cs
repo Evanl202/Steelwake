@@ -803,4 +803,49 @@ public class UpgradeManager : MonoBehaviour
             playerAbilities.repairCooldown
         );
     }
+
+    // Upgrade availability checks
+    public bool CanUpgradeSpeed()
+    {
+        return playerMovement != null &&
+            playerMovement.maxSpeed < baseMaxSpeed * 2f;
+    }
+
+    public bool CanUpgradeHealth()
+    {
+        return playerShip != null &&
+            playerShip.maxHealth < baseMaxHealth * 10f;
+    }
+
+    public bool CanUpgradeArmor()
+    {
+        return playerShip != null &&
+            playerShip.armor < baseArmor * 10f;
+    }
+
+    public bool CanUpgradeGunRange()
+    {
+        return playerWeapon != null &&
+            playerWeapon.gunRange < baseGunRange * 2f;
+    }
+
+    public bool CanUpgradeShellSpeed()
+    {
+        return playerWeapon != null &&
+            playerWeapon.shellSpeed < 50f;
+    }
+
+    public bool CanUpgradeTorpedoRange()
+    {
+        return playerWeapon != null &&
+            playerWeapon.torpedoPrefab != null &&
+            playerWeapon.torpedoRange < baseTorpedoRange * 2f;
+    }
+
+    public bool CanUpgradeTorpedoSpeed()
+    {
+        return playerWeapon != null &&
+            playerWeapon.torpedoPrefab != null &&
+            playerWeapon.torpedoSpeed < 50f;
+    }
 }

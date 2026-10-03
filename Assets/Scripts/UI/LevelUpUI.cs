@@ -307,31 +307,69 @@ public class LevelUpUI : MonoBehaviour
         Weapon weapon =
             player.GetComponentInChildren<Weapon>();
 
-        // Add universal upgrades
-        for (int i = 0; i <= 11; i++)
+        // Speed
+        if (UpgradeManager.Instance.CanUpgradeSpeed())
         {
-            availableUpgrades.Add(upgrades[i]);
+            availableUpgrades.Add(upgrades[0]);
+            availableUpgrades.Add(upgrades[1]);
         }
+
+        // Universal Damage
+        availableUpgrades.Add(upgrades[2]);
+        availableUpgrades.Add(upgrades[3]);
+
+        // Universal Reload
+        availableUpgrades.Add(upgrades[4]);
+        availableUpgrades.Add(upgrades[5]);
+
+        // Health
+        if (UpgradeManager.Instance.CanUpgradeHealth())
+        {
+            availableUpgrades.Add(upgrades[6]);
+            availableUpgrades.Add(upgrades[7]);
+        }
+
+        // HE Damage
+        availableUpgrades.Add(upgrades[8]);
+        availableUpgrades.Add(upgrades[9]);
+
+        // AP Damage
+        availableUpgrades.Add(upgrades[10]);
+        availableUpgrades.Add(upgrades[11]);
 
         // AP penetration
         availableUpgrades.Add(upgrades[14]);
         availableUpgrades.Add(upgrades[15]);
 
         // Armor
-        availableUpgrades.Add(upgrades[16]);
-        availableUpgrades.Add(upgrades[17]);
+        if (UpgradeManager.Instance.CanUpgradeArmor())
+        {
+            availableUpgrades.Add(upgrades[16]);
+            availableUpgrades.Add(upgrades[17]);
+        }
 
         // Main battery reload
         availableUpgrades.Add(upgrades[18]);
         availableUpgrades.Add(upgrades[19]);
 
         // Main battery range
-        availableUpgrades.Add(upgrades[29]);
-        availableUpgrades.Add(upgrades[30]);
+        if (UpgradeManager.Instance.CanUpgradeGunRange())
+        {
+            availableUpgrades.Add(upgrades[29]);
+            availableUpgrades.Add(upgrades[30]);
+        }
 
         // Shell speed
-        availableUpgrades.Add(upgrades[31]);
-        availableUpgrades.Add(upgrades[32]);
+        if (UpgradeManager.Instance.CanUpgradeShellSpeed())
+        {
+            availableUpgrades.Add(upgrades[31]);
+            availableUpgrades.Add(upgrades[32]);
+        }
+
+        // Universal Repair upgrades
+        availableUpgrades.Add(upgrades[22]);
+        availableUpgrades.Add(upgrades[23]);
+        availableUpgrades.Add(upgrades[24]);
 
         // Destroyer / Cruiser only
         bool hasTorpedoes =
@@ -349,12 +387,18 @@ public class LevelUpUI : MonoBehaviour
             availableUpgrades.Add(upgrades[21]);
 
             // Torpedo range
-            availableUpgrades.Add(upgrades[33]);
-            availableUpgrades.Add(upgrades[34]);
+            if (UpgradeManager.Instance.CanUpgradeTorpedoRange())
+            {
+                availableUpgrades.Add(upgrades[33]);
+                availableUpgrades.Add(upgrades[34]);
+            }
 
             // Torpedo speed
-            availableUpgrades.Add(upgrades[35]);
-            availableUpgrades.Add(upgrades[36]);
+            if (UpgradeManager.Instance.CanUpgradeTorpedoSpeed())
+            {
+                availableUpgrades.Add(upgrades[35]);
+                availableUpgrades.Add(upgrades[36]);
+            }
         }
 
         // Destroyer / Cruiser only
