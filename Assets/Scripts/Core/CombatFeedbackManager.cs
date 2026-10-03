@@ -15,7 +15,7 @@ public class CombatFeedbackManager  : MonoBehaviour
     [Header ("UI")]
     public Canvas canvas;
     public Camera mainCamera;
-
+    
     private Dictionary<GameObject, Coroutine> activeFlashes =
         new Dictionary<GameObject, Coroutine>();
 
@@ -124,10 +124,10 @@ public class CombatFeedbackManager  : MonoBehaviour
             return;
         }
 
+        // Ignore another flash while this ship is already flashing.
         if (activeFlashes.ContainsKey(ship))
         {
-            StopCoroutine(activeFlashes[ship]);
-            activeFlashes.Remove(ship);
+            return;
         }
 
         Coroutine flash =
