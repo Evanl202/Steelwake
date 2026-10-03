@@ -44,6 +44,9 @@ public class CameraFollow : MonoBehaviour
 
     private void HandleZoom()
     {
+        if (Mouse.current == null)
+            return;
+            
         float scroll = Mouse.current.scroll.ReadValue().y;
 
         if (Mathf.Abs(scroll) > 0.01f)
