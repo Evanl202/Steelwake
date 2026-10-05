@@ -79,3 +79,8 @@ The game combines:
 ## Development
 
 This project is currently in early prototype development.
+
+IJN and USS Ships
+Choose between IJN or USS ships, spawn enemy opposite to chosen
+6 ship models for player and 8 for enemy
+https://sketchfab.com/search?q=japanese+navy&type=models 
