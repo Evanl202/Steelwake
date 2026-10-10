@@ -60,33 +60,62 @@ public class Weapon : MonoBehaviour
 
     public float TorpedoReloadTimer => torpedoReloadTimer;
 
+    // Fix Unity gun rotation from Blender
+    private Quaternion[] gunRotationOffsets;
+    private Quaternion[] torpedoRotationOffsets;
+
     private void Awake()
     {
         if (gunTransforms != null)
         {
             gunBaseAngles = new float[gunTransforms.Length];
+            gunRotationOffsets = new Quaternion[gunTransforms.Length];
 
             for (int i = 0; i < gunTransforms.Length; i++)
             {
-                if (gunTransforms[i] != null)
-                {
-                    gunBaseAngles[i] =
-                        Mathf.DeltaAngle(0f, gunTransforms[i].localEulerAngles.y);
-                }
+                Transform gun = gunTransforms[i];
+
+                if (gun == null)
+                    continue;
+
+                gunBaseAngles[i] =
+                    Mathf.DeltaAngle(0f, gun.localEulerAngles.y);
+
+                float baseWorldAngle =
+                    shipTransform.eulerAngles.y + gunBaseAngles[i];
+
+                Quaternion baseYaw =
+                    Quaternion.Euler(0f, baseWorldAngle, 0f);
+
+                gunRotationOffsets[i] =
+                    Quaternion.Inverse(baseYaw) * gun.rotation;
             }
         }
 
         if (torpedoLaunchers != null)
         {
             torpedoBaseAngles = new float[torpedoLaunchers.Length];
+            torpedoRotationOffsets =
+                new Quaternion[torpedoLaunchers.Length];
 
             for (int i = 0; i < torpedoLaunchers.Length; i++)
             {
-                if (torpedoLaunchers[i] != null)
-                {
-                    torpedoBaseAngles[i] =
-                        Mathf.DeltaAngle(0f, torpedoLaunchers[i].localEulerAngles.y);
-                }
+                Transform launcher = torpedoLaunchers[i];
+
+                if (launcher == null)
+                    continue;
+
+                torpedoBaseAngles[i] =
+                    Mathf.DeltaAngle(0f, launcher.localEulerAngles.y);
+
+                float baseWorldAngle =
+                    shipTransform.eulerAngles.y + torpedoBaseAngles[i];
+
+                Quaternion baseYaw =
+                    Quaternion.Euler(0f, baseWorldAngle, 0f);
+
+                torpedoRotationOffsets[i] =
+                    Quaternion.Inverse(baseYaw) * launcher.rotation;
             }
         }
     }
@@ -199,11 +228,9 @@ public class Weapon : MonoBehaviour
                 gunBaseAngles[i] +
                 clampedAngle;
 
-            targetRotation = Quaternion.Euler(
-                0f,
-                finalAngle,
-                0f
-            );
+            targetRotation =
+                Quaternion.Euler(0f, finalAngle, 0f)
+                * gunRotationOffsets[i];
 
             //Rotate Turret
             gun.rotation = Quaternion.RotateTowards(
@@ -264,11 +291,9 @@ public class Weapon : MonoBehaviour
                 torpedoBaseAngles[i] +
                 clampedAngle;
 
-            torpedoRotation = Quaternion.Euler(
-                0f,
-                finalAngle,
-                0f
-            );
+            torpedoRotation =
+                Quaternion.Euler(0f, finalAngle, 0f)
+                * torpedoRotationOffsets[i];
 
             launcher.rotation = Quaternion.RotateTowards(
                 launcher.rotation,
