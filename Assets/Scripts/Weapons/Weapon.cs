@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -6,29 +5,31 @@ public class Weapon : MonoBehaviour
     [Header("Ship")]
     public Transform shipTransform;
 
-    [Header("Gun")]
+    [Header ("Gun")]
     public GameObject shellPrefab;
     public GameObject apShellPrefab;
 
     public Transform[] gunTransforms;
     public Transform[] firingPoints;
-
-    [Header("Gun Rotation")]
+    
+    [Header ("Gun Rotation")]
     public float rotationSpeed = 360f;
 
-    [Header("Gun Firing Arcs")]
+    [Header ("Gun Firing Arcs")]
     public float[] gunMinAngles;
     public float[] gunMaxAngles;
+
     public float[] gunBaseAngles;
 
-    [Header("Gun Combat")]
+    [Header ("Gun Combat")]
     public float damage = 25f;
     public float apDamage = 40f;
     public float penetration = 25f;
+
     public float reloadTime = 1f;
     private float reloadTimer = 0f;
 
-    [Header("Gun Range")]
+    [Header ("Gun Range")]
     public float gunRange = 30f;
     public float shellSpeed = 30f;
 
@@ -37,67 +38,92 @@ public class Weapon : MonoBehaviour
     [Header("Ammo Type")]
     public bool isAP = false;
 
-    [Header("Torpedo")]
+    [Header ("Torpedo")]
     public GameObject torpedoPrefab;
     public Transform[] torpedoLaunchers;
     public Transform[] torpedoFiringPoints;
 
-    [Header("Torpedo Firing Arcs")]
+    [Header ("Torpedo Firing Arcs")]
     public float[] torpedoMinAngles;
     public float[] torpedoMaxAngles;
+
     public float[] torpedoBaseAngles;
 
-    [Header("Torpedo Combat")]
+    [Header ("Torpedo Combat")]
     public float torpedoDamage = 50f;
     public float torpedoReloadTime = 5f;
     private float torpedoReloadTimer = 0f;
 
-    [Header("Torpedo Range")]
+    [Header ("Torpedo Range")]
     public float torpedoRange = 35f;
     public float torpedoSpeed = 20f;
 
     public float TorpedoReloadTimer => torpedoReloadTimer;
+
+    // Fix Unity gun rotation from Blender
+    private Quaternion[] gunRotationOffsets;
+    private Quaternion[] torpedoRotationOffsets;
 
     private void Awake()
     {
         if (gunTransforms != null)
         {
             gunBaseAngles = new float[gunTransforms.Length];
+            gunRotationOffsets = new Quaternion[gunTransforms.Length];
 
             for (int i = 0; i < gunTransforms.Length; i++)
             {
-                if (gunTransforms[i] != null)
-                {
-                    gunBaseAngles[i] =
-                        Mathf.DeltaAngle(
-                            0f,
-                            gunTransforms[i].localEulerAngles.y
-                        );
-                }
+                Transform gun = gunTransforms[i];
+
+                if (gun == null)
+                    continue;
+
+                gunBaseAngles[i] =
+                    Mathf.DeltaAngle(0f, gun.localEulerAngles.y);
+
+                float baseWorldAngle =
+                    shipTransform.eulerAngles.y + gunBaseAngles[i];
+
+                Quaternion baseYaw =
+                    Quaternion.Euler(0f, baseWorldAngle, 0f);
+
+                gunRotationOffsets[i] =
+                    Quaternion.Inverse(baseYaw) * gun.rotation;
             }
         }
 
         if (torpedoLaunchers != null)
         {
             torpedoBaseAngles = new float[torpedoLaunchers.Length];
+            torpedoRotationOffsets =
+                new Quaternion[torpedoLaunchers.Length];
 
             for (int i = 0; i < torpedoLaunchers.Length; i++)
             {
-                if (torpedoLaunchers[i] != null)
-                {
-                    torpedoBaseAngles[i] =
-                        Mathf.DeltaAngle(
-                            0f,
-                            torpedoLaunchers[i].localEulerAngles.y
-                        );
-                }
+                Transform launcher = torpedoLaunchers[i];
+
+                if (launcher == null)
+                    continue;
+
+                torpedoBaseAngles[i] =
+                    Mathf.DeltaAngle(0f, launcher.localEulerAngles.y);
+
+                float baseWorldAngle =
+                    shipTransform.eulerAngles.y + torpedoBaseAngles[i];
+
+                Quaternion baseYaw =
+                    Quaternion.Euler(0f, baseWorldAngle, 0f);
+
+                torpedoRotationOffsets[i] =
+                    Quaternion.Inverse(baseYaw) * launcher.rotation;
             }
         }
     }
-    private void Update()
+
+    void Update()
     {
-        if (GameManager.Instance != null &&
-            !GameManager.Instance.gameRunning)
+
+        if (GameManager.Instance != null && !GameManager.Instance.gameRunning)
         {
             return;
         }
@@ -105,40 +131,56 @@ public class Weapon : MonoBehaviour
         HandleGunRotation();
 
         if (reloadTimer > 0f)
+        {
             reloadTimer -= Time.deltaTime;
+        }
 
         if (torpedoReloadTimer > 0f)
-            torpedoReloadTimer -= Time.deltaTime;
-
+        {
+            torpedoReloadTimer -=Time.deltaTime;
+        }
+        
         if (Input.GetKeyDown(KeyCode.R))
+        {
             isAP = !isAP;
+        }
 
         if (Input.GetMouseButton(0) && reloadTimer <= 0f)
+        {
             Fire();
+        }
 
         if (Input.GetMouseButton(1) && torpedoReloadTimer <= 0f)
+        {
             FireTorpedo();
+        }
     }
 
     private void HandleGunRotation()
     {
-        if (shipTransform == null ||
-            gunTransforms == null ||
+        //Handle index error
+        if (gunTransforms == null ||
+            gunTransforms.Length == 0 ||
             gunMinAngles == null ||
             gunMaxAngles == null ||
-            gunBaseAngles == null ||
-            gunTransforms.Length != gunMinAngles.Length ||
-            gunTransforms.Length != gunMaxAngles.Length ||
-            gunTransforms.Length != gunBaseAngles.Length)
+            gunMinAngles.Length != gunTransforms.Length ||
+            gunMaxAngles.Length != gunTransforms.Length)
         {
             return;
         }
 
         Camera cam = Camera.main;
+
         if (cam == null)
             return;
 
-        Plane oceanPlane = new Plane(Vector3.up, transform.position);
+        //Horizontal plane at gun height
+        Plane oceanPlane = new Plane(
+            Vector3.up,
+            transform.position
+        );
+
+        //Aimming
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
         if (!oceanPlane.Raycast(ray, out float distance))
@@ -146,41 +188,51 @@ public class Weapon : MonoBehaviour
 
         Vector3 targetPoint = ray.GetPoint(distance);
 
-        float shipYaw = shipTransform.eulerAngles.y;
-
         for (int i = 0; i < gunTransforms.Length; i++)
         {
             Transform gun = gunTransforms[i];
+
             if (gun == null)
                 continue;
 
             Vector3 direction = targetPoint - gun.position;
+
             direction.y = 0f;
 
             if (direction.sqrMagnitude < 0.001f)
                 continue;
 
-            float targetYaw =
-                Quaternion.LookRotation(direction, Vector3.up).eulerAngles.y;
+            Quaternion targetRotation =
+                Quaternion.LookRotation(direction, Vector3.up);
+            
+            float targetAngle = targetRotation.eulerAngles.y;
 
-            float relativeAngle =
-                Mathf.DeltaAngle(shipYaw, targetYaw);
+            float targetRelativeToShip = Mathf.DeltaAngle(
+                shipTransform.eulerAngles.y,
+                targetAngle
+            );
 
-            float relativeToGun =
-                Mathf.DeltaAngle(gunBaseAngles[i], relativeAngle);
+            float targetRelativeToGun = Mathf.DeltaAngle(
+                gunBaseAngles[i],
+                targetRelativeToShip
+            );
 
             float clampedAngle = Mathf.Clamp(
-                relativeToGun,
+                targetRelativeToGun,
                 gunMinAngles[i],
                 gunMaxAngles[i]
             );
 
-            float finalYaw =
-                shipYaw + gunBaseAngles[i] + clampedAngle;
+            float finalAngle =
+                shipTransform.eulerAngles.y +
+                gunBaseAngles[i] +
+                clampedAngle;
 
-            Quaternion targetRotation =
-                Quaternion.Euler(0f, finalYaw, 0f);
+            targetRotation =
+                Quaternion.Euler(0f, finalAngle, 0f)
+                * gunRotationOffsets[i];
 
+            //Rotate Turret
             gun.rotation = Quaternion.RotateTowards(
                 gun.rotation,
                 targetRotation,
@@ -191,50 +243,61 @@ public class Weapon : MonoBehaviour
         if (torpedoLaunchers == null ||
             torpedoMinAngles == null ||
             torpedoMaxAngles == null ||
-            torpedoBaseAngles == null ||
-            torpedoLaunchers.Length != torpedoMinAngles.Length ||
-            torpedoLaunchers.Length != torpedoMaxAngles.Length ||
-            torpedoLaunchers.Length != torpedoBaseAngles.Length)
+            torpedoMinAngles.Length != torpedoLaunchers.Length ||
+            torpedoMaxAngles.Length != torpedoLaunchers.Length)
         {
             return;
         }
-
         for (int i = 0; i < torpedoLaunchers.Length; i++)
         {
             Transform launcher = torpedoLaunchers[i];
+
             if (launcher == null)
                 continue;
 
-            Vector3 direction = targetPoint - launcher.position;
-            direction.y = 0f;
+            Vector3 torpedoDirection = targetPoint - launcher.position;
 
-            if (direction.sqrMagnitude < 0.001f)
+            torpedoDirection.y = 0f;
+
+            if (torpedoDirection.sqrMagnitude < 0.001f)
                 continue;
 
-            float targetYaw =
-                Quaternion.LookRotation(direction, Vector3.up).eulerAngles.y;
+            Quaternion torpedoRotation = 
+                Quaternion.LookRotation(
+                    torpedoDirection,
+                    Vector3.up
+                );
+            
+            float targetAngle = torpedoRotation.eulerAngles.y;
 
-            float relativeAngle =
-                Mathf.DeltaAngle(shipYaw, targetYaw);
+            float targetRelativeToShip = Mathf.DeltaAngle(
+                shipTransform.eulerAngles.y,
+                targetAngle
+            );
 
-            float relativeToLauncher =
-                Mathf.DeltaAngle(torpedoBaseAngles[i], relativeAngle);
+            float targetRelativeToLauncher = Mathf.DeltaAngle(
+                torpedoBaseAngles[i],
+                targetRelativeToShip
+            );
 
             float clampedAngle = Mathf.Clamp(
-                relativeToLauncher,
+                targetRelativeToLauncher,
                 torpedoMinAngles[i],
                 torpedoMaxAngles[i]
             );
 
-            float finalYaw =
-                shipYaw + torpedoBaseAngles[i] + clampedAngle;
+            float finalAngle =
+                shipTransform.eulerAngles.y +
+                torpedoBaseAngles[i] +
+                clampedAngle;
 
-            Quaternion targetRotation =
-                Quaternion.Euler(0f, finalYaw, 0f);
+            torpedoRotation =
+                Quaternion.Euler(0f, finalAngle, 0f)
+                * torpedoRotationOffsets[i];
 
             launcher.rotation = Quaternion.RotateTowards(
                 launcher.rotation,
-                targetRotation,
+                torpedoRotation,
                 rotationSpeed * Time.deltaTime
             );
         }
@@ -255,12 +318,11 @@ public class Weapon : MonoBehaviour
             Debug.LogWarning("Missing firing point");
             return;
         }
-
         foreach (Transform point in firingPoints)
         {
             if (point == null)
                 continue;
-
+            
             GameObject shellObject = Instantiate(
                 selectedShell,
                 point.position,
@@ -274,11 +336,11 @@ public class Weapon : MonoBehaviour
                 shell.damage = isAP ? apDamage : damage;
                 shell.isAP = isAP;
                 shell.penetration = penetration;
+
                 shell.maxDistance = gunRange;
                 shell.speed = shellSpeed;
             }
         }
-
         reloadTimer = reloadTime;
     }
 
@@ -287,21 +349,20 @@ public class Weapon : MonoBehaviour
         if (torpedoPrefab == null)
         {
             Debug.LogWarning("Missing torpedo prefab");
-            return;
+            return;            
         }
 
-        if (torpedoFiringPoints == null ||
-            torpedoFiringPoints.Length == 0)
+        if (torpedoFiringPoints == null || torpedoFiringPoints.Length == 0)
         {
             Debug.LogWarning("Missing torpedo firing points");
-            return;
+            return;            
         }
 
         foreach (Transform point in torpedoFiringPoints)
         {
             if (point == null)
                 continue;
-
+            
             GameObject torpedoObject = Instantiate(
                 torpedoPrefab,
                 point.position,
@@ -313,11 +374,13 @@ public class Weapon : MonoBehaviour
             if (torpedo != null)
             {
                 torpedo.damage = torpedoDamage;
+
                 torpedo.maxDistance = torpedoRange;
                 torpedo.speed = torpedoSpeed;
             }
         }
 
         torpedoReloadTimer = torpedoReloadTime;
+
     }
 }
