@@ -58,6 +58,42 @@ public class Weapon : MonoBehaviour
 
     public float TorpedoReloadTimer => torpedoReloadTimer;
 
+    private void Awake()
+    {
+        if (gunTransforms != null)
+        {
+            gunBaseAngles = new float[gunTransforms.Length];
+
+            for (int i = 0; i < gunTransforms.Length; i++)
+            {
+                if (gunTransforms[i] != null)
+                {
+                    gunBaseAngles[i] =
+                        Mathf.DeltaAngle(
+                            0f,
+                            gunTransforms[i].localEulerAngles.y
+                        );
+                }
+            }
+        }
+
+        if (torpedoLaunchers != null)
+        {
+            torpedoBaseAngles = new float[torpedoLaunchers.Length];
+
+            for (int i = 0; i < torpedoLaunchers.Length; i++)
+            {
+                if (torpedoLaunchers[i] != null)
+                {
+                    torpedoBaseAngles[i] =
+                        Mathf.DeltaAngle(
+                            0f,
+                            torpedoLaunchers[i].localEulerAngles.y
+                        );
+                }
+            }
+        }
+    }
     private void Update()
     {
         if (GameManager.Instance != null &&
