@@ -78,8 +78,7 @@ public class CombatFeedbackManager  : MonoBehaviour
 
         if (healthBar != null)
         {
-            healthBar.enemy = enemy;
-            healthBar.mainCamera = mainCamera;
+            healthBar.Initialize(enemy, mainCamera);
         }
     }
 
