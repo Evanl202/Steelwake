@@ -79,6 +79,7 @@ public class ExperienceManager : MonoBehaviour
     public void CompleteLevelUpChoice()
     {
         pendingLevelUps--;
+        Debug.Log("Remaining level-up choices: " + pendingLevelUps);
         isProcessingLevelUps = false;
 
         if (pendingLevelUps > 0)
