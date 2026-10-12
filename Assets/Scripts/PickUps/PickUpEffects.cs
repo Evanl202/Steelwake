@@ -60,4 +60,5 @@ public class PickupEffects : MonoBehaviour
         IsInvulnerable = true;
         invulnerabilityTimer = 5f;
     }
+    
 }
