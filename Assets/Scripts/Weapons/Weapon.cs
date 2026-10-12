@@ -223,21 +223,40 @@ public class Weapon : MonoBehaviour
                 gunMaxAngles[i]
             );
 
+            // Get the turret's current angle relative to its allowed arc.
+            float currentRelativeToShip = Mathf.DeltaAngle(
+                shipTransform.eulerAngles.y,
+                gun.eulerAngles.y
+            );
+
+            float currentRelativeToGun = Mathf.DeltaAngle(
+                gunBaseAngles[i],
+                currentRelativeToShip
+            );
+
+            // Keep the current angle inside the allowed arc.
+            currentRelativeToGun = Mathf.Clamp(
+                currentRelativeToGun,
+                gunMinAngles[i],
+                gunMaxAngles[i]
+            );
+
+            // Move numerically through the allowed arc instead of taking
+            // the shortest quaternion path through the rear of the ship.
+            float nextAngle = Mathf.MoveTowards(
+                currentRelativeToGun,
+                clampedAngle,
+                rotationSpeed * Time.deltaTime
+            );
+
             float finalAngle =
                 shipTransform.eulerAngles.y +
                 gunBaseAngles[i] +
-                clampedAngle;
+                nextAngle;
 
-            targetRotation =
+            gun.rotation =
                 Quaternion.Euler(0f, finalAngle, 0f)
                 * gunRotationOffsets[i];
-
-            //Rotate Turret
-            gun.rotation = Quaternion.RotateTowards(
-                gun.rotation,
-                targetRotation,
-                rotationSpeed * Time.deltaTime
-            );
         }
 
         if (torpedoLaunchers == null ||
