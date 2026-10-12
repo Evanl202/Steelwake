@@ -47,6 +47,10 @@ public class Weapon : MonoBehaviour
     public float[] torpedoMinAngles;
     public float[] torpedoMaxAngles;
 
+    [Header("Torpedo Firing Direction Restriction")]
+    public float torpedoSideMinAngle = 55f;
+    public float torpedoSideMaxAngle = 125f;
+
     public float[] torpedoBaseAngles;
 
     [Header ("Torpedo Combat")]
@@ -365,6 +369,48 @@ public class Weapon : MonoBehaviour
 
     private void FireTorpedo()
     {
+        // Only allow torpedo firing toward the sides of the ship.
+        Camera cam = Camera.main;
+
+        if (cam == null || shipTransform == null)
+            return;
+
+        Plane oceanPlane = new Plane(
+            Vector3.up,
+            transform.position
+        );
+
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+        if (!oceanPlane.Raycast(ray, out float distance))
+            return;
+
+        Vector3 targetPoint = ray.GetPoint(distance);
+        Vector3 directionToTarget = targetPoint - shipTransform.position;
+        directionToTarget.y = 0f;
+
+        if (directionToTarget.sqrMagnitude < 0.001f)
+            return;
+
+        float targetAngle = Quaternion.LookRotation(
+            directionToTarget,
+            Vector3.up
+        ).eulerAngles.y;
+
+        float targetRelativeToShip = Mathf.Abs(
+            Mathf.DeltaAngle(
+                shipTransform.eulerAngles.y,
+                targetAngle
+            )
+        );
+
+        // Reject targets in the blocked front or rear sectors.
+        if (targetRelativeToShip < torpedoSideMinAngle ||
+            targetRelativeToShip > torpedoSideMaxAngle)
+        {
+            return;
+        }
+
         if (torpedoPrefab == null)
         {
             Debug.LogWarning("Missing torpedo prefab");
