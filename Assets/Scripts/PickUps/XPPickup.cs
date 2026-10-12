@@ -41,15 +41,14 @@ public class XPPickup : MonoBehaviour
             FindObjectsSortMode.None
         );
 
-        Debug.Log("XP Collector found " + pickups.Length + " pickups.");
-
         foreach (XPPickup pickup in pickups)
         {
             if (pickup != null)
             {
-                Debug.Log("Collecting XP pickup: " + pickup.name);
                 pickup.CollectXP();
             }
         }
+
+        Debug.Log("XP Collector collected " + pickups.Length + " XP pickups.");
     }
 }
