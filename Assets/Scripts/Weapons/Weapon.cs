@@ -309,20 +309,40 @@ public class Weapon : MonoBehaviour
                 torpedoMaxAngles[i]
             );
 
+            // Get the launcher's current angle relative to its allowed arc.
+            float currentRelativeToShip = Mathf.DeltaAngle(
+                shipTransform.eulerAngles.y,
+                launcher.eulerAngles.y
+            );
+
+            float currentRelativeToLauncher = Mathf.DeltaAngle(
+                torpedoBaseAngles[i],
+                currentRelativeToShip
+            );
+
+            // Keep the current angle inside the allowed arc.
+            currentRelativeToLauncher = Mathf.Clamp(
+                currentRelativeToLauncher,
+                torpedoMinAngles[i],
+                torpedoMaxAngles[i]
+            );
+
+            // Move through the permitted arc without taking the shortest
+            // quaternion path through the blocked rear section.
+            float nextAngle = Mathf.MoveTowards(
+                currentRelativeToLauncher,
+                clampedAngle,
+                rotationSpeed * Time.deltaTime
+            );
+
             float finalAngle =
                 shipTransform.eulerAngles.y +
                 torpedoBaseAngles[i] +
-                clampedAngle;
+                nextAngle;
 
-            torpedoRotation =
+            launcher.rotation =
                 Quaternion.Euler(0f, finalAngle, 0f)
                 * torpedoRotationOffsets[i];
-
-            launcher.rotation = Quaternion.RotateTowards(
-                launcher.rotation,
-                torpedoRotation,
-                rotationSpeed * Time.deltaTime
-            );
         }
     }
 
