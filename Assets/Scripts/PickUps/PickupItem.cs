@@ -5,7 +5,11 @@ public class PickupItem : MonoBehaviour
 {
     public enum PickupType
     {
-        Repair
+        Repair,
+        DamageBoost,
+        AttackSpeedBoost,
+        ReloadBoost,
+        Invulnerability
     }
 
     [Header("Pickup Settings")]
@@ -31,12 +35,45 @@ public class PickupItem : MonoBehaviour
             case PickupType.Repair:
                 player.RepairPercent(repairPercent);
                 break;
+
+            case PickupType.DamageBoost:
+            case PickupType.AttackSpeedBoost:
+            case PickupType.ReloadBoost:
+            case PickupType.Invulnerability:
+                PickupEffects effects =
+                    player.GetComponent<PickupEffects>();
+
+                if (effects == null)
+                {
+                    Debug.LogWarning(
+                        "Player is missing PickupEffects."
+                    );
+                    return;
+                }
+
+                switch (pickupType)
+                {
+                    case PickupType.DamageBoost:
+                        effects.ActivateDamageBoost();
+                        break;
+
+                    case PickupType.AttackSpeedBoost:
+                        effects.ActivateAttackSpeedBoost();
+                        break;
+
+                    case PickupType.ReloadBoost:
+                        effects.ActivateReloadBoost();
+                        break;
+
+                    case PickupType.Invulnerability:
+                        effects.ActivateInvulnerability();
+                        break;
+                }
+                break;
         }
 
         collected = true;
-
         Debug.Log("Collected pickup: " + pickupType);
-
         Destroy(gameObject);
     }
 }
