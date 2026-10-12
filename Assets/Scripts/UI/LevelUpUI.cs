@@ -687,7 +687,16 @@ public class LevelUpUI : MonoBehaviour
                 break;
         }
 
-        HideLevelUp();
+        levelUpPanel.SetActive(false);
+
+        if (ExperienceManager.Instance != null)
+        {
+            ExperienceManager.Instance.CompleteLevelUpChoice();
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     public void HideLevelUp()

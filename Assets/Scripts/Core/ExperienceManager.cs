@@ -12,6 +12,9 @@ public class ExperienceManager : MonoBehaviour
     [Header ("Level Up UI")]
     public LevelUpUI levelUpUI;
 
+    private int pendingLevelUps = 0;
+    private bool isProcessingLevelUps = false;
+
     private void Awake()
     {
         if (Instance == null)
@@ -41,32 +44,54 @@ public class ExperienceManager : MonoBehaviour
     {
         while (currentXP >= xpToNextLevel)
         {
-            LevelUp();
+            currentXP -= xpToNextLevel;
+            currentLevel++;
 
+            xpToNextLevel = Mathf.RoundToInt(
+                xpToNextLevel * 1.5f
+            );
+
+            pendingLevelUps++;
+
+            Debug.Log(
+                "LEVEL UP! Current Level: " + currentLevel
+            );
         }
+
+        ProcessNextLevelUp();
     }
 
-    public void LevelUp()
+    public void ProcessNextLevelUp()
     {
-        currentXP -= xpToNextLevel;
+        if (isProcessingLevelUps || pendingLevelUps <= 0)
+            return;
 
-        currentLevel++;
-
-        xpToNextLevel = Mathf.RoundToInt(
-            xpToNextLevel * 1.5f
-        );
-
-        Debug.Log(
-            "LEVEL UP! Current Level: " + currentLevel
-        );
-
-        if (levelUpUI != null)
+        if (levelUpUI == null)
         {
-            levelUpUI.ShowLevelUp();
+            Debug.LogWarning("ExperienceManager has no LevelUpUI assigned");
+            return;
+        }
+
+        isProcessingLevelUps = true;
+        levelUpUI.ShowLevelUp();
+    }
+
+    public void CompleteLevelUpChoice()
+    {
+        pendingLevelUps--;
+        isProcessingLevelUps = false;
+
+        if (pendingLevelUps > 0)
+        {
+            ProcessNextLevelUp();
         }
         else
         {
-            Debug.LogWarning("ExperienceManager has no LevelUpUI assigned");
+            if (GameManager.Instance != null &&
+                GameManager.Instance.gameRunning)
+            {
+                Time.timeScale = 1f;
+            }
         }
     }
 }
