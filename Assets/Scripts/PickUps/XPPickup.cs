@@ -37,9 +37,11 @@ public class XPPickup : MonoBehaviour
 
     public static void CollectAllXP()
     {
-        XPPickup[] pickups = FindObjectsByType<XPPickup>(
-            FindObjectsSortMode.None
+        XPPickup[] pickups = Object.FindObjectsByType<XPPickup>(
+            FindObjectsInactive.Exclude
         );
+
+        Debug.Log($"XP Collector found {pickups.Length} XP pickups.");
 
         foreach (XPPickup pickup in pickups)
         {
@@ -48,7 +50,5 @@ public class XPPickup : MonoBehaviour
                 pickup.CollectXP();
             }
         }
-
-        Debug.Log("XP Collector collected " + pickups.Length + " XP pickups.");
     }
 }
