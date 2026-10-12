@@ -376,7 +376,15 @@ public class Weapon : MonoBehaviour
 
             if (shell != null)
             {
-                shell.damage = isAP ? apDamage : damage;
+                PickupEffects effects =
+                    shipTransform.GetComponent<PickupEffects>();
+
+                float damageMultiplier =
+                    effects != null ? effects.DamageMultiplier : 1f;
+
+                shell.damage = (isAP ? apDamage : damage)
+                    * damageMultiplier;
+                
                 shell.isAP = isAP;
                 shell.penetration = penetration;
 
@@ -384,7 +392,16 @@ public class Weapon : MonoBehaviour
                 shell.speed = shellSpeed;
             }
         }
-        reloadTimer = reloadTime;
+        PickupEffects effects =
+            shipTransform.GetComponent<PickupEffects>();
+
+        float attackSpeed =
+            effects != null ? effects.AttackSpeedMultiplier : 1f;
+
+        float reloadMultiplier =
+            effects != null ? effects.ReloadMultiplier : 1f;
+
+        reloadTimer = reloadTime * reloadMultiplier / attackSpeed;
     }
 
     private void FireTorpedo()
@@ -458,14 +475,29 @@ public class Weapon : MonoBehaviour
 
             if (torpedo != null)
             {
-                torpedo.damage = torpedoDamage;
+                PickupEffects effects =
+                    shipTransform.GetComponent<PickupEffects>();
+
+                float damageMultiplier =
+                    effects != null ? effects.DamageMultiplier : 1f;
+
+                torpedo.damage = torpedoDamage * damageMultiplier;
 
                 torpedo.maxDistance = torpedoRange;
                 torpedo.speed = torpedoSpeed;
             }
         }
 
-        torpedoReloadTimer = torpedoReloadTime;
+        PickupEffects effects =
+            shipTransform.GetComponent<PickupEffects>();
 
+        float attackSpeed =
+            effects != null ? effects.AttackSpeedMultiplier : 1f;
+
+        float reloadMultiplier =
+            effects != null ? effects.ReloadMultiplier : 1f;
+
+        torpedoReloadTimer =
+            torpedoReloadTime * reloadMultiplier / attackSpeed;
     }
 }
