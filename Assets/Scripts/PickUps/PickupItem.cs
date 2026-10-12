@@ -9,6 +9,7 @@ public class PickupItem : MonoBehaviour
         DamageBoost,
         AttackSpeedBoost,
         ReloadBoost,
+        XPCollector,
         Invulnerability
     }
 
@@ -67,6 +68,10 @@ public class PickupItem : MonoBehaviour
 
                     case PickupType.Invulnerability:
                         effects.ActivateInvulnerability();
+                        break;
+
+                    case PickupType.XPCollector:
+                        XPPickup.CollectAllXP();
                         break;
                 }
                 break;
