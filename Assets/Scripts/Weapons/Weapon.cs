@@ -376,11 +376,11 @@ public class Weapon : MonoBehaviour
 
             if (shell != null)
             {
-                PickupEffects effects =
+                PickupEffects Turreteffects =
                     shipTransform.GetComponent<PickupEffects>();
 
                 float damageMultiplier =
-                    effects != null ? effects.DamageMultiplier : 1f;
+                    Turreteffects != null ? Turreteffects.DamageMultiplier : 1f;
 
                 shell.damage = (isAP ? apDamage : damage)
                     * damageMultiplier;
@@ -392,14 +392,14 @@ public class Weapon : MonoBehaviour
                 shell.speed = shellSpeed;
             }
         }
-        PickupEffects effects =
+        PickupEffects Turreteffects =
             shipTransform.GetComponent<PickupEffects>();
 
         float attackSpeed =
-            effects != null ? effects.AttackSpeedMultiplier : 1f;
+            Turreteffects != null ? Turreteffects.AttackSpeedMultiplier : 1f;
 
         float reloadMultiplier =
-            effects != null ? effects.ReloadMultiplier : 1f;
+            Turreteffects != null ? Turreteffects.ReloadMultiplier : 1f;
 
         reloadTimer = reloadTime * reloadMultiplier / attackSpeed;
     }
@@ -475,11 +475,11 @@ public class Weapon : MonoBehaviour
 
             if (torpedo != null)
             {
-                PickupEffects effects =
+                PickupEffects Torpedoeffects =
                     shipTransform.GetComponent<PickupEffects>();
 
                 float damageMultiplier =
-                    effects != null ? effects.DamageMultiplier : 1f;
+                    Torpedoeffects != null ? Torpedoeffects.DamageMultiplier : 1f;
 
                 torpedo.damage = torpedoDamage * damageMultiplier;
 
@@ -488,14 +488,14 @@ public class Weapon : MonoBehaviour
             }
         }
 
-        PickupEffects effects =
+        PickupEffects Torpedoeffects =
             shipTransform.GetComponent<PickupEffects>();
 
         float attackSpeed =
-            effects != null ? effects.AttackSpeedMultiplier : 1f;
+            Torpedoeffects != null ? Torpedoeffects.AttackSpeedMultiplier : 1f;
 
         float reloadMultiplier =
-            effects != null ? effects.ReloadMultiplier : 1f;
+            Torpedoeffects != null ? Torpedoeffects.ReloadMultiplier : 1f;
 
         torpedoReloadTimer =
             torpedoReloadTime * reloadMultiplier / attackSpeed;
