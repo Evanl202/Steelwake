@@ -36,29 +36,62 @@ public class CombatFeedbackManager  : MonoBehaviour
         }
     }
 
-    public void ShowDamage(float damage, Vector3 worldPosition)
+    
+public void ShowDamage(float damage, Vector3 worldPosition)
+{
+    if (damageNumberPrefab == null || canvas == null)
+        return;
+
+    if (mainCamera == null)
+        mainCamera = Camera.main;
+
+    if (mainCamera == null)
+        return;
+
+    Vector3 screenPosition =
+        mainCamera.WorldToScreenPoint(worldPosition);
+
+    // Do not show damage numbers for positions behind the camera.
+    if (screenPosition.z <= 0f)
+        return;
+
+    GameObject damageObject =
+        Instantiate(damageNumberPrefab, canvas.transform);
+
+    DamageNumber damageNumber =
+        damageObject.GetComponent<DamageNumber>();
+
+    RectTransform damageRect =
+        damageObject.GetComponent<RectTransform>();
+
+    if (damageNumber != null && damageRect != null)
     {
-        if (damageNumberPrefab == null || canvas == null)
+        Camera canvasCamera =
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay
+                ? null
+                : canvas.worldCamera;
+
+        RectTransform canvasRect =
+            canvas.transform as RectTransform;
+
+        if (canvasRect != null &&
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                canvasRect,
+                screenPosition,
+                canvasCamera,
+                out Vector2 localPoint))
         {
-            return;
+            damageRect.anchoredPosition =
+                localPoint + damageNumber.GetRandomOffset();
+        }
+        else
+        {
+            damageRect.position = screenPosition;
         }
 
-        GameObject damageObject =
-            Instantiate(damageNumberPrefab, canvas.transform);
-
-        Vector3 screenPosition =
-            mainCamera.WorldToScreenPoint(worldPosition);
-
-        damageObject.transform.position = screenPosition;
-
-        DamageNumber damageNumber =
-            damageObject.GetComponent<DamageNumber>();
-
-        if (damageNumber != null)
-        {
-            damageNumber.SetDamage(damage);
-        }
+        damageNumber.SetDamage(damage);
     }
+}
 
     public void CreateEnemyHealthBar(EnemyShip enemy)
     {
