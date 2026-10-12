@@ -392,14 +392,14 @@ public class Weapon : MonoBehaviour
                 shell.speed = shellSpeed;
             }
         }
-        PickupEffects Turreteffects =
+        PickupEffects effects =
             shipTransform.GetComponent<PickupEffects>();
 
         float attackSpeed =
-            Turreteffects != null ? Turreteffects.AttackSpeedMultiplier : 1f;
+            effects != null ? effects.AttackSpeedMultiplier : 1f;
 
         float reloadMultiplier =
-            Turreteffects != null ? Turreteffects.ReloadMultiplier : 1f;
+            effects != null ? effects.ReloadMultiplier : 1f;
 
         reloadTimer = reloadTime * reloadMultiplier / attackSpeed;
     }
@@ -488,14 +488,14 @@ public class Weapon : MonoBehaviour
             }
         }
 
-        PickupEffects Torpedoeffects =
+        PickupEffects effects =
             shipTransform.GetComponent<PickupEffects>();
 
         float attackSpeed =
-            Torpedoeffects != null ? Torpedoeffects.AttackSpeedMultiplier : 1f;
+            effects != null ? effects.AttackSpeedMultiplier : 1f;
 
         float reloadMultiplier =
-            Torpedoeffects != null ? Torpedoeffects.ReloadMultiplier : 1f;
+            effects != null ? effects.ReloadMultiplier : 1f;
 
         torpedoReloadTimer =
             torpedoReloadTime * reloadMultiplier / attackSpeed;
