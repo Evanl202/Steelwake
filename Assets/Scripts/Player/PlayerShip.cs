@@ -19,6 +19,14 @@ public class PlayerShip : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        PickupEffects effects = GetComponent<PickupEffects>();
+
+        if (effects != null && effects.IsInvulnerable)
+        {
+            Debug.Log("Damage blocked by invulnerability!");
+            return;
+        }
+        
         currentHealth -= damage;
 
         if (CombatFeedbackManager.Instance != null)
