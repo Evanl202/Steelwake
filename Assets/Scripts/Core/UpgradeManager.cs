@@ -206,7 +206,7 @@ public class UpgradeManager : MonoBehaviour
         );
 
         playerWeapon.torpedoReloadTime = Mathf.Max(
-            1f,
+            5f,
             playerWeapon.torpedoReloadTime - reloadFlatReduction
         );
 
@@ -227,7 +227,7 @@ public class UpgradeManager : MonoBehaviour
         );
 
         playerWeapon.torpedoReloadTime = Mathf.Max(
-            1f,
+            5f,
             playerWeapon.torpedoReloadTime * (1f - reloadPercentReduction)
         );
         
@@ -697,7 +697,7 @@ public class UpgradeManager : MonoBehaviour
         }
         
         playerWeapon.torpedoReloadTime = Mathf.Max(
-            1f,
+            5f,
             playerWeapon.torpedoReloadTime - reloadFlatReduction
         );
         
@@ -716,7 +716,7 @@ public class UpgradeManager : MonoBehaviour
         }
         
         playerWeapon.torpedoReloadTime = Mathf.Max(
-            1f,
+            5f,
             playerWeapon.torpedoReloadTime * (1f - reloadPercentReduction)
         );
         

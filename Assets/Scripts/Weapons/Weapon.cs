@@ -55,11 +55,11 @@ public class Weapon : MonoBehaviour
 
     [Header ("Torpedo Combat")]
     public float torpedoDamage = 50f;
-    public float torpedoReloadTime = 5f;
+    public float torpedoReloadTime = 20f;
     private float torpedoReloadTimer = 0f;
 
     [Header ("Torpedo Range")]
-    public float torpedoRange = 35f;
+    public float torpedoRange = 50f;
     public float torpedoSpeed = 20f;
 
     public float TorpedoReloadTimer => torpedoReloadTimer;
