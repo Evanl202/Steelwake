@@ -37,6 +37,11 @@ public class PickupItem : MonoBehaviour
                 player.RepairPercent(repairPercent);
                 break;
 
+            case PickupType.XPCollector:
+                Debug.Log("XP Collector activated!");
+                XPPickup.CollectAllXP();
+                break;
+
             case PickupType.DamageBoost:
             case PickupType.AttackSpeedBoost:
             case PickupType.ReloadBoost:
