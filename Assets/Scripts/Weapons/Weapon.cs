@@ -236,15 +236,16 @@ public class Weapon : MonoBehaviour
                 gunMaxAngles[i]
             );
 
-            // Get the turret's current angle relative to its allowed arc.
+            // Get the turret's current angle relative to the ship.
+            float currentRelativeToShip = Mathf.DeltaAngle(
+                shipTransform.eulerAngles.y,
+                gun.eulerAngles.y
+            );
+
+            // Apply this turret's rotation direction.
             float currentRelativeToGun =
                 Mathf.DeltaAngle(gunBaseAngles[i], currentRelativeToShip)
                 * directionSign;
-
-            float currentRelativeToGun = Mathf.DeltaAngle(
-                gunBaseAngles[i],
-                currentRelativeToShip
-            );
 
             // Keep the current angle inside the allowed arc.
             currentRelativeToGun = Mathf.Clamp(
