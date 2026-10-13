@@ -21,8 +21,6 @@ public class Weapon : MonoBehaviour
 
     public float[] gunBaseAngles;
 
-    public float[] gunRotationDirections;
-
     [Header ("Gun Combat")]
     public float damage = 25f;
     public float apDamage = 40f;
@@ -128,6 +126,7 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
+
         if (GameManager.Instance != null && !GameManager.Instance.gameRunning)
         {
             return;
@@ -217,18 +216,10 @@ public class Weapon : MonoBehaviour
                 targetAngle
             );
 
-            float directionSign =
-                gunRotationDirections != null &&
-                i < gunRotationDirections.Length
-                    ? Mathf.Sign(gunRotationDirections[i])
-                    : 1f;
-
-            if (directionSign == 0f)
-                directionSign = 1f;
-
-            float targetRelativeToGun =
-                Mathf.DeltaAngle(gunBaseAngles[i], targetRelativeToShip)
-                * directionSign;
+            float targetRelativeToGun = Mathf.DeltaAngle(
+                gunBaseAngles[i],
+                targetRelativeToShip
+            );
 
             float clampedAngle = Mathf.Clamp(
                 targetRelativeToGun,
@@ -237,9 +228,10 @@ public class Weapon : MonoBehaviour
             );
 
             // Get the turret's current angle relative to its allowed arc.
-            float currentRelativeToGun =
-                Mathf.DeltaAngle(gunBaseAngles[i], currentRelativeToShip)
-                * directionSign;
+            float currentRelativeToShip = Mathf.DeltaAngle(
+                shipTransform.eulerAngles.y,
+                gun.eulerAngles.y
+            );
 
             float currentRelativeToGun = Mathf.DeltaAngle(
                 gunBaseAngles[i],
@@ -264,7 +256,7 @@ public class Weapon : MonoBehaviour
             float finalAngle =
                 shipTransform.eulerAngles.y +
                 gunBaseAngles[i] +
-                nextAngle * directionSign;
+                nextAngle;
 
             gun.rotation =
                 Quaternion.Euler(0f, finalAngle, 0f)
