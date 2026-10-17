@@ -634,47 +634,58 @@ public class EnemyWeapon : MonoBehaviour
     {
         if (shellPrefab == null ||
             firingPoints == null ||
-            guns == null)
+            guns == null ||
+            gunBaseAngles == null ||
+            gunMinAngles == null ||
+            gunMaxAngles == null)
         {
             Debug.LogWarning(
-                "Missing shell, firing points, or guns"
+                "Missing shell, firing points, guns, or gun arc settings"
             );
-
             return;
         }
 
         int gunCount = Mathf.Min(
-            firingPoints.Length,
             guns.Length,
             gunBaseAngles.Length,
             gunMinAngles.Length,
             gunMaxAngles.Length
         );
 
-        bool fired = false;
+        if (gunCount == 0)
+            return;
 
+        bool fired = false;
         isAP = Random.value < apChance;
 
-        EnemyShip enemyShip = shipTransform.GetComponent<EnemyShip>();
+        EnemyShip enemyShip =
+            shipTransform.GetComponent<EnemyShip>();
 
-        for (int i = 0; i < gunCount; i++)
+        for (int i = 0; i < firingPoints.Length; i++)
         {
-            if (guns[i] == null ||
-                firingPoints[i] == null)
-            {
+            if (firingPoints[i] == null)
                 continue;
-            }
+
+            // If there is one turret with multiple barrels,
+            // all firing points use that turret's firing arc.
+            int gunIndex = guns.Length == 1 ? 0 : i;
+
+            if (gunIndex >= gunCount)
+                continue;
+
+            if (guns[gunIndex] == null)
+                continue;
 
             if (!IsTargetInArc(
-                    guns[i],
-                    gunBaseAngles[i],
-                    gunMinAngles[i],
-                    gunMaxAngles[i],
-                    shellSpeed))
+                guns[gunIndex],
+                gunBaseAngles[gunIndex],
+                gunMinAngles[gunIndex],
+                gunMaxAngles[gunIndex],
+                shellSpeed))
             {
                 continue;
             }
-            
+
             GameObject selectedShell =
                 isAP ? apShellPrefab : shellPrefab;
 
@@ -684,19 +695,20 @@ public class EnemyWeapon : MonoBehaviour
                 return;
             }
 
-            GameObject shellObject =
-                Instantiate(
-                    selectedShell,
-                    firingPoints[i].position,
-                    firingPoints[i].rotation
-                );
+            // Spawn one shell at this barrel's own muzzle.
+            GameObject shellObject = Instantiate(
+                selectedShell,
+                firingPoints[i].position,
+                firingPoints[i].rotation
+            );
 
             EnemyShell shell =
                 shellObject.GetComponent<EnemyShell>();
-            
+
             if (shell != null)
             {
                 shell.damage = isAP ? apDamage : gunDamage;
+
                 if (enemyShip != null && enemyShip.isElite)
                 {
                     shell.damage *= 1.25f;
@@ -704,19 +716,20 @@ public class EnemyWeapon : MonoBehaviour
 
                 shell.isAP = isAP;
                 shell.penetration = penetration;
-
                 shell.maxDistance = gunFiringRange;
                 shell.speed = shellSpeed;
             }
 
             fired = true;
         }
-            
+
+        // Start the reload once after the salvo, not once per barrel.
         if (fired)
         {
             reloadTimer = gunReloadTime;
         }
     }
+
 
     private void FireTorpedo()
     {
