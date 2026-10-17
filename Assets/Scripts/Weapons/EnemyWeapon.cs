@@ -48,7 +48,13 @@ public class EnemyWeapon : MonoBehaviour
     private float reloadTimer = 0f;
     private float torpedoReloadTimer = 0f;
 
-    [Header("Aim Accuracy")]
+    
+    [Header ("Torpedo Firing Direction Restriction")]
+    public float torpedoSideMinAngle = 55f;
+    public float torpedoSideMaxAngle = 125f;
+
+
+    [Header ("Aim Accuracy")]
     [Range(0f, 1f)]
     public float predictionAccuracy = 1f;
 
@@ -714,6 +720,38 @@ public class EnemyWeapon : MonoBehaviour
 
     private void FireTorpedo()
     {
+        
+        // Only allow torpedo firing toward the sides of the ship.
+        if (shipTransform == null || player == null)
+            return;
+
+        Vector3 directionToPlayer =
+            player.position - shipTransform.position;
+
+        directionToPlayer.y = 0f;
+
+        if (directionToPlayer.sqrMagnitude < 0.001f)
+            return;
+
+        float targetAngle = Quaternion.LookRotation(
+            directionToPlayer,
+            Vector3.up
+        ).eulerAngles.y;
+
+        float targetRelativeToShip = Mathf.Abs(
+            Mathf.DeltaAngle(
+                shipTransform.eulerAngles.y,
+                targetAngle
+            )
+        );
+
+        // Reject targets in the blocked front or rear sectors.
+        if (targetRelativeToShip < torpedoSideMinAngle ||
+            targetRelativeToShip > torpedoSideMaxAngle)
+        {
+            return;
+        }
+
         if (torpedoPrefab == null ||
             torpedoFiringPoints == null || 
             torpedoLaunchers == null)
