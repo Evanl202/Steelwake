@@ -8,6 +8,11 @@ public class EnemyWeapon : MonoBehaviour
     public Transform[] guns;
     public Transform[] firingPoints;
 
+    
+    [Header("Firing Point Mapping")]
+    public int[] firingPointToGunIndex;
+
+
     [Header ("Ship")]
     public Transform shipTransform;
 
@@ -666,9 +671,13 @@ public class EnemyWeapon : MonoBehaviour
             if (firingPoints[i] == null)
                 continue;
 
-            // If there is one turret with multiple barrels,
-            // all firing points use that turret's firing arc.
-            int gunIndex = guns.Length == 1 ? 0 : i;
+            if (firingPointToGunIndex == null ||
+                i >= firingPointToGunIndex.Length)
+            {
+                continue;
+            }
+
+            int gunIndex = firingPointToGunIndex[i];
 
             if (gunIndex >= gunCount)
                 continue;
