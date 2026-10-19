@@ -14,7 +14,8 @@ public class ShipFire : MonoBehaviour
 
     public bool IsBurning => isBurning;
 
-    public bool TryStartFire(bool isAP)
+    
+    public bool TryStartFire(bool isAP, float ignitionChance)
     {
         // AP shells cannot start fires.
         if (isAP || isBurning)
@@ -30,6 +31,7 @@ public class ShipFire : MonoBehaviour
         fireCoroutine = StartCoroutine(FireRoutine());
         return true;
     }
+
 
     private IEnumerator FireRoutine()
     {

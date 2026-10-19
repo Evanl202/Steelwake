@@ -61,7 +61,7 @@ public class EnemyShell : MonoBehaviour
             {
                 ShipFire fire = player.GetComponent<ShipFire>();
 
-                if (fire != null && fire.TryStartFire(false))
+                if (fire != null && fire.TryStartFire(false, ignitionChance))
                 {
                     Debug.Log("Player ship caught fire!");
                 }

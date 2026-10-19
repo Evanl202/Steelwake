@@ -60,7 +60,7 @@ public class Shell : MonoBehaviour
             {
                 ShipFire fire = enemy.GetComponent<ShipFire>();
 
-                if (fire != null && fire.TryStartFire(false))
+                if (fire != null && fire.TryStartFire(false, ignitionChance))
                 {
                     Debug.Log("Enemy ship caught fire!");
                 }
