@@ -395,13 +395,10 @@ public class Weapon : MonoBehaviour
         PickupEffects effects =
             shipTransform.GetComponent<PickupEffects>();
 
-        float attackSpeed =
-            effects != null ? effects.AttackSpeedMultiplier : 1f;
-
         float reloadMultiplier =
             effects != null ? effects.ReloadMultiplier : 1f;
 
-        reloadTimer = reloadTime * reloadMultiplier / attackSpeed;
+        reloadTimer = reloadTime * reloadMultiplier;
     }
 
     private void FireTorpedo()
@@ -491,13 +488,10 @@ public class Weapon : MonoBehaviour
         PickupEffects effects =
             shipTransform.GetComponent<PickupEffects>();
 
-        float attackSpeed =
-            effects != null ? effects.AttackSpeedMultiplier : 1f;
-
         float reloadMultiplier =
             effects != null ? effects.ReloadMultiplier : 1f;
 
         torpedoReloadTimer =
-            torpedoReloadTime * reloadMultiplier / attackSpeed;
+            torpedoReloadTime * reloadMultiplier;
     }
 }

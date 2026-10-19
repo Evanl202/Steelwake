@@ -5,11 +5,9 @@ public class PickupEffects : MonoBehaviour
 {
     public bool IsInvulnerable { get; private set; }
     public float DamageMultiplier { get; private set; } = 1f;
-    public float AttackSpeedMultiplier { get; private set; } = 1f;
     public float ReloadMultiplier { get; private set; } = 1f;
 
     private float damageTimer;
-    private float attackSpeedTimer;
     private float reloadTimer;
     private float invulnerabilityTimer;
 
@@ -41,12 +39,6 @@ public class PickupEffects : MonoBehaviour
     {
         DamageMultiplier = 1.5f;
         damageTimer = 10f;
-    }
-
-    public void ActivateAttackSpeedBoost()
-    {
-        AttackSpeedMultiplier = 1.4f;
-        attackSpeedTimer = 10f;
     }
 
     public void ActivateReloadBoost()

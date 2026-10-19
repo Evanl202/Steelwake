@@ -7,7 +7,6 @@ public class PickupItem : MonoBehaviour
     {
         Repair,
         DamageBoost,
-        AttackSpeedBoost,
         ReloadBoost,
         XPCollector,
         Invulnerability
@@ -43,7 +42,6 @@ public class PickupItem : MonoBehaviour
                 break;
 
             case PickupType.DamageBoost:
-            case PickupType.AttackSpeedBoost:
             case PickupType.ReloadBoost:
             case PickupType.Invulnerability:
                 PickupEffects effects =
