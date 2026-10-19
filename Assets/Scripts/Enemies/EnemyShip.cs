@@ -27,7 +27,7 @@ public class EnemyShip : MonoBehaviour
     public GameObject xpPickupPrefab;
 
     [Header("Regular Pickup Drop")]
-    public GameObject pickupPrefab;
+    public GameObject[] pickupPrefab;
 
     [Range(0f, 1f)]
     public float pickupDropChance = 0.05f;
@@ -433,18 +433,27 @@ public class EnemyShip : MonoBehaviour
             );
         }
 
-        if (pickupPrefab != null &&
+        if (pickupPrefabs != null &&
+            pickupPrefabs.Length > 0 &&
             Random.value < pickupDropChance)
         {
-            Instantiate(
-                pickupPrefab,
-                transform.position,
-                Quaternion.identity
-            );
+            GameObject selectedPickup = pickupPrefabs[
+                Random.Range(0, pickupPrefabs.Length)
+            ];
 
-            Debug.Log("Enemy dropped a regular pickup");
+            if (selectedPickup != null)
+            {
+                Instantiate(
+                    selectedPickup,
+                    transform.position,
+                    Quaternion.identity
+                );
+
+                Debug.Log(
+                    "Enemy dropped pickup: " + selectedPickup.name
+                );
+            }
         }
-
         Destroy(gameObject);
     }
 }
