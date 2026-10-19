@@ -16,6 +16,7 @@ public class ShipAbilities : MonoBehaviour
     [Header("Smoke")]
     public float smokeDuration = 8f;
     public float smokeCooldown = 20f;
+    public ParticleSystem smokeEffect;
 
     [Header("Repair")]
     public float repairCooldown = 60;
@@ -77,6 +78,12 @@ public class ShipAbilities : MonoBehaviour
         smokeDurationTimer = smokeDuration;
         IsInSmoke = true;
 
+        if (smokeEffect != null)
+        {
+            smokeEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            smokeEffect.Play();
+        }
+
         Debug.Log("Smoke activated!");
 
         StartCoroutine(SmokeRoutine());
@@ -118,6 +125,11 @@ public class ShipAbilities : MonoBehaviour
 
         smokeDurationTimer = 0f;
         IsInSmoke = false;
+
+        if (smokeEffect != null)
+        {
+            smokeEffect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        }
 
         smokeCooldownTimer = smokeCooldown;
 
