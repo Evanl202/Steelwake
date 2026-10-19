@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class ShipFire : MonoBehaviour
 {
-    [Header("Fire Settings")]
-    [Range(0f, 1f)]
-    public float ignitionChance = 0.20f;
-
     [Range(0f, 1f)]
     public float damagePercentPerSecond = 0.02f;
 

@@ -112,6 +112,15 @@ public class ShipAbilities : MonoBehaviour
             return;
         }
 
+        // Extinguish Fire
+        ShipFire fire = GetComponent<ShipFire>();
+
+        if (fire != null && fire.IsBurning)
+        {
+            fire.Extinguish();
+            Debug.Log("Fire extinguished!");
+        }
+
         playerShip.RepairPercent(repairPercent);
 
         repairCooldownTimer = repairCooldown;

@@ -13,6 +13,10 @@ public class EnemyShell : MonoBehaviour
     public bool isAP = false;
     public float penetration = 0f;
 
+    [Header("Fire Settings")]
+    [Range(0f, 1f)]
+    public float ignitionChance = 0.20f;
+
     private void Update()
     {
         float movement = speed * Time.deltaTime;
