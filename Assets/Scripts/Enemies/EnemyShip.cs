@@ -25,6 +25,12 @@ public class EnemyShip : MonoBehaviour
     [Header ("Experience")]
     public int experienceReward = 10;
     public GameObject xpPickupPrefab;
+
+    [Header("Regular Pickup Drop")]
+    public GameObject pickupPrefab;
+
+    [Range(0f, 1f)]
+    public float pickupDropChance = 0.05f;
     
     [Header ("Movement")]
     public float maxSpeed = 10f;
@@ -425,6 +431,18 @@ public class EnemyShip : MonoBehaviour
             Debug.LogWarning(
                 "Enemyship has no XP Prefab assigned"
             );
+        }
+
+        if (pickupPrefab != null &&
+            Random.value < pickupDropChance)
+        {
+            Instantiate(
+                pickupPrefab,
+                transform.position,
+                Quaternion.identity
+            );
+
+            Debug.Log("Enemy dropped a regular pickup");
         }
 
         Destroy(gameObject);
