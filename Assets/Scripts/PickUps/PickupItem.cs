@@ -61,10 +61,6 @@ public class PickupItem : MonoBehaviour
                         effects.ActivateDamageBoost();
                         break;
 
-                    case PickupType.AttackSpeedBoost:
-                        effects.ActivateAttackSpeedBoost();
-                        break;
-
                     case PickupType.ReloadBoost:
                         effects.ActivateReloadBoost();
                         break;

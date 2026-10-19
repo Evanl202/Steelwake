@@ -18,15 +18,11 @@ public class PickupEffects : MonoBehaviour
             return;
 
         damageTimer -= Time.deltaTime;
-        attackSpeedTimer -= Time.deltaTime;
         reloadTimer -= Time.deltaTime;
         invulnerabilityTimer -= Time.deltaTime;
 
         if (damageTimer <= 0f)
             DamageMultiplier = 1f;
-
-        if (attackSpeedTimer <= 0f)
-            AttackSpeedMultiplier = 1f;
 
         if (reloadTimer <= 0f)
             ReloadMultiplier = 1f;
