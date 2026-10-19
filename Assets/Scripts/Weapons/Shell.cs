@@ -51,6 +51,17 @@ public class Shell : MonoBehaviour
             Debug.Log("Shell dealing " + damage + " damage.");
             
             enemy.TakeDamage(damage);
+
+            if (!isAP)
+            {
+                ShipFire fire = enemy.GetComponent<ShipFire>();
+
+                if (fire != null && fire.TryStartFire(false))
+                {
+                    Debug.Log("Enemy ship caught fire!");
+                }
+            }
+            
             Destroy(gameObject);
         }
 
