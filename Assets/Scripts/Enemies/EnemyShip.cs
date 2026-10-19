@@ -27,7 +27,7 @@ public class EnemyShip : MonoBehaviour
     public GameObject xpPickupPrefab;
 
     [Header("Regular Pickup Drop")]
-    public GameObject[] pickupPrefab;
+    public GameObject[] pickupPrefabs;
 
     [Range(0f, 1f)]
     public float pickupDropChance = 0.05f;
