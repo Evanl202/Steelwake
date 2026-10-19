@@ -14,6 +14,10 @@ public class ShipFire : MonoBehaviour
 
     public bool IsBurning => isBurning;
 
+    [Header("Fire Effect")]
+    public GameObject fireEffectPrefab;
+
+    private GameObject activeFireEffect;
     
     public bool TryStartFire(bool isAP, float ignitionChance)
     {
@@ -29,6 +33,17 @@ public class ShipFire : MonoBehaviour
         }
 
         fireCoroutine = StartCoroutine(FireRoutine());
+
+        if (activeFireEffect == null && fireEffectPrefab != null)
+        {
+            activeFireEffect = Instantiate(
+                fireEffectPrefab,
+                transform.position,
+                Quaternion.identity,
+                transform
+            );
+        }
+
         return true;
     }
 
@@ -87,6 +102,12 @@ public class ShipFire : MonoBehaviour
         {
             StopCoroutine(fireCoroutine);
             fireCoroutine = null;
+        }
+
+        if (activeFireEffect != null)
+        {
+            Destroy(activeFireEffect);
+            activeFireEffect = null;
         }
 
         isBurning = false;
