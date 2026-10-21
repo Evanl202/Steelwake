@@ -42,6 +42,14 @@ public class ShipFire : MonoBehaviour
                 Quaternion.identity,
                 transform
             );
+
+            ParticleSystem[] particles =
+                activeFireEffect.GetComponentsInChildren<ParticleSystem>(true);
+
+            foreach (ParticleSystem particle in particles)
+            {
+                particle.Play(true);
+            }
         }
 
         return true;
