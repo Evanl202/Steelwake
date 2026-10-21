@@ -72,6 +72,7 @@ public class ShipFire : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
 
+            elapsed += 1f;
             FireTimeRemaining = Mathf.Max(0f, fireDuration - elapsed);
 
             if (elapsed > fireDuration)
@@ -138,6 +139,7 @@ public class ShipFire : MonoBehaviour
         }
 
         isBurning = false;
+        FireTimeRemaining = 0f;
 
         if (activeFireEffect != null)
         {

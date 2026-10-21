@@ -60,17 +60,14 @@ public class AbilityUI : MonoBehaviour
 
     private void UpdateAbilityVisibility()
     {
-        smokePanel.SetActive(
-            playerAbilities.hasSmoke
-        );
+        if (smokePanel != null)
+        smokePanel.SetActive(playerAbilities.hasSmoke);
 
-        repairPanel.SetActive(
-            playerAbilities.hasRepair
-        );
+        if (repairPanel != null)
+            repairPanel.SetActive(playerAbilities.hasRepair);
 
-        repairPartyPanel.SetActive(
-            playerAbilities.hasRepairParty
-        );
+        if (repairPartyPanel != null)
+            repairPartyPanel.SetActive(playerAbilities.hasRepairParty);
     }
 
     private void UpdateSmokeUI()
