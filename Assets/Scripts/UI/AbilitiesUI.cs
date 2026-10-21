@@ -49,19 +49,20 @@ public class AbilityUI : MonoBehaviour
     private void Update()
     {
         if (playerAbilities == null)
-            return;
+        {
+            UpdateAbilityVisibility();
+            UpdateSmokeUI();
+            UpdateRepairUI();
+            UpdateRepairPartyUI();
+        }
 
-        UpdateAbilityVisibility();
-        UpdateSmokeUI();
-        UpdateRepairUI();
-        UpdateRepairPartyUI();
         UpdateFireUI();
     }
 
     private void UpdateAbilityVisibility()
     {
         if (smokePanel != null)
-        smokePanel.SetActive(playerAbilities.hasSmoke);
+            smokePanel.SetActive(playerAbilities.hasSmoke);
 
         if (repairPanel != null)
             repairPanel.SetActive(playerAbilities.hasRepair);
@@ -72,7 +73,7 @@ public class AbilityUI : MonoBehaviour
 
     private void UpdateSmokeUI()
     {
-        if (!playerAbilities.hasSmoke)
+        if (!playerAbilities.hasSmoke || smokeCooldownText == null)
             return;
 
         if (playerAbilities.IsInSmoke)
@@ -98,7 +99,7 @@ public class AbilityUI : MonoBehaviour
 
     private void UpdateRepairUI()
     {
-        if (!playerAbilities.hasRepair)
+        if (!playerAbilities.hasRepair || repairCooldownText == null)
             return;
 
         if (playerAbilities.GetRepairCooldownRemaining() > 0f)
@@ -117,7 +118,7 @@ public class AbilityUI : MonoBehaviour
 
     private void UpdateRepairPartyUI()
     {
-        if (!playerAbilities.hasRepairParty)
+        if (!playerAbilities.hasRepairParty || repairPartyCooldownText == null)
             return;
 
         if (playerAbilities.GetRepairPartyCooldownRemaining() > 0f)

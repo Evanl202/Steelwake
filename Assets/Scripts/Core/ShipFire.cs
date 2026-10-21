@@ -46,7 +46,7 @@ public class ShipFire : MonoBehaviour
             );
 
             activeFireEffect.transform.localPosition =
-                new Vector3(0f, 1f, 0f);
+                new Vector3(1f, 1.5f, 0f);
 
             // Starts firee
             ParticleSystem[] particles =
@@ -74,11 +74,6 @@ public class ShipFire : MonoBehaviour
 
             elapsed += 1f;
             FireTimeRemaining = Mathf.Max(0f, fireDuration - elapsed);
-
-            if (elapsed > fireDuration)
-            {
-                break;
-            }
 
             PlayerShip player = GetComponent<PlayerShip>();
 
