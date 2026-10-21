@@ -3,10 +3,10 @@ using UnityEngine;
 public class PlayerShip : MonoBehaviour
 {
     [Header ("Health")]
-    public float maxHealth = 100f;
+    public float maxHealth = 1000f;
 
     [Header ("Armor")]
-    public float armor = 40f;
+    public float armor = 80f;
 
     private float currentHealth;
 
