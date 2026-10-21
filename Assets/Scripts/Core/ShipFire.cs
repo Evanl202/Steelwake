@@ -106,6 +106,23 @@ public class ShipFire : MonoBehaviour
 
         isBurning = false;
         fireCoroutine = null;
+
+        if (activeFireEffect != null)
+        {
+            ParticleSystem[] particles =
+                activeFireEffect.GetComponentsInChildren<ParticleSystem>(true);
+
+            foreach (ParticleSystem particle in particles)
+            {
+                particle.Stop(
+                    true,
+                    ParticleSystemStopBehavior.StopEmittingAndClear
+                );
+            }
+
+            Destroy(activeFireEffect);
+            activeFireEffect = null;
+        }
     }
 
     
