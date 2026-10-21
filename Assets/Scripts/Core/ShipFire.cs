@@ -108,6 +108,7 @@ public class ShipFire : MonoBehaviour
         fireCoroutine = null;
     }
 
+    
     public void Extinguish()
     {
         if (fireCoroutine != null)
@@ -135,4 +136,5 @@ public class ShipFire : MonoBehaviour
             activeFireEffect = null;
         }
     }
+
 }
