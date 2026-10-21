@@ -43,6 +43,10 @@ public class ShipFire : MonoBehaviour
                 transform
             );
 
+            activeFireEffect.transform.localPosition =
+                new Vector3(0f, 4f, 0f);
+                
+            // Starts firee
             ParticleSystem[] particles =
                 activeFireEffect.GetComponentsInChildren<ParticleSystem>(true);
 
