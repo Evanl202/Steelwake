@@ -18,6 +18,10 @@ public class ShipFire : MonoBehaviour
     [Header("Fire Effect")]
     public GameObject fireEffectPrefab;
 
+    [Header("Random Fire Position")]
+    public Vector2 fireAreaSize = new Vector2(4f, 8f);
+    public float fireHeight = 1.5f;
+
     private GameObject activeFireEffect;
     
     public bool TryStartFire(bool isAP, float ignitionChance)
