@@ -66,7 +66,6 @@ public class ShipFire : MonoBehaviour
                 particle.Play(true);
             }
         }
-        }
 
         return true;
     }
