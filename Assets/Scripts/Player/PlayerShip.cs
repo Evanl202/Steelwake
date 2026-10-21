@@ -8,6 +8,10 @@ public class PlayerShip : MonoBehaviour
     [Header ("Armor")]
     public float armor = 80f;
 
+    [Header ("Torpedo Protection")]
+    [Range (0f, 0.5f)]
+    public float torpedoProtection = 0.05f;
+
     private float currentHealth;
 
     public float CurrentHealth => currentHealth;

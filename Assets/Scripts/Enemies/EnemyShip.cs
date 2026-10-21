@@ -18,6 +18,10 @@ public class EnemyShip : MonoBehaviour
     [Header ("Armor")]
     public float armor = 0f;
 
+    [Header("Torpedo Protection")]
+    [Range(0f, 0.5f)]
+    public float torpedoProtection = 0.05f;
+
     [Header ("Elite")]
     public bool isElite = false;
     public Color eliteColor = Color.black;

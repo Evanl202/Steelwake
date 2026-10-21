@@ -29,12 +29,22 @@ public class EnemyTorpedo : MonoBehaviour
 
         if (player != null)
         {
-            Debug.Log("Enemy torpedo hit player");
-            Debug.Log("Enemy torpedo dealing " + damage + " damage.");
-            
-            player.TakeDamage(damage);
+            float protection = Mathf.Clamp(
+                player.torpedoProtection,
+                0f,
+                0.5f
+            );
+
+            float finalDamage = damage * (1f - protection);
+
+            Debug.Log(
+                "Enemy torpedo dealing " + finalDamage +
+                " damage after " + (protection * 100f) +
+                "% protection."
+            );
+
+            player.TakeDamage(finalDamage);
             Destroy(gameObject);
         }
-
     }
 }

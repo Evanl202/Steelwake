@@ -30,11 +30,22 @@ public class Torpedo : MonoBehaviour
 
         if (enemy != null)
         {
-            Debug.Log("Torpedo dealing " + damage + " damage.");
-            
-            enemy.TakeDamage(damage);
+            float protection = Mathf.Clamp(
+                enemy.torpedoProtection,
+                0f,
+                0.5f
+            );
+
+            float finalDamage = damage * (1f - protection);
+
+            Debug.Log(
+                "Torpedo dealing " + finalDamage +
+                " damage after " + (protection * 100f) +
+                "% protection."
+            );
+
+            enemy.TakeDamage(finalDamage);
             Destroy(gameObject);
         }
-
     }
 }

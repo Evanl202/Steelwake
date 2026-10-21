@@ -60,6 +60,7 @@ public class UpgradeManager : MonoBehaviour
     private float baseArmor;
     private float baseGunRange;
     private float baseTorpedoRange;
+    private float baseTorpedoProtection;
 
     private void Awake()
     {
@@ -88,6 +89,7 @@ public class UpgradeManager : MonoBehaviour
             playerShip = player.GetComponent<PlayerShip>();
             playerWeapon = player.GetComponentInChildren<Weapon>();
             playerAbilities = player.GetComponent<ShipAbilities>();
+            baseTorpedoProtection = playerShip.torpedoProtection;
 
             // Save the original stats before any upgrades are applied
             if (playerMovement != null)
@@ -726,6 +728,27 @@ public class UpgradeManager : MonoBehaviour
         );
     }
 
+    public void UpgradeTorpedoProtection()
+    {
+        if (playerShip == null)
+        {
+            Debug.LogWarning(
+                "UpgradeManager: Player Ship not assigned."
+            );
+            return;
+        }
+
+        playerShip.torpedoProtection = Mathf.Min(
+            0.5f,
+            playerShip.torpedoProtection + 0.05f
+        );
+
+        Debug.Log(
+            "Torpedo Protection upgraded! New protection: " +
+            (playerShip.torpedoProtection * 100f) + "%"
+        );
+    }
+
     // Ability Upgrades
     public void UpgradeSmokeDuration()
     {
@@ -847,5 +870,11 @@ public class UpgradeManager : MonoBehaviour
         return playerWeapon != null &&
             playerWeapon.torpedoPrefab != null &&
             playerWeapon.torpedoSpeed < 50f;
+    }
+
+    public bool CanUpgradeTorpedoProtection()
+    {
+        return playerShip != null &&
+            playerShip.torpedoProtection < 0.5f;
     }
 }

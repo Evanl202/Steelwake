@@ -260,6 +260,13 @@ public class LevelUpUI : MonoBehaviour
             "Increase torpedo speed by 10%",
             36
         )
+
+        // TORPEDO PROTECTION
+        new UpgradeData(
+            "TORPEDO PROTECTION",
+            "Reduce torpedo damage taken by 5 percentage points",
+            37
+        ),
     };
 
     private UpgradeData choice1;
@@ -346,6 +353,11 @@ public class LevelUpUI : MonoBehaviour
         {
             availableUpgrades.Add(upgrades[16]);
             availableUpgrades.Add(upgrades[17]);
+        }
+
+        if (UpgradeManager.Instance.CanUpgradeTorpedoProtection())
+        {
+            availableUpgrades.Add(upgrades[37]);
         }
 
         // Main battery reload
@@ -684,6 +696,10 @@ public class LevelUpUI : MonoBehaviour
 
             case 36:
                 UpgradeManager.Instance.UpgradeTorpedoSpeedPercent();
+                break;
+
+            case 37:
+                UpgradeManager.Instance.UpgradeTorpedoProtection();
                 break;
         }
 
