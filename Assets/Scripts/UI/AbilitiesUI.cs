@@ -6,6 +6,7 @@ public class AbilityUI : MonoBehaviour
     [Header("Ability Panels")]
     public GameObject smokePanel;
     public GameObject repairPanel;
+    public GameObject repairPartyPanel;
 
     [Header("Smoke")]
     public TMP_Text smokeCooldownText;
@@ -14,6 +15,15 @@ public class AbilityUI : MonoBehaviour
     public TMP_Text repairCooldownText;
 
     private ShipAbilities playerAbilities;
+
+    [Header("Repair Party")]
+    public TMP_Text repairPartyCooldownText;
+
+    [Header("Fire Timer")]
+    public GameObject firePanel;
+    public TMP_Text fireTimerText;
+
+    private ShipFire playerFire;
 
     private void Start()
     {
@@ -30,6 +40,8 @@ public class AbilityUI : MonoBehaviour
             playerAbilities =
                 player.GetComponent<ShipAbilities>();
 
+            playerFire = player.GetComponent<ShipFire>();
+            
             UpdateAbilityVisibility();
         }
     }
@@ -42,6 +54,8 @@ public class AbilityUI : MonoBehaviour
         UpdateAbilityVisibility();
         UpdateSmokeUI();
         UpdateRepairUI();
+        UpdateRepairPartyUI();
+        UpdateFireUI();
     }
 
     private void UpdateAbilityVisibility()
@@ -52,6 +66,10 @@ public class AbilityUI : MonoBehaviour
 
         repairPanel.SetActive(
             playerAbilities.hasRepair
+        );
+
+        repairPartyPanel.SetActive(
+            playerAbilities.hasRepairParty
         );
     }
 
@@ -96,7 +114,41 @@ public class AbilityUI : MonoBehaviour
         else
         {
             repairCooldownText.text =
-                "READY\n[R]";
+                "READY\n[E]";
         }
     }
+
+    private void UpdateRepairPartyUI()
+    {
+        if (!playerAbilities.hasRepairParty)
+            return;
+
+        if (playerAbilities.GetRepairPartyCooldownRemaining() > 0f)
+        {
+            repairPartyCooldownText.text =
+                "COOLDOWN\n" +
+                playerAbilities.GetRepairPartyCooldownRemaining()
+                    .ToString("F1") + "s";
+        }
+        else
+        {
+            repairPartyCooldownText.text = "READY\n[C]";
+        }
+    }
+
+    private void UpdateFireUI()
+    {
+        bool burning = playerFire != null && playerFire.IsBurning;
+
+        if (firePanel != null)
+            firePanel.SetActive(burning);
+
+        if (burning && fireTimerText != null)
+        {
+            fireTimerText.text =
+                "ON FIRE: " +
+                playerFire.FireTimeRemaining.ToString("F0") + "s";
+        }
+    }
+
 }

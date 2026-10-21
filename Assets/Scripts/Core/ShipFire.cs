@@ -13,6 +13,7 @@ public class ShipFire : MonoBehaviour
     private Coroutine fireCoroutine;
 
     public bool IsBurning => isBurning;
+    public float FireTimeRemaining { get; private set; }
 
     [Header("Fire Effect")]
     public GameObject fireEffectPrefab;
@@ -32,6 +33,7 @@ public class ShipFire : MonoBehaviour
             return false;
         }
 
+        FireTimeRemaining = fireDuration;
         fireCoroutine = StartCoroutine(FireRoutine());
 
         if (activeFireEffect == null && fireEffectPrefab != null)
@@ -70,7 +72,7 @@ public class ShipFire : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
 
-            elapsed += 1f;
+            FireTimeRemaining = Mathf.Max(0f, fireDuration - elapsed);
 
             if (elapsed > fireDuration)
             {
@@ -106,6 +108,7 @@ public class ShipFire : MonoBehaviour
 
         isBurning = false;
         fireCoroutine = null;
+        FireTimeRemaining = 0f;
 
         if (activeFireEffect != null)
         {

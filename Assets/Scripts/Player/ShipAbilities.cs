@@ -58,6 +58,12 @@ public class ShipAbilities : MonoBehaviour
             repairCooldownTimer -= Time.deltaTime;
         }
 
+        if (repairPartyCooldownTimer > 0f)
+        {
+            repairPartyCooldownTimer =
+                Mathf.Max(0f, repairPartyCooldownTimer - Time.deltaTime);
+        }
+
         if (Input.GetKeyDown(KeyCode.F))
         {
             UseSmoke();
