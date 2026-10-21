@@ -40,15 +40,24 @@ public class ShipFire : MonoBehaviour
         {
             activeFireEffect = Instantiate(
                 fireEffectPrefab,
-                transform.position,
-                Quaternion.identity,
                 transform
             );
 
-            activeFireEffect.transform.localPosition =
-                new Vector3(1f, 1.5f, 0f);
+            float randomX = Random.Range(
+                -fireAreaSize.x / 2f,
+                fireAreaSize.x / 2f
+            );
 
-            // Starts firee
+            float randomZ = Random.Range(
+                -fireAreaSize.y / 2f,
+                fireAreaSize.y / 2f
+            );
+
+            activeFireEffect.transform.localPosition =
+                new Vector3(randomX, fireHeight, randomZ);
+
+            activeFireEffect.transform.localRotation = Quaternion.identity;
+
             ParticleSystem[] particles =
                 activeFireEffect.GetComponentsInChildren<ParticleSystem>(true);
 
@@ -56,6 +65,7 @@ public class ShipFire : MonoBehaviour
             {
                 particle.Play(true);
             }
+        }
         }
 
         return true;
