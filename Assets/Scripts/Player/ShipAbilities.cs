@@ -9,22 +9,28 @@ public class ShipAbilities : MonoBehaviour
         Repair
     }
 
-    [Header("Abilities")]
+    [Header ("Abilities")]
     public bool hasSmoke = false;
     public bool hasRepair = false;
 
-    [Header("Smoke")]
+    [Header ("Smoke")]
     public float smokeDuration = 8f;
     public float smokeCooldown = 20f;
     public ParticleSystem smokeEffect;
 
-    [Header("Repair")]
+    [Header ("Repair")]
     public float repairCooldown = 60;
     public float repairPercent = 0.25f;
 
     private float smokeCooldownTimer = 0f;
     private float repairCooldownTimer = 0f;
     private float smokeDurationTimer = 0f;
+
+    [Header ("Repair Party")]
+    public bool hasRepairParty = false;
+
+    public float repairPartyCooldown = 60f;
+    private float repairPartyCooldownTimer = 0f;
 
     private PlayerShip playerShip;
 
@@ -61,6 +67,11 @@ public class ShipAbilities : MonoBehaviour
         {
             UseRepair();
         }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            UseRepairParty();
+        }
     }
 
     private void UseSmoke()
@@ -74,6 +85,7 @@ public class ShipAbilities : MonoBehaviour
         {
             return;
         }
+        smokeCooldownTimer = smokeCooldown;
 
         smokeDurationTimer = smokeDuration;
         IsInSmoke = true;
@@ -112,20 +124,28 @@ public class ShipAbilities : MonoBehaviour
             return;
         }
 
-        // Extinguish Fire
-        ShipFire fire = GetComponent<ShipFire>();
-
-        if (fire != null && fire.IsBurning)
-        {
-            fire.Extinguish();
-            Debug.Log("Fire extinguished!");
-        }
-
         playerShip.RepairPercent(repairPercent);
 
         repairCooldownTimer = repairCooldown;
 
         Debug.Log("Repair activated!");
+    }
+
+    private void UseRepairParty()
+    {
+        if (!hasRepairParty || repairPartyCooldownTimer > 0f)
+            return;
+
+        ShipFire fire = GetComponent<ShipFire>();
+
+        if (fire != null && fire.IsBurning)
+        {
+            fire.Extinguish();
+            Debug.Log("Repair Party extinguished fire!");
+        }
+
+        repairPartyCooldownTimer = repairPartyCooldown;
+        Debug.Log("Repair Party activated!");
     }
 
     private System.Collections.IEnumerator SmokeRoutine()
@@ -139,8 +159,6 @@ public class ShipAbilities : MonoBehaviour
         {
             smokeEffect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
-
-        smokeCooldownTimer = smokeCooldown;
 
         Debug.Log("Smoke ended!");
     }
@@ -163,5 +181,10 @@ public class ShipAbilities : MonoBehaviour
     public float GetRepairPercent()
     {
         return repairPercent;
+    }
+
+    public float GetRepairPartyCooldownRemaining()
+    {
+        return Mathf.Max(0f, repairPartyCooldownTimer);
     }
 }
