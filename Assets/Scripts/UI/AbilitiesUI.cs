@@ -76,7 +76,10 @@ public class AbilityUI : MonoBehaviour
 
     private void UpdateSmokeUI()
     {
-        if (!playerAbilities.hasSmoke || smokeCooldownText == null)
+        if (playerAbilities == null || smokeCooldownText == null)
+            return;
+
+        if (!playerAbilities.hasSmoke)
             return;
 
         if (playerAbilities.IsInSmoke)
