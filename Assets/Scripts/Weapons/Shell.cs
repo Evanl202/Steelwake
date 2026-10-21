@@ -37,6 +37,7 @@ public class Shell : MonoBehaviour
 
         if (enemy != null)
         {
+            // AP pen check
             if (isAP && penetration < enemy.armor)
             {
                 Debug.Log("AP shell failed to penetrate armor.");
@@ -52,9 +53,22 @@ public class Shell : MonoBehaviour
                 return;
             }
 
-            Debug.Log("Shell dealing " + damage + " damage.");
+            float finalDamage = damage;
+
+            // HE shells are reduced by regular armor.
+            if (!isAP)
+            {
+                float damageMultiplier = Mathf.Max(
+                    0.33f,
+                    1f - enemy.armor / 200f
+                );
+
+                finalDamage *= damageMultiplier;
+            }
+
+            Debug.Log("Shell dealing " + finalDamage + " damage.");
             
-            enemy.TakeDamage(damage);
+            enemy.TakeDamage(finalDamage);
 
             if (!isAP)
             {
