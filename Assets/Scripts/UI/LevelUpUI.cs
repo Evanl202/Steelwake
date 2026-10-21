@@ -259,14 +259,14 @@ public class LevelUpUI : MonoBehaviour
             "TORPEDO SPEED +%",
             "Increase torpedo speed by 10%",
             36
-        )
+        ),
 
         // TORPEDO PROTECTION
         new UpgradeData(
             "TORPEDO PROTECTION",
             "Reduce torpedo damage taken by 5 percentage points",
             37
-        ),
+        )
     };
 
     private UpgradeData choice1;
