@@ -61,6 +61,9 @@ public class AbilityUI : MonoBehaviour
 
     private void UpdateAbilityVisibility()
     {
+        if (playerAbilities == null)
+            return;
+
         if (smokePanel != null)
             smokePanel.SetActive(playerAbilities.hasSmoke);
 
