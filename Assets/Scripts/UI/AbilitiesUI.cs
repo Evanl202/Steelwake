@@ -48,7 +48,7 @@ public class AbilityUI : MonoBehaviour
 
     private void Update()
     {
-        if (playerAbilities == null)
+        if (playerAbilities != null)
         {
             UpdateAbilityVisibility();
             UpdateSmokeUI();
@@ -76,10 +76,7 @@ public class AbilityUI : MonoBehaviour
 
     private void UpdateSmokeUI()
     {
-        if (playerAbilities == null || smokeCooldownText == null)
-            return;
-
-        if (!playerAbilities.hasSmoke)
+        if (!playerAbilities.hasSmoke || smokeCooldownText == null)
             return;
 
         if (playerAbilities.IsInSmoke)
