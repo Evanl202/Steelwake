@@ -10,13 +10,13 @@ public class UpgradeManager : MonoBehaviour
     private Weapon playerWeapon;
 
     [Header ("Flat Upgrades")]
-    public float healthFlatIncrease = 20f;
-    public float armorFlatIncrease = 5f;
+    public float healthFlatIncrease = 100f;
+    public float armorFlatIncrease = 10f;
 
-    public float damageFlatIncrease = 10f;
-    public float heDamageFlatIncrease = 10f;
-    public float apDamageFlatIncrease = 10f;
-    public float torpedoDamageFlatIncrease = 10f;
+    public float damageFlatIncrease = 20f;
+    public float heDamageFlatIncrease = 15f;
+    public float apDamageFlatIncrease = 15f;
+    public float torpedoDamageFlatIncrease = 15f;
 
     public float penetrationFlatIncrease = 5f;
     public float reloadFlatReduction = 0.05f;
@@ -28,15 +28,15 @@ public class UpgradeManager : MonoBehaviour
     public float torpedoSpeedFlatIncrease = 3f;
 
     [Header ("Percentage Upgrades")]
-    public float healthPercentIncrease = 0.10f;
-    public float armorPercentIncrease = 0.10f;
+    public float healthPercentIncrease = 0.05f;
+    public float armorPercentIncrease = 0.05f;
 
-    public float damagePercentIncrease = 0.10f;
-    public float heDamagePercentIncrease = 0.10f;
-    public float apDamagePercentIncrease = 0.10f;
-    public float torpedoDamagePercentIncrease = 0.10f;
+    public float damagePercentIncrease = 0.05f;
+    public float heDamagePercentIncrease = 0.05f;
+    public float apDamagePercentIncrease = 0.05f;
+    public float torpedoDamagePercentIncrease = 0.05f;
 
-    public float penetrationPercentIncrease = 0.10f;
+    public float penetrationPercentIncrease = 0.05f;
     public float reloadPercentReduction = 0.05f;
     public float speedPercentIncrease = 0.10f;
 

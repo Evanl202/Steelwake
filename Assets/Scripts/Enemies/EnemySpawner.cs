@@ -30,8 +30,8 @@ public class EnemySpawner : MonoBehaviour
     public int maximumEnemyLimit = 25;
 
     [Header("Wave Scaling")]
-    public float enemyHealthIncreasePerWave = 0.10f;
-    public float enemyDamageIncreasePerWave = 0.10f;
+    public float enemyHealthIncreasePerWave = 0.05f;
+    public float enemyDamageIncreasePerWave = 0.05f;
     public float enemySpeedIncreasePerWave = 0.05f;
 
     public float maximumEnemyHealthMultiplier = 2f;

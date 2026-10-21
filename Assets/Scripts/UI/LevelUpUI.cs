@@ -40,13 +40,13 @@ public class LevelUpUI : MonoBehaviour
         // UNIVERSAL DAMAGE
         new UpgradeData(
             "DAMAGE +FLAT",
-            "Increase HE, AP, and torpedo damage by 10",
+            "Increase HE, AP, and torpedo damage by 20",
             2
         ),
 
         new UpgradeData(
             "DAMAGE +%",
-            "Increase HE, AP, and torpedo damage by 10%",
+            "Increase HE, AP, and torpedo damage by 5%",
             3
         ),
 
@@ -66,52 +66,52 @@ public class LevelUpUI : MonoBehaviour
         // HEALTH
         new UpgradeData(
             "HEALTH +FLAT",
-            "Increase maximum health by 20",
+            "Increase maximum health by 100",
             6
         ),
 
         new UpgradeData(
             "HEALTH +%",
-            "Increase maximum health by 10%",
+            "Increase maximum health by 5%",
             7
         ),
 
         // HE DAMAGE
         new UpgradeData(
             "HE DAMAGE +FLAT",
-            "Increase HE shell damage by 10",
+            "Increase HE shell damage by 15",
             8
         ),
 
         new UpgradeData(
             "HE DAMAGE +%",
-            "Increase HE shell damage by 10%",
+            "Increase HE shell damage by 5%",
             9
         ),
 
         // AP DAMAGE
         new UpgradeData(
             "AP DAMAGE +FLAT",
-            "Increase AP shell damage by 10",
+            "Increase AP shell damage by 15",
             10
         ),
 
         new UpgradeData(
             "AP DAMAGE +%",
-            "Increase AP shell damage by 10%",
+            "Increase AP shell damage by 5%",
             11
         ),
 
         // TORPEDO DAMAGE
         new UpgradeData(
             "TORPEDO DAMAGE +FLAT",
-            "Increase torpedo damage by 10",
+            "Increase torpedo damage by 15",
             12
         ),
 
         new UpgradeData(
             "TORPEDO DAMAGE +%",
-            "Increase torpedo damage by 10%",
+            "Increase torpedo damage by 5%",
             13
         ),
 
@@ -124,20 +124,20 @@ public class LevelUpUI : MonoBehaviour
 
         new UpgradeData(
             "AP PENETRATION +%",
-            "Increase AP penetration by 10%",
+            "Increase AP penetration by 5%",
             15
         ),
 
         // ARMOR
         new UpgradeData(
             "ARMOR +FLAT",
-            "Increase armor by 5",
+            "Increase armor by 10",
             16
         ),
 
         new UpgradeData(
             "ARMOR +%",
-            "Increase armor by 10%",
+            "Increase armor by 5%",
             17
         ),
 
