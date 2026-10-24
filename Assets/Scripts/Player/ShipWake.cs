@@ -12,12 +12,12 @@ public class ShipWake : MonoBehaviour
     public float minimumSpeed = 0.5f;
     public float spawnInterval = 0.12f;
     public float sternOffset = 4f;
-    public float waterHeightOffset = 0.15f;
+    public float waterHeightOffset = 0.25f;
 
     [Header("Appearance")]
     public float minimumWidth = 0.7f;
     public float maximumWidth = 1.8f;
-    public float lifetime = 3f;
+    public float lifetime = 1f;
 
     private float spawnTimer;
 
