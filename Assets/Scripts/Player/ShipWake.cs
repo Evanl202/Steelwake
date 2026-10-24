@@ -78,7 +78,7 @@ public class ShipWake : MonoBehaviour
             + Vector3.up * waterHeightOffset;
 
         Quaternion rotation =
-            Quaternion.LookRotation(Vector3.up, forward);
+            Quaternion.LookRotation(Vector3.up, -forward);
 
         GameObject segment = Instantiate(
             wakeSegmentPrefab,
