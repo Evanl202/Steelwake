@@ -6,6 +6,7 @@ public class ShipWake : MonoBehaviour
 {
     [Header("References")]
     public ShipMovement shipMovement;
+    public EnemyShip enemyShip;
     public GameObject wakeSegmentPrefab;
 
     [Header("Wake Settings")]
@@ -38,20 +39,27 @@ public class ShipWake : MonoBehaviour
     {
         if (shipMovement == null)
             shipMovement = GetComponent<ShipMovement>();
+
+        if (enemyShip == null)
+            enemyShip = GetComponent<EnemyShip>();
     }
 
     private void Update()
     {
         UpdateSegments();
 
-        if (shipMovement == null || wakeSegmentPrefab == null)
+        if ((shipMovement == null && enemyShip == null) || wakeSegmentPrefab == null)
             return;
 
         if (GameManager.Instance != null &&
             !GameManager.Instance.gameRunning)
             return;
 
-        float speed = Mathf.Abs(shipMovement.CurrentSpeed);
+        float currentSpeed = shipMovement != null
+            ? shipMovement.CurrentSpeed
+            : enemyShip.CurrentSpeed;
+
+        float speed = Mathf.Abs(currentSpeed);
 
         if (speed < minimumSpeed)
         {
@@ -86,9 +94,13 @@ public class ShipWake : MonoBehaviour
             rotation
         );
 
-        float speedRatio = Mathf.Clamp01(
-            speed / shipMovement.maxSpeed
-        );
+        float maxSpeed = shipMovement != null
+            ? shipMovement.maxSpeed
+            : enemyShip.maxSpeed;
+
+        float speedRatio = maxSpeed > 0f
+            ? Mathf.Clamp01(speed / maxSpeed)
+            : 0f;
 
         Vector3 scale = segment.transform.localScale;
         scale.x = Mathf.Lerp(

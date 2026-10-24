@@ -65,6 +65,7 @@ public class EnemyShip : MonoBehaviour
 
     private float orbitDirection;
     private float currentSpeed = 0f;
+    public float CurrentSpeed => currentSpeed;
 
     private void Start()
     {
