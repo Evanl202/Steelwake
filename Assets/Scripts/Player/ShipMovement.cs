@@ -15,6 +15,14 @@ public class ShipMovement : MonoBehaviour
     
     private float currentSpeed = 0f;
 
+    private Vector3 previousPosition;
+    public Vector3 CurrentVelocity { get; private set; }
+
+    private void Start()
+    {
+        previousPosition = transform.position;
+    }
+
     void Update()
     {
         if (GameManager.Instance != null && !GameManager.Instance.gameRunning)
@@ -24,6 +32,17 @@ public class ShipMovement : MonoBehaviour
         
         HandleMovement();
         HandleTurning();
+    }
+
+    private void LateUpdate()
+    {
+        if (Time.deltaTime > 0f)
+        {
+            CurrentVelocity =
+                (transform.position - previousPosition) / Time.deltaTime;
+        }
+
+        previousPosition = transform.position;
     }
 
     private void HandleMovement()

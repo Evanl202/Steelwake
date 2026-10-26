@@ -303,7 +303,7 @@ public class EnemyWeapon : MonoBehaviour
             CalculateInterceptPoint(
                 weapon.position,
                 player.position,
-                player.forward * GetPlayerSpeed(),
+                GetPlayerVelocity()
                 projectileSpeed
             );
 
@@ -380,6 +380,19 @@ public class EnemyWeapon : MonoBehaviour
             minAngle,
             maxAngle
         );
+    }
+
+    private Vector3 GetPlayerVelocity()
+    {
+        ShipMovement playerMovement =
+            player.GetComponent<ShipMovement>();
+
+        if (playerMovement != null)
+        {
+            return playerMovement.CurrentVelocity;
+        }
+
+        return Vector3.zero;
     }
 
     private Quaternion GetWeaponRotation(
