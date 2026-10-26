@@ -303,7 +303,7 @@ public class EnemyWeapon : MonoBehaviour
             CalculateInterceptPoint(
                 weapon.position,
                 player.position,
-                GetPlayerVelocity()
+                GetPlayerVelocity(),
                 projectileSpeed
             );
 
