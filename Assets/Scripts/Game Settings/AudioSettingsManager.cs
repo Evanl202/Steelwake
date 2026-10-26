@@ -45,10 +45,17 @@ public class AudioSettingsManager : MonoBehaviour
 
     private void SetVolume(string saveKey, string mixerParameter, float value)
     {
-        value = Mathf.Clamp(value, 0.0001f, 1f);
+        value = Mathf.Clamp01(value);
+
+        // A slider value of 0 means effectively silent.
+        float decibels = value <= 0.0001f
+            ? -80f
+            : Mathf.Log10(value) * 20f;
 
         if (audioMixer != null)
-            audioMixer.SetFloat(mixerParameter, Mathf.Log10(value) * 20f);
+        {
+            audioMixer.SetFloat(mixerParameter, decibels);
+        }
 
         PlayerPrefs.SetFloat(saveKey, value);
         PlayerPrefs.Save();
@@ -58,7 +65,14 @@ public class AudioSettingsManager : MonoBehaviour
     {
         float value = PlayerPrefs.GetFloat(saveKey, 1f);
 
+        float decibels = value <= 0.0001f
+            ? -80f
+            : Mathf.Log10(value) * 20f;
+
         if (audioMixer != null)
-            audioMixer.SetFloat(mixerParameter, Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f);
+        {
+            audioMixer.SetFloat(mixerParameter, decibels);
+        }
     }
+
 }
