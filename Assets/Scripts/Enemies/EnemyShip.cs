@@ -224,22 +224,22 @@ public class EnemyShip : MonoBehaviour
 
                     case AIBehavior.Balanced:
 
-                        if (distance > combatDistance)
+                        if (distance < minimumDistance)
                         {
+                            // Too close: move away while continuing to orbit.
                             movementDirection =
-                                directionToPlayer +
-                                orbitDirectionVector;
+                                -directionToPlayer + orbitDirectionVector;
                         }
-                        else if (distance < minimumDistance)
+                        else if (distance > combatDistance)
                         {
+                            // Too far: approach while continuing to orbit.
                             movementDirection =
-                                directionToPlayer +
-                                orbitDirectionVector;
+                                directionToPlayer + orbitDirectionVector;
                         }
                         else
                         {
-                            movementDirection =
-                                orbitDirectionVector;
+                            // At a suitable distance: circle the player.
+                            movementDirection = orbitDirectionVector;
                         }
 
                         break;
@@ -360,17 +360,33 @@ public class EnemyShip : MonoBehaviour
                 );
         }
 
-        // The ship never intentionally stops.
+        
+        float targetSpeed = maxSpeed;
+
+        // Slow down near  combat distance to reduce overshooting
+        if (aiBehavior == AIBehavior.Balanced)
+        {
+            float distanceError = Mathf.Abs(distance - combatDistance);
+
+            // Slow down within 20 units of combat distance
+            float speedFactor = Mathf.Clamp01(distanceError / 20f);
+
+            // Never drop below 35% speed
+            targetSpeed = Mathf.Lerp(maxSpeed * 0.35f, maxSpeed, speedFactor);
+        }
+
+        float speedChange = targetSpeed > currentSpeed
+            ? acceleration
+            : deceleration;
+
         currentSpeed = Mathf.MoveTowards(
             currentSpeed,
-            maxSpeed,
-            acceleration * Time.deltaTime
+            targetSpeed,
+            speedChange * Time.deltaTime
         );
 
-        transform.position +=
-            transform.forward *
-            currentSpeed *
-            Time.deltaTime;
+        transform.position += transform.forward * currentSpeed * Time.deltaTime;
+
     }
 
     private float GetCombatDistance()
