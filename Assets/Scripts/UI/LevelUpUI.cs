@@ -526,6 +526,11 @@ public class LevelUpUI : MonoBehaviour
 
     private void ApplyUpgrade(UpgradeData upgrade)
     {
+        if (GameAudioSFX.Instance != null)
+        {
+            GameAudioSFX.Instance.PlayUpgradeClick();
+        }
+
         Debug.Log("Selected upgrade: " + upgrade.upgradeName);
 
         if (UpgradeManager.Instance == null)

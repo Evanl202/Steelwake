@@ -37,6 +37,14 @@ public class GameAudioSFX : MonoBehaviour
     [Header("Level Up Sound")]
     [SerializeField] private AudioClip levelUpSound;
 
+    [Header("Upgrade Sounds")]
+    [SerializeField] private AudioClip upgradeClickSound;
+
+    public void PlayUpgradeClick()
+    {
+        PlaySound(upgradeClickSound);
+    }
+
     private AudioSource audioSource;
 
     private void Awake()
