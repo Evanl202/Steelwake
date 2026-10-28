@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class PlayerShip : MonoBehaviour
 {
+    [Header ("Ship Class")]
+    public ShipClass shipClass = ShipClass.Destroyer;
+    
     [Header ("Health")]
     public float maxHealth = 1000f;
 

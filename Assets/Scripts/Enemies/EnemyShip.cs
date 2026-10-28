@@ -10,6 +10,9 @@ public enum AIBehavior
 
 public class EnemyShip : MonoBehaviour
 {
+    [Header ("Ship Class")]
+    public ShipClass shipClass = ShipClass.Destroyer;
+
     [Header ("Health")]
     public float maxHealth = 50f;
 
@@ -18,7 +21,7 @@ public class EnemyShip : MonoBehaviour
     [Header ("Armor")]
     public float armor = 0f;
 
-    [Header("Torpedo Protection")]
+    [Header ("Torpedo Protection")]
     [Range(0f, 0.5f)]
     public float torpedoProtection = 0.05f;
 
@@ -30,10 +33,10 @@ public class EnemyShip : MonoBehaviour
     public int experienceReward = 10;
     public GameObject xpPickupPrefab;
 
-    [Header("Regular Pickup Drop")]
+    [Header ("Regular Pickup Drop")]
     public GameObject[] pickupPrefabs;
 
-    [Range(0f, 1f)]
+    [Range (0f, 1f)]
     public float pickupDropChance = 0.05f;
     
     [Header ("Movement")]

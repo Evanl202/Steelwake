@@ -753,7 +753,15 @@ public class EnemyWeapon : MonoBehaviour
         {
             if (GameAudioSFX.Instance != null)
             {
-                GameAudioSFX.Instance.PlayEnemyGunFire();
+                EnemyShip enemyShip =
+                    shipTransform.GetComponent<EnemyShip>();
+
+                if (enemyShip != null)
+                {
+                    GameAudioSFX.Instance.PlayGunFire(
+                        enemyShip.shipClass
+                    );
+                }
             }
             
             reloadTimer = gunReloadTime;

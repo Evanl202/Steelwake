@@ -1,6 +1,13 @@
 
 using UnityEngine;
 
+public enum ShipClass
+{
+    Destroyer,
+    Cruiser,
+    Battleship
+}
+
 public class GameAudioSFX : MonoBehaviour
 {
     public static GameAudioSFX Instance { get; private set; }
@@ -23,8 +30,9 @@ public class GameAudioSFX : MonoBehaviour
     [SerializeField] private float hitSoundCooldown = 0.15f;
 
     [Header("Weapon Sounds")]
-    [SerializeField] private AudioClip playerGunFireSound;
-    [SerializeField] private AudioClip enemyGunFireSound;
+    [SerializeField] private AudioClip[] destroyerGunSounds;
+    [SerializeField] private AudioClip[] cruiserGunSounds;
+    [SerializeField] private AudioClip[] battleshipGunSounds;
     
     private AudioSource audioSource;
 
@@ -66,14 +74,22 @@ public class GameAudioSFX : MonoBehaviour
         PlaySound(enemyHitSound);
     }
 
-    public void PlayPlayerGunFire()
+    public void PlayGunFire(ShipClass shipClass)
     {
-        PlaySound(playerGunFireSound);
-    }
+        AudioClip[] sounds = shipClass switch
+        {
+            ShipClass.Destroyer => destroyerGunSounds,
+            ShipClass.Cruiser => cruiserGunSounds,
+            ShipClass.Battleship => battleshipGunSounds,
+            _ => null
+        };
 
-    public void PlayEnemyGunFire()
-    {
-        PlaySound(enemyGunFireSound);
+        if (sounds == null || sounds.Length == 0)
+            return;
+
+        AudioClip clip = sounds[Random.Range(0, sounds.Length)];
+
+        PlaySound(clip);
     }
 
     public void PlayPickup()
