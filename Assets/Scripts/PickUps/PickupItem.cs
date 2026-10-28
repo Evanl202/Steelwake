@@ -73,6 +73,12 @@ public class PickupItem : MonoBehaviour
         }
 
         collected = true;
+
+        if (GameAudioSFX.Instance != null)
+        {
+            GameAudioSFX.Instance.PlayPickup();
+        }
+
         Debug.Log("Collected pickup: " + pickupType);
         Destroy(gameObject);
     }

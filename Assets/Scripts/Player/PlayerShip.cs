@@ -33,6 +33,11 @@ public class PlayerShip : MonoBehaviour
         
         currentHealth -= damage;
 
+        if (GameAudioSFX.Instance != null)
+        {
+            GameAudioSFX.Instance.PlayPlayerHit();
+        }
+
         if (CombatFeedbackManager.Instance != null)
         {
             CombatFeedbackManager.Instance.HitFlash(gameObject);
@@ -59,6 +64,11 @@ public class PlayerShip : MonoBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.GameOver();
+        }
+
+        if (GameAudioSFX.Instance != null)
+        {
+            GameAudioSFX.Instance.PlayPlayerDestroyed();
         }
         
         Destroy(gameObject);

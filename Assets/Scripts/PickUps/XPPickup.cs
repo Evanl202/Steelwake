@@ -30,6 +30,11 @@ public class XPPickup : MonoBehaviour
         {
             ExperienceManager.Instance.AddXP(xpAmount);
         }
+        
+        if (GameAudioSFX.Instance != null)
+        {
+            GameAudioSFX.Instance.PlayXPPickup();
+        }
 
         Debug.Log("Collected XP: " + xpAmount);
         Destroy(gameObject);

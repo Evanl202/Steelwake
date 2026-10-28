@@ -751,6 +751,11 @@ public class EnemyWeapon : MonoBehaviour
         // Start the reload once after the salvo, not once per barrel.
         if (fired)
         {
+            if (GameAudioSFX.Instance != null)
+            {
+                GameAudioSFX.Instance.PlayEnemyGunFire();
+            }
+            
             reloadTimer = gunReloadTime;
         }
     }

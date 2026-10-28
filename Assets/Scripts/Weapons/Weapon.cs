@@ -392,6 +392,11 @@ public class Weapon : MonoBehaviour
                 shell.speed = shellSpeed;
             }
         }
+        if (GameAudioSFX.Instance != null)
+        {
+            GameAudioSFX.Instance.PlayPlayerGunFire();
+        }
+
         PickupEffects effects =
             shipTransform.GetComponent<PickupEffects>();
 

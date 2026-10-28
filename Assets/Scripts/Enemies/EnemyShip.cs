@@ -404,6 +404,11 @@ public class EnemyShip : MonoBehaviour
     {
         currentHealth -= damage;
 
+        if (GameAudioSFX.Instance != null)
+        {
+            GameAudioSFX.Instance.PlayEnemyHit();
+        }
+
         if (CombatFeedbackManager.Instance != null)
         {
             CombatFeedbackManager.Instance.HitFlash(gameObject);
@@ -475,6 +480,12 @@ public class EnemyShip : MonoBehaviour
                 );
             }
         }
+
+        if (GameAudioSFX.Instance != null)
+        {
+            GameAudioSFX.Instance.PlayEnemyDestroyed();
+        }
+        
         Destroy(gameObject);
     }
 }
