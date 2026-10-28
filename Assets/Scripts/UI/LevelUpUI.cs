@@ -285,6 +285,11 @@ public class LevelUpUI : MonoBehaviour
 
         levelUpPanel.SetActive(true);
 
+        if (GameAudioSFX.Instance != null)
+        {
+            GameAudioSFX.Instance.PlayLevelUp();
+        }
+
         Time.timeScale = 0f;
 
         Debug.Log("Level up panel opened");
@@ -704,11 +709,6 @@ public class LevelUpUI : MonoBehaviour
         }
 
         levelUpPanel.SetActive(false);
-
-        if (GameAudioSFX.Instance != null)
-        {
-            GameAudioSFX.Instance.PlayLevelUp();
-        }
 
         if (ExperienceManager.Instance != null)
         {
