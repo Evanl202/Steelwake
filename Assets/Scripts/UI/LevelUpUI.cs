@@ -705,6 +705,11 @@ public class LevelUpUI : MonoBehaviour
 
         levelUpPanel.SetActive(false);
 
+        if (GameAudioSFX.Instance != null)
+        {
+            GameAudioSFX.Instance.PlayLevelUp();
+        }
+
         if (ExperienceManager.Instance != null)
         {
             ExperienceManager.Instance.CompleteLevelUpChoice();

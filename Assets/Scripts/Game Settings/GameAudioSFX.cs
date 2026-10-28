@@ -34,6 +34,9 @@ public class GameAudioSFX : MonoBehaviour
     [SerializeField] private AudioClip[] cruiserGunSounds;
     [SerializeField] private AudioClip[] battleshipGunSounds;
     
+    [Header("Level Up Sound")]
+    [SerializeField] private AudioClip levelUpSound;
+
     private AudioSource audioSource;
 
     private void Awake()
@@ -110,6 +113,11 @@ public class GameAudioSFX : MonoBehaviour
     public void PlayPlayerDestroyed()
     {
         PlaySound(playerDestroyedSound);
+    }
+
+    public void PlayLevelUp()
+    {
+        PlaySound(levelUpSound);
     }
 
     private void PlaySound(AudioClip clip)
