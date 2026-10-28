@@ -753,13 +753,13 @@ public class EnemyWeapon : MonoBehaviour
         {
             if (GameAudioSFX.Instance != null)
             {
-                EnemyShip enemyShip =
+                EnemyShip enemyShipComponent =
                     shipTransform.GetComponent<EnemyShip>();
 
-                if (enemyShip != null)
+                if (enemyShipComponent != null)
                 {
                     GameAudioSFX.Instance.PlayGunFire(
-                        enemyShip.shipClass
+                        enemyShipComponent.shipClass
                     );
                 }
             }
