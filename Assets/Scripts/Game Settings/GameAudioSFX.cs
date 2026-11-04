@@ -34,6 +34,10 @@ public class GameAudioSFX : MonoBehaviour
     [SerializeField] private AudioClip[] cruiserGunSounds;
     [SerializeField] private AudioClip[] battleshipGunSounds;
     
+    [Header("Torpedo Sounds")]
+    [SerializeField] private AudioClip torpedoLaunchSound;
+    [SerializeField] private AudioClip underwaterExplosionSound;
+
     [Header("Level Up Sound")]
     [SerializeField] private AudioClip levelUpSound;
 
@@ -126,6 +130,16 @@ public class GameAudioSFX : MonoBehaviour
     public void PlayLevelUp()
     {
         PlaySound(levelUpSound);
+    }
+
+    public void PlayTorpedoLaunch()
+    {
+        PlaySound(torpedoLaunchSound);
+    }
+
+    public void PlayUnderwaterExplosion()
+    {
+        PlaySound(underwaterExplosionSound);
     }
 
     private void PlaySound(AudioClip clip)

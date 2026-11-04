@@ -44,6 +44,12 @@ public class EnemyTorpedo : MonoBehaviour
             );
 
             player.TakeDamage(finalDamage);
+            
+            if (GameAudioSFX.Instance != null)
+            {
+                GameAudioSFX.Instance.PlayUnderwaterExplosion();
+            }
+            
             Destroy(gameObject);
         }
     }

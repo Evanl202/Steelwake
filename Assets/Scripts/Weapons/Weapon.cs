@@ -508,6 +508,11 @@ public class Weapon : MonoBehaviour
                 torpedo.speed = torpedoSpeed;
             }
         }
+        
+        if (GameAudioSFX.Instance != null)
+        {
+            GameAudioSFX.Instance.PlayTorpedoLaunch();
+        }
 
         PickupEffects effects =
             shipTransform.GetComponent<PickupEffects>();

@@ -885,6 +885,11 @@ public class EnemyWeapon : MonoBehaviour
 
         if (fired)
         {
+            if (GameAudioSFX.Instance != null)
+            {
+                GameAudioSFX.Instance.PlayTorpedoLaunch();
+            }
+
             torpedoReloadTimer = torpedoReloadTime;
         }
     }
