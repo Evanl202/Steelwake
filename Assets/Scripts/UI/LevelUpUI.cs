@@ -266,6 +266,19 @@ public class LevelUpUI : MonoBehaviour
             "TORPEDO PROTECTION",
             "Reduce torpedo damage taken by 5 percentage points",
             37
+        ),
+
+        // CRITICAL
+        new UpgradeData(
+            "AP CRITICAL CHANCE",
+            "Increase AP critical hit chance by 5%",
+            38
+        ),
+
+        new UpgradeData(
+            "AP CRITICAL DAMAGE",
+            "Increase AP critical damage multiplier by 0.25x",
+            39
         )
     };
 
@@ -352,6 +365,17 @@ public class LevelUpUI : MonoBehaviour
         // AP penetration
         availableUpgrades.Add(upgrades[14]);
         availableUpgrades.Add(upgrades[15]);
+
+        // AP Critical Hits
+        if (UpgradeManager.Instance.CanUpgradeAPCriticalChance())
+        {
+            availableUpgrades.Add(upgrades[38]);
+        }
+
+        if (UpgradeManager.Instance.CanUpgradeAPCriticalDamage())
+        {
+            availableUpgrades.Add(upgrades[39]);
+        }
 
         // Armor
         if (UpgradeManager.Instance.CanUpgradeArmor())
@@ -710,6 +734,14 @@ public class LevelUpUI : MonoBehaviour
 
             case 37:
                 UpgradeManager.Instance.UpgradeTorpedoProtection();
+                break;
+
+            case 38:
+                UpgradeManager.Instance.UpgradeAPCriticalChance();
+                break;
+
+            case 39:
+                UpgradeManager.Instance.UpgradeAPCriticalDamage();
                 break;
         }
 

@@ -46,10 +46,23 @@ public class DamageNumber : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public void SetDamage(float damage)
+    public void SetDamage(float damage, bool isCritical = false)
     {
-        if (damageText != null)
-            damageText.text = Mathf.CeilToInt(damage).ToString();
+        if (damageText == null)
+            return;
+
+        string damageValue = Mathf.CeilToInt(damage).ToString();
+
+        if (isCritical)
+        {
+            damageText.text = "CRIT! " + damageValue;
+            damageText.color = Color.yellow;
+            damageText.fontStyle = FontStyles.Bold;
+        }
+        else
+        {
+            damageText.text = damageValue;
+        }
     }
 
     public Vector2 GetRandomOffset()

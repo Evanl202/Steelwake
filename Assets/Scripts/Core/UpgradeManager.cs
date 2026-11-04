@@ -610,6 +610,44 @@ public class UpgradeManager : MonoBehaviour
         );
     }
 
+    public void UpgradeAPCriticalChance()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.apCriticalChance = Mathf.Min(
+            0.50f,
+            playerWeapon.apCriticalChance + 0.05f
+        );
+
+        Debug.Log(
+            "AP Critical Chance upgraded! New chance: " +
+            (playerWeapon.apCriticalChance * 100f) + "%"
+        );
+    }
+
+    public void UpgradeAPCriticalDamage()
+    {
+        if (playerWeapon == null)
+        {
+            Debug.LogWarning("UpgradeManager: Player Weapon not assigned");
+            return;
+        }
+
+        playerWeapon.apCriticalMultiplier = Mathf.Min(
+            5f,
+            playerWeapon.apCriticalMultiplier + 0.25f
+        );
+
+        Debug.Log(
+            "AP Critical Damage upgraded! New multiplier: " +
+            playerWeapon.apCriticalMultiplier + "x"
+        );
+    }
+
     public void UpgradeArmorFlat()
     {
         if (playerShip == null)
@@ -876,5 +914,17 @@ public class UpgradeManager : MonoBehaviour
     {
         return playerShip != null &&
             playerShip.torpedoProtection < 0.5f;
+    }
+
+    public bool CanUpgradeAPCriticalChance()
+    {
+        return playerWeapon != null &&
+            playerWeapon.apCriticalChance < 0.50f;
+    }
+
+    public bool CanUpgradeAPCriticalDamage()
+    {
+        return playerWeapon != null &&
+            playerWeapon.apCriticalMultiplier < 5f;
     }
 }

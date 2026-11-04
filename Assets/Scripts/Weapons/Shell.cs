@@ -9,11 +9,18 @@ public class Shell : MonoBehaviour
 
     private float distanceTravelled = 0f;
 
-    [Header("Armor Penetration")]
+    [Header ("Armor Penetration")]
     public bool isAP = false;
     public float penetration = 0f;
 
-    [Header("Fire Settings")]
+    [Header ("Critical Hit")]
+    [Range(0f, 1f)]
+    public float criticalChance = 0f;
+
+    [Min(1f)]
+    public float criticalMultiplier  = 2f;
+
+    [Header ("Fire Settings")]
     [Range(0f, 1f)]
     public float ignitionChance = 0.20f;
 
@@ -54,6 +61,15 @@ public class Shell : MonoBehaviour
             }
 
             float finalDamage = damage;
+            bool isCritical = false;
+
+            if (isAP && Random.value < criticalChance)
+            {
+                finalDamage *= criticalMultiplier;
+                isCritical = true;
+
+                Debug.Log("AP CRITICAL HIT! Damage: " + finalDamage);
+            }
 
             // HE shells are reduced by regular armor.
             if (!isAP)
@@ -69,6 +85,14 @@ public class Shell : MonoBehaviour
             Debug.Log("Shell dealing " + finalDamage + " damage.");
             
             enemy.TakeDamage(finalDamage);
+            
+            if (isCritical && CombatFeedbackManager.Instance != null)
+            {
+                CombatFeedbackManager.Instance.ShowCriticalHit(
+                    finalDamage,
+                    enemy.transform.position
+                );
+            }
 
             if (!isAP)
             {

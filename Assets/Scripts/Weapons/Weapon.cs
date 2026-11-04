@@ -29,6 +29,12 @@ public class Weapon : MonoBehaviour
     public float reloadTime = 1f;
     private float reloadTimer = 0f;
 
+    [Header ("AP Critical Hits")]
+    [Range(0f, 1f)]
+    public float apCriticalChance = 0.15f;
+
+    public float apCriticalMultiplier = 2f;
+
     [Header ("Gun Range")]
     public float gunRange = 30f;
     public float shellSpeed = 30f;
@@ -387,6 +393,10 @@ public class Weapon : MonoBehaviour
                 
                 shell.isAP = isAP;
                 shell.penetration = penetration;
+
+                // Critical stats only apply to AP shells.
+                shell.criticalChance = isAP ? apCriticalChance : 0f;
+                shell.criticalMultiplier = apCriticalMultiplier;
 
                 shell.maxDistance = gunRange;
                 shell.speed = shellSpeed;

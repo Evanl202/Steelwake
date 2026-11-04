@@ -37,61 +37,116 @@ public class CombatFeedbackManager  : MonoBehaviour
     }
 
     
-public void ShowDamage(float damage, Vector3 worldPosition)
-{
-    if (damageNumberPrefab == null || canvas == null)
-        return;
-
-    if (mainCamera == null)
-        mainCamera = Camera.main;
-
-    if (mainCamera == null)
-        return;
-
-    Vector3 screenPosition =
-        mainCamera.WorldToScreenPoint(worldPosition);
-
-    // Do not show damage numbers for positions behind the camera.
-    if (screenPosition.z <= 0f)
-        return;
-
-    GameObject damageObject =
-        Instantiate(damageNumberPrefab, canvas.transform);
-
-    DamageNumber damageNumber =
-        damageObject.GetComponent<DamageNumber>();
-
-    RectTransform damageRect =
-        damageObject.GetComponent<RectTransform>();
-
-    if (damageNumber != null && damageRect != null)
+    public void ShowDamage(float damage, Vector3 worldPosition)
     {
-        Camera canvasCamera =
-            canvas.renderMode == RenderMode.ScreenSpaceOverlay
-                ? null
-                : canvas.worldCamera;
+        if (damageNumberPrefab == null || canvas == null)
+            return;
 
-        RectTransform canvasRect =
-            canvas.transform as RectTransform;
+        if (mainCamera == null)
+            mainCamera = Camera.main;
 
-        if (canvasRect != null &&
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                canvasRect,
-                screenPosition,
-                canvasCamera,
-                out Vector2 localPoint))
+        if (mainCamera == null)
+            return;
+
+        Vector3 screenPosition =
+            mainCamera.WorldToScreenPoint(worldPosition);
+
+        // Do not show damage numbers for positions behind the camera.
+        if (screenPosition.z <= 0f)
+            return;
+
+        GameObject damageObject =
+            Instantiate(damageNumberPrefab, canvas.transform);
+
+        DamageNumber damageNumber =
+            damageObject.GetComponent<DamageNumber>();
+
+        RectTransform damageRect =
+            damageObject.GetComponent<RectTransform>();
+
+        if (damageNumber != null && damageRect != null)
         {
-            damageRect.anchoredPosition =
-                localPoint + damageNumber.GetRandomOffset();
-        }
-        else
-        {
-            damageRect.position = screenPosition;
-        }
+            Camera canvasCamera =
+                canvas.renderMode == RenderMode.ScreenSpaceOverlay
+                    ? null
+                    : canvas.worldCamera;
 
-        damageNumber.SetDamage(damage);
+            RectTransform canvasRect =
+                canvas.transform as RectTransform;
+
+            if (canvasRect != null &&
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    canvasRect,
+                    screenPosition,
+                    canvasCamera,
+                    out Vector2 localPoint))
+            {
+                damageRect.anchoredPosition =
+                    localPoint + damageNumber.GetRandomOffset();
+            }
+            else
+            {
+                damageRect.position = screenPosition;
+            }
+
+            damageNumber.SetDamage(damage);
+        }
     }
-}
+
+    public void ShowCriticalHit(float damage, Vector3 worldPosition)
+    {
+        if (damageNumberPrefab == null || canvas == null)
+            return;
+
+        if (mainCamera == null)
+            mainCamera = Camera.main;
+
+        if (mainCamera == null)
+            return;
+
+        Vector3 screenPosition =
+            mainCamera.WorldToScreenPoint(worldPosition);
+
+        if (screenPosition.z <= 0f)
+            return;
+
+        GameObject damageObject =
+            Instantiate(damageNumberPrefab, canvas.transform);
+
+        DamageNumber damageNumber =
+            damageObject.GetComponent<DamageNumber>();
+
+        RectTransform damageRect =
+            damageObject.GetComponent<RectTransform>();
+
+        if (damageNumber != null && damageRect != null)
+        {
+            Camera canvasCamera =
+                canvas.renderMode == RenderMode.ScreenSpaceOverlay
+                    ? null
+                    : canvas.worldCamera;
+
+            RectTransform canvasRect =
+                canvas.transform as RectTransform;
+
+            if (canvasRect != null &&
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    canvasRect,
+                    screenPosition,
+                    canvasCamera,
+                    out Vector2 localPoint))
+            {
+                damageRect.anchoredPosition =
+                    localPoint + damageNumber.GetRandomOffset();
+            }
+            else
+            {
+                damageRect.position = screenPosition;
+            }
+
+            damageNumber.SetDamage(damage, true);
+        }
+    }
 
     public void CreateEnemyHealthBar(EnemyShip enemy)
     {
