@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class ShipSelectionManager : MonoBehaviour
 {
@@ -41,7 +43,7 @@ public class ShipSelectionManager : MonoBehaviour
         // Start rotating when the left mouse button is pressed.
         if (Input.GetMouseButtonDown(0))
         {
-            isDragging = !EventSystem.current.IsPointerOverGameObject();
+            isDragging = !IsPointerOverInteractiveUI();
         }
 
         // Stop rotating when the mouse button is released.
@@ -77,6 +79,29 @@ public class ShipSelectionManager : MonoBehaviour
 
             previewCamera.fieldOfView = currentZoom;
         }
+    }
+
+    private bool IsPointerOverInteractiveUI()
+    {
+        if (EventSystem.current == null)
+            return false;
+
+        PointerEventData pointerData =
+            new PointerEventData(EventSystem.current);
+
+        pointerData.position = Input.mousePosition;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+
+        EventSystem.current.RaycastAll(pointerData, results);
+
+        foreach (RaycastResult result in results)
+        {
+            if (result.gameObject.GetComponentInParent<Selectable>() != null)
+                return true;
+        }
+
+        return false;
     }
 
     public void NextShip()
