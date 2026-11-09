@@ -44,6 +44,19 @@ public class GameAudioSFX : MonoBehaviour
     [Header("Upgrade Sounds")]
     [SerializeField] private AudioClip upgradeClickSound;
 
+    [Header("Gun Fire Volume")]
+    [Range(0f, 1f)]
+    [SerializeField] private float playerGunVolume = 1f;
+
+    [Range(0f, 1f)]
+    [SerializeField] private float enemyGunVolume = 0.4f;
+
+    [Header("Torpedo Sound Volume")]
+    [Range(0f, 1f)]
+    [SerializeField] private float playerTorpedoVolume = 1f;
+
+    [Range(0f, 1f)]
+    [SerializeField] private float enemyTorpedoVolume = 0.4f;
     public void PlayUpgradeClick()
     {
         PlaySound(upgradeClickSound);
@@ -89,7 +102,17 @@ public class GameAudioSFX : MonoBehaviour
         PlaySound(enemyHitSound);
     }
 
-    public void PlayGunFire(ShipClass shipClass)
+    public void PlayPlayerGunFire(ShipClass shipClass)
+    {
+        PlayGunFire(shipClass, playerGunVolume);
+    }
+
+    public void PlayEnemyGunFire(ShipClass shipClass)
+    {
+        PlayGunFire(shipClass, enemyGunVolume);
+    }
+
+    private void PlayGunFire(ShipClass shipClass, float volume)
     {
         AudioClip[] sounds = shipClass switch
         {
@@ -104,7 +127,7 @@ public class GameAudioSFX : MonoBehaviour
 
         AudioClip clip = sounds[Random.Range(0, sounds.Length)];
 
-        PlaySound(clip);
+        PlaySound(clip, volume);
     }
 
     public void PlayPickup()
@@ -132,9 +155,20 @@ public class GameAudioSFX : MonoBehaviour
         PlaySound(levelUpSound);
     }
 
-    public void PlayTorpedoLaunch()
+    public void PlayTorpedoLaunch(bool isPlayer)
     {
-        PlaySound(torpedoLaunchSound);
+        PlaySound(
+            torpedoLaunchSound,
+            isPlayer ? playerTorpedoVolume : enemyTorpedoVolume
+        );
+    }
+
+    public void PlayUnderwaterExplosion(bool isPlayer)
+    {
+        PlaySound(
+            underwaterExplosionSound,
+            isPlayer ? playerTorpedoVolume : enemyTorpedoVolume
+        );
     }
 
     public void PlayUnderwaterExplosion()
@@ -142,9 +176,9 @@ public class GameAudioSFX : MonoBehaviour
         PlaySound(underwaterExplosionSound);
     }
 
-    private void PlaySound(AudioClip clip)
+    private void PlaySound(AudioClip clip, float volume = 1f)
     {
         if (clip != null && audioSource != null)
-            audioSource.PlayOneShot(clip);
+            audioSource.PlayOneShot(clip, volume);
     }
 }

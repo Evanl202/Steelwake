@@ -410,7 +410,7 @@ public class Weapon : MonoBehaviour
 
             if (playerShip != null)
             {
-                GameAudioSFX.Instance.PlayGunFire(
+                GameAudioSFX.Instance.PlayPlayerGunFire(
                     playerShip.shipClass
                 );
             }
@@ -511,7 +511,7 @@ public class Weapon : MonoBehaviour
         
         if (GameAudioSFX.Instance != null)
         {
-            GameAudioSFX.Instance.PlayTorpedoLaunch();
+            GameAudioSFX.Instance.PlayUnderwaterExplosion(true);
         }
 
         PickupEffects effects =

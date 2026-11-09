@@ -758,8 +758,8 @@ public class EnemyWeapon : MonoBehaviour
 
                 if (enemyShipComponent != null)
                 {
-                    GameAudioSFX.Instance.PlayGunFire(
-                        enemyShipComponent.shipClass
+                    GameAudioSFX.Instance.PlayEnemyGunFire(
+                        enemyShip.shipClass
                     );
                 }
             }
@@ -887,7 +887,7 @@ public class EnemyWeapon : MonoBehaviour
         {
             if (GameAudioSFX.Instance != null)
             {
-                GameAudioSFX.Instance.PlayTorpedoLaunch();
+                GameAudioSFX.Instance.PlayUnderwaterExplosion(false);
             }
 
             torpedoReloadTimer = torpedoReloadTime;
