@@ -4,6 +4,16 @@ using TMPro;
 public class GameSettings : MonoBehaviour
 {
     public TMP_Dropdown fpsDropdown;
+
+    public TMP_Dropdown resolutionDropdown;
+
+    private readonly Vector2Int[] resolutions =
+    {
+        new Vector2Int(1280, 720),
+        new Vector2Int(1920, 1080),
+        new Vector2Int(2560, 1440),
+        new Vector2Int(3840, 2160)
+    };
     
     private int[] fpsOptions = { 30, 60, 120, 144 };
 
@@ -15,6 +25,7 @@ public class GameSettings : MonoBehaviour
     private void Start()
     {
         LoadFPS();
+        LoadResolution();
     }
 
     public void ApplyFPS()
@@ -48,5 +59,42 @@ public class GameSettings : MonoBehaviour
         fpsDropdown.RefreshShownValue();
 
         Application.targetFrameRate = savedFPS;
+    }
+
+    public void ApplyResolution()
+    {
+        int selectedIndex = resolutionDropdown.value;
+
+        Vector2Int resolution = resolutions[selectedIndex];
+
+        Screen.SetResolution(
+            resolution.x,
+            resolution.y,
+            FullScreenMode.FullScreenWindow
+        );
+
+        PlayerPrefs.SetInt("ResolutionIndex", selectedIndex);
+        PlayerPrefs.Save();
+
+        Debug.Log("Resolution set to " +
+            resolution.x + "x" + resolution.y);
+    }
+
+    private void LoadResolution()
+    {
+        int savedIndex = PlayerPrefs.GetInt("ResolutionIndex", 1);
+
+        savedIndex = Mathf.Clamp(savedIndex, 0, resolutions.Length - 1);
+
+        resolutionDropdown.value = savedIndex;
+        resolutionDropdown.RefreshShownValue();
+
+        Vector2Int resolution = resolutions[savedIndex];
+
+        Screen.SetResolution(
+            resolution.x,
+            resolution.y,
+            FullScreenMode.FullScreenWindow
+        );
     }
 }
