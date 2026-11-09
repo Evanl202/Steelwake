@@ -19,6 +19,53 @@ public class PickupItem : MonoBehaviour
     public float repairPercent = 0.30f;
 
     private bool collected;
+    
+    private void ShowPickupNotification()
+    {
+        if (PickupNotificationUI.Instance == null)
+            return;
+
+        string title = "";
+        string description = "";
+
+        switch (pickupType)
+        {
+            case PickupType.Repair:
+                title = "REPAIR KIT";
+                description =
+                    $"Restores {repairPercent * 100f:0}% of maximum health";
+                break;
+
+            case PickupType.DamageBoost:
+                title = "DAMAGE BOOST";
+                description =
+                    "Increases damage by 50% for 10 seconds";
+                break;
+
+            case PickupType.ReloadBoost:
+                title = "RELOAD BOOST";
+                description =
+                    "Reduces reload time by 40% for 10 seconds";
+                break;
+
+            case PickupType.XPCollector:
+                title = "XP COLLECTOR";
+                description =
+                    "Collects all XP pickups on the map";
+                break;
+
+            case PickupType.Invulnerability:
+                title = "INVULNERABILITY";
+                description =
+                    "Prevents damage for 5 seconds";
+                break;
+        }
+
+        PickupNotificationUI.Instance.ShowNotification(
+            title,
+            description
+        );
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -78,6 +125,8 @@ public class PickupItem : MonoBehaviour
         {
             GameAudioSFX.Instance.PlayPickup();
         }
+
+        ShowPickupNotification();
 
         Debug.Log("Collected pickup: " + pickupType);
         Destroy(gameObject);

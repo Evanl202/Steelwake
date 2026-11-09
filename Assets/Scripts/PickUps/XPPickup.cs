@@ -19,7 +19,7 @@ public class XPPickup : MonoBehaviour
         }
     }
 
-    public void CollectXP()
+    public void CollectXP(bool showNotification = true)
     {
         if (collected)
             return;
@@ -34,6 +34,14 @@ public class XPPickup : MonoBehaviour
         if (GameAudioSFX.Instance != null)
         {
             GameAudioSFX.Instance.PlayXPPickup();
+        }
+
+        if (showNotification && PickupNotificationUI.Instance != null)
+        {
+            PickupNotificationUI.Instance.ShowNotification(
+                "XP +" + xpAmount,
+                "Experience gained"
+            );
         }
 
         Debug.Log("Collected XP: " + xpAmount);
@@ -52,7 +60,7 @@ public class XPPickup : MonoBehaviour
         {
             if (pickup != null)
             {
-                pickup.CollectXP();
+                pickup.CollectXP(false);
             }
         }
     }
