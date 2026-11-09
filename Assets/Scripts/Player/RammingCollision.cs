@@ -27,7 +27,7 @@ public class RammingCollision : MonoBehaviour
 
         EnemyShip enemy = other.GetComponentInParent<EnemyShip>();
 
-        if (enemy == null || rammedEnemies.Contains(enemy))
+        if (enemy == null || enemy.CompareTag("Boss") || rammedEnemies.Contains(enemy))
             return;
 
         rammedEnemies.Add(enemy);
