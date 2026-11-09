@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class ShipSelectionManager : MonoBehaviour
 {
@@ -15,9 +16,67 @@ public class ShipSelectionManager : MonoBehaviour
 
     private int selectedShip = 0;
 
+    [Header("Preview Controls")]
+    public Camera previewCamera;
+
+    public float rotationSpeed = 150f;
+
+    public float zoomSpeed = 5f;
+    public float minZoom = 25f;
+    public float maxZoom = 60f;
+
+    private float currentZoom = 45f;
+    private bool isDragging = false;
+
     private void Start()
     {
         UpdateShipDisplay();
+    }
+
+    private void Update()
+    {
+        if (previewShip == null)
+            return;
+
+        // Start rotating when the left mouse button is pressed.
+        if (Input.GetMouseButtonDown(0))
+        {
+            isDragging = !EventSystem.current.IsPointerOverGameObject();
+        }
+
+        // Stop rotating when the mouse button is released.
+        if (Input.GetMouseButtonUp(0))
+        {
+            isDragging = false;
+        }
+
+        // Rotate the ship horizontally.
+        if (isDragging && Input.GetMouseButton(0))
+        {
+            float mouseX = Input.GetAxis("Mouse X");
+
+            previewShip.transform.Rotate(
+                Vector3.up,
+                -mouseX * rotationSpeed * Time.deltaTime,
+                Space.World
+            );
+        }
+
+        // Zoom using the mouse wheel.
+        if (previewCamera != null)
+        {
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+
+            currentZoom -= scroll * zoomSpeed * 100f * Time.deltaTime;
+
+            currentZoom = Mathf.Clamp(
+                currentZoom,
+                minZoom,
+                maxZoom
+            );
+
+            previewCamera.fieldOfView = currentZoom;
+        }
     }
 
     public void NextShip()
