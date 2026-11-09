@@ -27,10 +27,10 @@ public class XPPickup : MonoBehaviour
         collected = true;
 
         int gainedXP = xpAmount;
-        
+
         if (ExperienceManager.Instance != null)
         {
-            int gainedXP = ExperienceManager.Instance.AddXP(xpAmount);
+            gainedXP = ExperienceManager.Instance.AddXP(xpAmount);
         }
         
         if (GameAudioSFX.Instance != null)
