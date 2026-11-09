@@ -72,6 +72,7 @@ public class EnemyShip : MonoBehaviour
 
     private float orbitDirection;
     private float gunRepositionDirection = 1f;
+    private bool repositioningForGun = false;
     private float currentSpeed = 0f;
     public float CurrentSpeed => currentSpeed;
 
@@ -176,17 +177,19 @@ public class EnemyShip : MonoBehaviour
                 float gunCorrection =
                     enemyWeapon.GetGunPositioningAngle();
 
-                // Only change repositioning direction when the
-                // correction is large enough to avoid left/right jitter.
-                if (Mathf.Abs(gunCorrection) > 8f)
+                // Choose a direction only when beginning to reposition.
+                if (!repositioningForGun)
                 {
-                    gunRepositionDirection = Mathf.Sign(gunCorrection);
+                    if (Mathf.Abs(gunCorrection) > 0.1f)
+                    {
+                        gunRepositionDirection = Mathf.Sign(gunCorrection);
+                    }
+
+                    repositioningForGun = true;
                 }
 
-                float correctionDirection = gunRepositionDirection;
-
                 Vector3 repositionDirection =
-                    orbitDirectionVector * correctionDirection;
+                    orbitDirectionVector * gunRepositionDirection;
 
                 movementDirection =
                     repositionDirection +
