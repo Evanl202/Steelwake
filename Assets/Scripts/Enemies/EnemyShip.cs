@@ -403,7 +403,7 @@ public class EnemyShip : MonoBehaviour
         return enemyWeapon.gunFiringRange * weaponRangeBuffer;
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, bool isCritical = false)
     {
         currentHealth -= damage;
 
