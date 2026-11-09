@@ -418,7 +418,8 @@ public class EnemyShip : MonoBehaviour
 
             CombatFeedbackManager.Instance.ShowDamage(
                 damage,
-                transform.position
+                transform.position,
+                isCritical
             );
         }
         Debug.Log("Enemy HP: " + currentHealth);

@@ -37,7 +37,7 @@ public class CombatFeedbackManager  : MonoBehaviour
     }
 
     
-    public void ShowDamage(float damage, Vector3 worldPosition)
+    public void ShowDamage(float damage, Vector3 worldPosition, bool isCritical = false)
     {
         if (damageNumberPrefab == null || canvas == null)
             return;
@@ -89,7 +89,7 @@ public class CombatFeedbackManager  : MonoBehaviour
                 damageRect.position = screenPosition;
             }
 
-            damageNumber.SetDamage(damage);
+            damageNumber.SetDamage(damage, isCritical);
         }
     }
 

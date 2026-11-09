@@ -84,15 +84,7 @@ public class Shell : MonoBehaviour
 
             Debug.Log("Shell dealing " + finalDamage + " damage.");
             
-            enemy.TakeDamage(finalDamage);
-            
-            if (isCritical && CombatFeedbackManager.Instance != null)
-            {
-                CombatFeedbackManager.Instance.ShowCriticalHit(
-                    finalDamage,
-                    enemy.transform.position
-                );
-            }
+            enemy.TakeDamage(finalDamage, isCritical);
 
             if (!isAP)
             {
