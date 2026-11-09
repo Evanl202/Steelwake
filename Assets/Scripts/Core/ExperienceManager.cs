@@ -8,6 +8,7 @@ public class ExperienceManager : MonoBehaviour
     public int currentLevel = 1;
     public int currentXP = 0;
     public int xpToNextLevel = 100;
+    public float xpMultiplier = 1f;
 
     [Header ("Level Up UI")]
     public LevelUpUI levelUpUI;
@@ -27,18 +28,22 @@ public class ExperienceManager : MonoBehaviour
         }
     }
 
-    public void AddXP(int amount)
+    public int AddXP(int amount)
     {
-        currentXP += amount;
+        int finalXP = Mathf.RoundToInt(amount * xpMultiplier);
+
+        currentXP += finalXP;
 
         Debug.Log(
-            "Gained: " + amount +
-            "XP. Total XP: " + currentXP +
-            "/" + xpToNextLevel
+            "Gained: " + finalXP +
+            " XP (Multiplier: " + xpMultiplier + "x). Total XP: " +
+            currentXP + "/" + xpToNextLevel
         );
 
         CheckLevel();
-    }
+
+        return finalXP;
+}
 
     public void CheckLevel()
     {

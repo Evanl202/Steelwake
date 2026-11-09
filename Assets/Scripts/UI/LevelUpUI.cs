@@ -279,6 +279,12 @@ public class LevelUpUI : MonoBehaviour
             "AP CRITICAL DAMAGE",
             "Increase AP critical damage multiplier by 0.25x",
             39
+        ),
+
+        new UpgradeData(
+            "XP MULTIPLIER",
+            "Increase XP gained by 10%. Maximum multiplier: 2x",
+            40
         )
     };
 
@@ -468,6 +474,12 @@ public class LevelUpUI : MonoBehaviour
             {
                 availableUpgrades.Add(upgrades[28]);
             }
+        }
+
+        // XP Multiplier
+        if (UpgradeManager.Instance.CanUpgradeXPMultiplier())
+        {
+            availableUpgrades.Add(upgrades[40]);
         }
 
         // Safety check
@@ -743,6 +755,11 @@ public class LevelUpUI : MonoBehaviour
             case 39:
                 UpgradeManager.Instance.UpgradeAPCriticalDamage();
                 break;
+
+            case 40:
+                UpgradeManager.Instance.UpgradeXPMultiplier();
+                break;
+
         }
 
         levelUpPanel.SetActive(false);

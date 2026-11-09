@@ -28,7 +28,7 @@ public class XPPickup : MonoBehaviour
 
         if (ExperienceManager.Instance != null)
         {
-            ExperienceManager.Instance.AddXP(xpAmount);
+            int gainedXP = ExperienceManager.Instance.AddXP(xpAmount);
         }
         
         if (GameAudioSFX.Instance != null)
@@ -39,7 +39,7 @@ public class XPPickup : MonoBehaviour
         if (showNotification && PickupNotificationUI.Instance != null)
         {
             PickupNotificationUI.Instance.ShowNotification(
-                "XP +" + xpAmount,
+                "XP +" + gainedXP,
                 "Experience gained"
             );
         }

@@ -865,6 +865,25 @@ public class UpgradeManager : MonoBehaviour
         );
     }
 
+    public void UpgradeXPMultiplier()
+    {
+        if (ExperienceManager.Instance == null)
+        {
+            Debug.LogWarning("ExperienceManager not found.");
+            return;
+        }
+
+        ExperienceManager.Instance.xpMultiplier = Mathf.Min(
+            2f,
+            ExperienceManager.Instance.xpMultiplier + 0.1f
+        );
+
+        Debug.Log(
+            "XP Multiplier upgraded! New multiplier: " +
+            ExperienceManager.Instance.xpMultiplier + "x"
+        );
+    }
+
     // Upgrade availability checks
     public bool CanUpgradeSpeed()
     {
@@ -926,5 +945,11 @@ public class UpgradeManager : MonoBehaviour
     {
         return playerWeapon != null &&
             playerWeapon.apCriticalMultiplier < 5f;
+    }
+
+    public bool CanUpgradeXPMultiplier()
+    {
+        return ExperienceManager.Instance != null &&
+            ExperienceManager.Instance.xpMultiplier < 2f;
     }
 }
