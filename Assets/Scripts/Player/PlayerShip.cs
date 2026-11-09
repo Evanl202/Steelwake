@@ -15,6 +15,10 @@ public class PlayerShip : MonoBehaviour
     [Range (0f, 0.5f)]
     public float torpedoProtection = 0.05f;
 
+    [Header ("Ramming")]
+    [Range(1, 3)]
+    public int shipWeight = 1;
+
     private float currentHealth;
 
     public float CurrentHealth => currentHealth;

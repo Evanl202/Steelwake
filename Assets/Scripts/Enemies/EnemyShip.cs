@@ -56,13 +56,17 @@ public class EnemyShip : MonoBehaviour
     public float maximumDistance = 60f;
     public float returnTurnSpeedMultiplier = 2f;
 
-    [Header("AI Weapon Awareness")]
+    [Header ("AI Weapon Awareness")]
     private EnemyWeapon enemyWeapon;
     public float weaponRangeBuffer = 0.9f;
 
     [Header ("Spacing")]
     public float enemySpacing = 8f;
     public float spacingStrength = 1f;
+
+    [Header ("Ramming")]
+    [Range(1, 3)]
+    public int shipWeight = 1;
 
     protected Transform player;
 
