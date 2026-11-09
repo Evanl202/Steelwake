@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class XPPickup : MonoBehaviour
 {
-    public int xpAmount = 10;
+    public int gainedXP = 10;
 
     private bool collected;
 
