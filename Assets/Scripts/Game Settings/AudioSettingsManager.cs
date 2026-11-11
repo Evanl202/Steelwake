@@ -22,7 +22,10 @@ public class AudioSettingsManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
 
+    private void Start()
+    {
         LoadVolume(MasterKey, "MasterVolume");
         LoadVolume(MusicKey, "MusicVolume");
         LoadVolume(SFXKey, "SFXVolume");

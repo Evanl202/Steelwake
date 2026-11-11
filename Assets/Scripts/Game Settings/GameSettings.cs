@@ -7,6 +7,8 @@ public class GameSettings : MonoBehaviour
 
     public TMP_Dropdown resolutionDropdown;
 
+    public TMP_Dropdown displayModeDropdown;
+
     private readonly Vector2Int[] resolutions =
     {
         new Vector2Int(1280, 720),
@@ -42,6 +44,7 @@ public class GameSettings : MonoBehaviour
     {
         LoadFPS();
         LoadResolution();
+        LoadDisplayMode();
     }
 
     public void ApplyFPS()
@@ -83,34 +86,78 @@ public class GameSettings : MonoBehaviour
 
         Vector2Int resolution = resolutions[selectedIndex];
 
+        int displayModeIndex = displayModeDropdown.value;
+
+        FullScreenMode selectedMode = displayModes[displayModeIndex];
+
         Screen.SetResolution(
             resolution.x,
             resolution.y,
-            FullScreenMode.FullScreenWindow
+            selectedMode
         );
 
         PlayerPrefs.SetInt("ResolutionIndex", selectedIndex);
         PlayerPrefs.Save();
 
         Debug.Log("Resolution set to " +
-            resolution.x + "x" + resolution.y);
+            resolution.x + "x" + resolution.y +
+            " | Mode: " + selectedMode);
     }
 
-    private void LoadResolution()
+    private readonly FullScreenMode[] displayModes =
     {
-        int savedIndex = PlayerPrefs.GetInt("ResolutionIndex", 1);
+        FullScreenMode.Windowed,
+        FullScreenMode.FullScreenWindow,
+        FullScreenMode.ExclusiveFullScreen
+    };
 
-        savedIndex = Mathf.Clamp(savedIndex, 0, resolutions.Length - 1);
+    public void ApplyDisplayMode()
+    {
+        int selectedIndex = displayModeDropdown.value;
 
-        resolutionDropdown.value = savedIndex;
-        resolutionDropdown.RefreshShownValue();
+        FullScreenMode selectedMode = displayModes[selectedIndex];
 
-        Vector2Int resolution = resolutions[savedIndex];
+        Vector2Int resolution = resolutions[resolutionDropdown.value];
 
         Screen.SetResolution(
             resolution.x,
             resolution.y,
-            FullScreenMode.FullScreenWindow
+            selectedMode
+        );
+
+        PlayerPrefs.SetInt("DisplayMode", selectedIndex);
+        PlayerPrefs.Save();
+
+        Debug.Log("Display mode set to " + selectedMode);
+    }
+
+    private void LoadDisplaySettings()
+    {
+        int savedResolutionIndex = PlayerPrefs.GetInt("ResolutionIndex", 1);
+        int savedDisplayModeIndex = PlayerPrefs.GetInt("DisplayMode", 1);
+
+        savedResolutionIndex = Mathf.Clamp(
+            savedResolutionIndex, 0, resolutions.Length - 1
+        );
+
+        savedDisplayModeIndex = Mathf.Clamp(
+            savedDisplayModeIndex, 0, displayModes.Length - 1
+        );
+
+        // Update dropdowns
+        resolutionDropdown.value = savedResolutionIndex;
+        resolutionDropdown.RefreshShownValue();
+
+        displayModeDropdown.value = savedDisplayModeIndex;
+        displayModeDropdown.RefreshShownValue();
+
+        // Apply saved settings
+        Vector2Int resolution = resolutions[savedResolutionIndex];
+
+        Screen.SetResolution(
+            resolution.x,
+            resolution.y,
+            displayModes[savedDisplayModeIndex]
         );
     }
 }
