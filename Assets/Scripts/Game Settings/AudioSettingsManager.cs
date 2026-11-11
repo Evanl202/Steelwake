@@ -39,7 +39,7 @@ public class AudioSettingsManager : MonoBehaviour
 
     private void FindAudioMixer()
     {
-        audioMixer = Resources.Load<AudioMixer>("SteelWakeMixer");
+        audioMixer = Resources.Load<AudioMixer>("MainAudioMixer");
 
         if (audioMixer == null)
         {
