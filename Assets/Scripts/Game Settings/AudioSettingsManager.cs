@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class AudioSettingsManager : MonoBehaviour
 {
@@ -27,14 +28,31 @@ public class AudioSettingsManager : MonoBehaviour
         }
 
         Instance = this;
+
         FindAudioMixer();
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
     {
-        LoadVolumeSettings();
-        ConnectSliders();
+        FindSceneSliders();
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            Instance = null;
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        FindSceneSliders();
     }
 
     private void FindAudioMixer()
@@ -49,6 +67,52 @@ public class AudioSettingsManager : MonoBehaviour
         {
             Debug.Log("Audio Mixer found successfully!");
         }
+    }
+
+    private void FindSceneSliders()
+    {
+        Slider[] sliders = FindObjectsByType<Slider>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None
+        );
+
+        masterSlider = null;
+        musicSlider = null;
+        sfxSlider = null;
+
+        foreach (Slider slider in sliders)
+        {
+            string objectNames = "";
+            Transform current = slider.transform;
+
+            // Check the slider and all its parent names.
+            while (current != null)
+            {
+                objectNames += current.name.ToLower() + " ";
+                current = current.parent;
+            }
+
+            if (objectNames.Contains("master"))
+            {
+                masterSlider = slider;
+            }
+            else if (objectNames.Contains("music"))
+            {
+                musicSlider = slider;
+            }
+            else if (objectNames.Contains("sfx"))
+            {
+                sfxSlider = slider;
+            }
+        }
+
+        Debug.Log("Audio sliders found:");
+        Debug.Log("Master: " + (masterSlider != null));
+        Debug.Log("Music: " + (musicSlider != null));
+        Debug.Log("SFX: " + (sfxSlider != null));
+
+        LoadVolumeSettings();
+        ConnectSliders();
     }
 
     private void ConnectSliders()
