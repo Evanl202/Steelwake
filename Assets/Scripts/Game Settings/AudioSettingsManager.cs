@@ -7,7 +7,7 @@ public class AudioSettingsManager : MonoBehaviour
     public static AudioSettingsManager Instance { get; private set; }
 
     [Header("Audio Mixer")]
-    [SerializeField] private AudioMixer audioMixer;
+    private AudioMixer audioMixer;
 
     [Header("Current Scene Sliders")]
     [SerializeField] private Slider masterSlider;
@@ -27,6 +27,7 @@ public class AudioSettingsManager : MonoBehaviour
         }
 
         Instance = this;
+        FindAudioMixer();
         DontDestroyOnLoad(gameObject);
     }
 
@@ -34,6 +35,20 @@ public class AudioSettingsManager : MonoBehaviour
     {
         LoadVolumeSettings();
         ConnectSliders();
+    }
+
+    private void FindAudioMixer()
+    {
+        audioMixer = Resources.Load<AudioMixer>("SteelWakeMixer");
+
+        if (audioMixer == null)
+        {
+            Debug.LogError("Could not find MainAudioMixer in Resources!");
+        }
+        else
+        {
+            Debug.Log("Audio Mixer found successfully!");
+        }
     }
 
     private void ConnectSliders()
