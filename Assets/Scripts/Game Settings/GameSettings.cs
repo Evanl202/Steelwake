@@ -22,6 +22,19 @@ public class GameSettings : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            Debug.Log("Game resolution: " +
+                Screen.width + "x" + Screen.height);
+
+            Debug.Log("Monitor resolution: " +
+                Screen.currentResolution.width + "x" +
+                Screen.currentResolution.height);
+        }
+    }
+
     private void Start()
     {
         LoadFPS();
