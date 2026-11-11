@@ -1,12 +1,18 @@
-
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class AudioSettingsManager : MonoBehaviour
 {
     public static AudioSettingsManager Instance { get; private set; }
 
+    [Header("Audio Mixer")]
     [SerializeField] private AudioMixer audioMixer;
+
+    [Header("Current Scene Sliders")]
+    [SerializeField] private Slider masterSlider;
+    [SerializeField] private Slider musicSlider;
+    [SerializeField] private Slider sfxSlider;
 
     private const string MasterKey = "MasterVolume";
     private const string MusicKey = "MusicVolume";
@@ -26,9 +32,29 @@ public class AudioSettingsManager : MonoBehaviour
 
     private void Start()
     {
-        LoadVolume(MasterKey, "MasterVolume");
-        LoadVolume(MusicKey, "MusicVolume");
-        LoadVolume(SFXKey, "SFXVolume");
+        LoadVolumeSettings();
+        ConnectSliders();
+    }
+
+    private void ConnectSliders()
+    {
+        if (masterSlider != null)
+        {
+            masterSlider.onValueChanged.RemoveListener(SetMasterVolume);
+            masterSlider.onValueChanged.AddListener(SetMasterVolume);
+        }
+
+        if (musicSlider != null)
+        {
+            musicSlider.onValueChanged.RemoveListener(SetMusicVolume);
+            musicSlider.onValueChanged.AddListener(SetMusicVolume);
+        }
+
+        if (sfxSlider != null)
+        {
+            sfxSlider.onValueChanged.RemoveListener(SetSFXVolume);
+            sfxSlider.onValueChanged.AddListener(SetSFXVolume);
+        }
     }
 
     public void SetMasterVolume(float value)
@@ -50,23 +76,52 @@ public class AudioSettingsManager : MonoBehaviour
     {
         value = Mathf.Clamp01(value);
 
-        // A slider value of 0 means effectively silent.
         float decibels = value <= 0.0001f
             ? -80f
             : Mathf.Log10(value) * 20f;
 
-        if (audioMixer != null)
+        if (audioMixer == null)
         {
-            audioMixer.SetFloat(mixerParameter, decibels);
+            Debug.LogError("Audio Mixer is not assigned!");
+        }
+        else
+        {
+            bool success = audioMixer.SetFloat(mixerParameter, decibels);
+
+            Debug.Log(
+                mixerParameter + " | Success: " + success +
+                " | Volume: " + value +
+                " | Decibels: " + decibels
+            );
         }
 
         PlayerPrefs.SetFloat(saveKey, value);
         PlayerPrefs.Save();
     }
 
-    private void LoadVolume(string saveKey, string mixerParameter)
+    private void LoadVolumeSettings()
     {
-        float value = PlayerPrefs.GetFloat(saveKey, 1f);
+        float master = PlayerPrefs.GetFloat(MasterKey, 1f);
+        float music = PlayerPrefs.GetFloat(MusicKey, 1f);
+        float sfx = PlayerPrefs.GetFloat(SFXKey, 1f);
+
+        ApplyVolume("MasterVolume", master);
+        ApplyVolume("MusicVolume", music);
+        ApplyVolume("SFXVolume", sfx);
+
+        if (masterSlider != null)
+            masterSlider.SetValueWithoutNotify(master);
+
+        if (musicSlider != null)
+            musicSlider.SetValueWithoutNotify(music);
+
+        if (sfxSlider != null)
+            sfxSlider.SetValueWithoutNotify(sfx);
+    }
+
+    private void ApplyVolume(string mixerParameter, float value)
+    {
+        value = Mathf.Clamp01(value);
 
         float decibels = value <= 0.0001f
             ? -80f
@@ -77,5 +132,4 @@ public class AudioSettingsManager : MonoBehaviour
             audioMixer.SetFloat(mixerParameter, decibels);
         }
     }
-
 }
