@@ -32,6 +32,9 @@ public class GameSettings : MonoBehaviour
             Debug.Log("Monitor resolution: " +
                 Screen.currentResolution.width + "x" +
                 Screen.currentResolution.height);
+
+            Debug.Log("Fullscreen mode: " +
+                Screen.fullScreenMode);
         }
     }
 
