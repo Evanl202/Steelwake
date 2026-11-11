@@ -72,8 +72,7 @@ public class AudioSettingsManager : MonoBehaviour
     private void FindSceneSliders()
     {
         Slider[] sliders = FindObjectsByType<Slider>(
-            FindObjectsInactive.Include,
-            FindObjectsSortMode.None
+            FindObjectsInactive.Include
         );
 
         masterSlider = null;
