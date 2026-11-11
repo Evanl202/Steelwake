@@ -43,8 +43,7 @@ public class GameSettings : MonoBehaviour
     private void Start()
     {
         LoadFPS();
-        LoadResolution();
-        LoadDisplayMode();
+        LoadDisplaySettings();
     }
 
     public void ApplyFPS()
