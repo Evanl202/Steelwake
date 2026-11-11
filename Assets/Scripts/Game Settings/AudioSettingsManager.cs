@@ -59,6 +59,7 @@ public class AudioSettingsManager : MonoBehaviour
 
     public void SetMasterVolume(float value)
     {
+        Debug.Log("MASTER SLIDER CALLED: " + value);
         SetVolume(MasterKey, "MasterVolume", value);
     }
 
