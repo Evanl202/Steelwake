@@ -24,7 +24,7 @@ public class GameSettings : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F9))
+        if (Input.GetKeyDown(KeyCode.F8))
         {
             Debug.Log("Game resolution: " +
                 Screen.width + "x" + Screen.height);
