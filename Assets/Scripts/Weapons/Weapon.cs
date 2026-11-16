@@ -4,6 +4,7 @@ public class Weapon : MonoBehaviour
 {
     [Header("Ship")]
     public Transform shipTransform;
+    private Camera mainCamera;
 
     [Header ("Gun")]
     public GameObject shellPrefab;
@@ -76,6 +77,11 @@ public class Weapon : MonoBehaviour
 
     private void Awake()
     {
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+        }
+
         if (gunTransforms != null)
         {
             gunBaseAngles = new float[gunTransforms.Length];
@@ -179,10 +185,15 @@ public class Weapon : MonoBehaviour
             return;
         }
 
-        Camera cam = Camera.main;
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+        }
 
-        if (cam == null)
+        if (mainCamera == null)
             return;
+
+        Camera cam = mainCamera;
 
         //Horizontal plane at gun height
         Plane oceanPlane = new Plane(

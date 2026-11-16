@@ -69,6 +69,8 @@ public class EnemyWeapon : MonoBehaviour
     public float aimError = 0f;
 
     private Transform player;
+    private ShipMovement playerMovement;
+    private ShipAbilities playerAbilities;
 
     private void Awake()
     {
@@ -120,6 +122,12 @@ public class EnemyWeapon : MonoBehaviour
         if (playerObject != null)
         {
             player = playerObject.transform;
+
+            playerMovement =
+                playerObject.GetComponent<ShipMovement>();
+
+            playerAbilities =
+                playerObject.GetComponent<ShipAbilities>();
         }
         else
         {
@@ -155,14 +163,11 @@ public class EnemyWeapon : MonoBehaviour
         
         AimAtPlayer();
 
-        float distance =
-            Vector3.Distance(
-                transform.position,
-                player.position
-            );
+        float distanceSquared =
+            (transform.position - player.position).sqrMagnitude;
 
         // Gun
-        if (distance <= gunFiringRange &&
+        if (distanceSquared <= gunFiringRange * gunFiringRange &&
             reloadTimer <= 0f)
         {
             FireGun();
@@ -172,7 +177,7 @@ public class EnemyWeapon : MonoBehaviour
         if (torpedoPrefab != null &&
             torpedoFiringPoints != null &&
             torpedoLaunchers != null &&
-            distance <= torpedoFiringRange &&
+            distanceSquared <= torpedoFiringRange * torpedoFiringRange &&
             torpedoReloadTimer <= 0f)
         {
             FireTorpedo();
@@ -278,20 +283,10 @@ public class EnemyWeapon : MonoBehaviour
 
     private bool IsPlayerInSmoke()
     {
-        if (player == null)
-        {
+        if (playerAbilities == null)
             return false;
-        }
 
-        ShipAbilities abilities =
-            player.GetComponent<ShipAbilities>();
-
-        if (abilities == null)
-        {
-            return false;
-        }
-
-        return abilities.IsInSmoke;
+        return playerAbilities.IsInSmoke;
     }
 
     // Helper Functions
@@ -384,9 +379,6 @@ public class EnemyWeapon : MonoBehaviour
 
     private Vector3 GetPlayerVelocity()
     {
-        ShipMovement playerMovement =
-            player.GetComponent<ShipMovement>();
-
         if (playerMovement != null)
         {
             return playerMovement.CurrentVelocity;
@@ -767,7 +759,6 @@ public class EnemyWeapon : MonoBehaviour
             reloadTimer = gunReloadTime;
         }
     }
-
 
     private void FireTorpedo()
     {

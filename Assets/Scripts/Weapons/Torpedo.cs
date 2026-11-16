@@ -8,6 +8,7 @@ public class Torpedo : MonoBehaviour
     public float maxDistance = 35f;
 
     private float distanceTravelled = 0f;
+    
 
     private void Update()
     {

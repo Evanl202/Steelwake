@@ -8,6 +8,16 @@ public class WaveAnnouncementUI : MonoBehaviour
 
     public void ShowWave(int wave)
     {
+        if (panel == null || announcementText == null)
+        {
+            Debug.LogWarning(
+                "WaveAnnouncementUI: Panel or Announcement Text is not assigned!",
+                this
+            );
+
+            return;
+        }
+
         panel.SetActive(true);
         announcementText.text = "WAVE " + wave;
 
@@ -17,6 +27,9 @@ public class WaveAnnouncementUI : MonoBehaviour
 
     private void HideWave()
     {
-        panel.SetActive(false);
+        if (panel != null)
+        {
+            panel.SetActive(false);
+        }
     }
 }
