@@ -418,9 +418,6 @@ public class EnemyWeapon : MonoBehaviour
     // Firing Prediction
     private float GetPlayerSpeed()
     {
-        ShipMovement playerMovement =
-            player.GetComponent<ShipMovement>();
-
         if (playerMovement != null)
         {
             return playerMovement.CurrentSpeed;
