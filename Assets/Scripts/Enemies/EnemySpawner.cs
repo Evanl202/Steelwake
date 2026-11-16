@@ -139,10 +139,17 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        GameObject[] enemies =
-            GameObject.FindGameObjectsWithTag("Enemy");
+        int enemyCount = 0;
 
-        if (enemies.Length >= GetEnemyLimit())
+        foreach (EnemyShip enemy in EnemyRegistry.ActiveEnemies)
+        {
+            if (enemy != null && enemy.CompareTag("Enemy"))
+            {
+                enemyCount++;
+            }
+        }
+
+        if (enemyCount >= GetEnemyLimit())
         {
             return;
         }
