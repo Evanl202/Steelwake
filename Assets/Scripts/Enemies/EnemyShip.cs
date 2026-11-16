@@ -298,8 +298,7 @@ public class EnemyShip : MonoBehaviour
         // Enemy spacing
         Vector3 spacingDirection = Vector3.zero;
 
-        GameObject[] enemies =
-            GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (EnemyShip enemy in EnemyRegistry.ActiveEnemies)
 
         foreach (GameObject enemy in enemies)
         {
@@ -442,6 +441,16 @@ public class EnemyShip : MonoBehaviour
         {
             Die();
         }
+    }
+
+    private void OnEnable()
+    {
+        EnemyRegistry.Register(this);
+    }
+
+    private void OnDisable()
+    {
+        EnemyRegistry.Unregister(this);
     }
 
     private void Die()
