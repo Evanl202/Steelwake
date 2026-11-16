@@ -101,6 +101,7 @@ public class UpgradeManager : MonoBehaviour
             {
                 baseMaxHealth = playerShip.maxHealth;
                 baseArmor = playerShip.armor;
+                baseTorpedoProtection = playerShip.torpedoProtection;
             }
 
             if (playerWeapon != null)

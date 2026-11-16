@@ -12,10 +12,18 @@ public class EnemyHealthBarUI : MonoBehaviour
     public Vector3 screenOffset = new Vector3(0f, 35f, 0f);
 
     private RectTransform rectTransform;
+    private CanvasGroup canvasGroup;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+
+        canvasGroup = GetComponent<CanvasGroup>();
+
+        if (canvasGroup == null)
+        {
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        }
     }
 
     public void Initialize(EnemyShip target, Camera cameraToUse)
@@ -55,9 +63,12 @@ public class EnemyHealthBarUI : MonoBehaviour
         Vector3 screenPosition =
             mainCamera.WorldToScreenPoint(enemy.transform.position);
 
-        // Hide the bar when the enemy is behind the camera.
+        // Hide the health bar when the enemy is behind the camera.
         bool visible = screenPosition.z > 0f;
-        gameObject.SetActive(visible);
+
+        canvasGroup.alpha = visible ? 1f : 0f;
+        canvasGroup.interactable = visible;
+        canvasGroup.blocksRaycasts = visible;
 
         if (!visible)
             return;
