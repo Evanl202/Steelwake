@@ -3,7 +3,7 @@ https://pixabay.com/service/license-summary/
 
 Music
 
-JonasBlaleWood - Background Music
+JonasBlakeWood - Background Music
 https://pixabay.com/music/synthwave-background-music-618629/
 
 kornevmusic - Epic Emotional Adventure
@@ -26,7 +26,7 @@ Sound effects
 SingularitysMarauder - powerful cannon
 https://pixabay.com/sound-effects/film-special-effects-powerful-cannon-254542/
 
-freesound_community - Cannon shot
+SamsterBirdies (Freesound) - Cannon shot
 https://pixabay.com/sound-effects/film-special-effects-cannon-shot-14799/ 
 
 LordSonny - Cannon Fire
@@ -35,7 +35,7 @@ https://pixabay.com/sound-effects/film-special-effects-cannon-fire-161072/
 MatthewVakaliuk73627 - Mouse click
 https://pixabay.com/sound-effects/film-special-effects-mouse-click-290204/
 
-freesound_community - big ship stationary 2
+gecop (Freesound) - big ship stationary 2
 https://pixabay.com/sound-effects/city-big-ship-stationary-2-63726/
 
 Vadim_Makes_Sound - Retro Arcade level up
@@ -59,5 +59,5 @@ https://pixabay.com/sound-effects/film-special-effects-metallic-thud-449652/
 DRAGON-STUDIO - Large Underwater Explosion
 https://pixabay.com/sound-effects/large-underwater-explosion-454253/
 
-Torpedo Laucnh
-https://soundbible.com/1380-Torpedo-Launch.html
+launching Missile
+https://pixabay.com/sound-effects/film-special-effects-launching-missile-313226/
