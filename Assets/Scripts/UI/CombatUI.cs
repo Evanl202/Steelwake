@@ -10,6 +10,7 @@ public class CombatUI : MonoBehaviour
     public TMP_Text reloadText;
     public Slider reloadBar;
 
+    private PlayerShip playerShip;
     private Weapon weapon;
 
     [Header("Torpedo UI")]
@@ -19,7 +20,11 @@ public class CombatUI : MonoBehaviour
 
     private void Update()
     {
-        FindActiveWeapon();
+        // Only search for a player when one has not been found yet.
+        if (playerShip == null)
+        {
+            FindActiveWeapon();
+        }
 
         if (weapon == null)
             return;
@@ -31,7 +36,7 @@ public class CombatUI : MonoBehaviour
 
     private void FindActiveWeapon()
     {
-        PlayerShip playerShip = FindAnyObjectByType<PlayerShip>();
+        playerShip = FindAnyObjectByType<PlayerShip>();
 
         if (playerShip == null)
         {
@@ -39,16 +44,7 @@ public class CombatUI : MonoBehaviour
             return;
         }
 
-        Weapon playerWeapon = playerShip.GetComponentInChildren<Weapon>();
-
-        if (playerWeapon != null)
-        {
-            weapon = playerWeapon;
-        }
-        else
-        {
-            weapon = null;
-        }
+        weapon = playerShip.GetComponentInChildren<Weapon>();
     }
 
     private void UpdateWeaponInfo()
