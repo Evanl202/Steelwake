@@ -887,7 +887,7 @@ public class EnemyWeapon : MonoBehaviour
         {
             if (GameAudioSFX.Instance != null)
             {
-                GameAudioSFX.Instance.PlayUnderwaterExplosion(false);
+                GameAudioSFX.Instance.PlayTorpedoLaunch(false);
             }
 
             torpedoReloadTimer = torpedoReloadTime;

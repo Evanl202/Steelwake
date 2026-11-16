@@ -511,7 +511,7 @@ public class Weapon : MonoBehaviour
         
         if (GameAudioSFX.Instance != null)
         {
-            GameAudioSFX.Instance.PlayUnderwaterExplosion(true);
+            GameAudioSFX.Instance.PlayTorpedoLaunch(true);
         }
 
         PickupEffects effects =
