@@ -29,6 +29,16 @@ public class PickupNotificationUI : MonoBehaviour
             return;
         }
 
+        if (notificationGroup == null)
+        {
+            Debug.LogWarning(
+                "PickupNotificationUI: Notification Group is not assigned!",
+                this
+            );
+
+            return;
+        }
+
         notificationGroup.alpha = 0f;
         notificationGroup.gameObject.SetActive(false);
     }

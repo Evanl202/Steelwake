@@ -50,7 +50,6 @@ public class AbilityUI : MonoBehaviour
     {
         if (playerAbilities != null)
         {
-            UpdateAbilityVisibility();
             UpdateSmokeUI();
             UpdateRepairUI();
             UpdateRepairPartyUI();

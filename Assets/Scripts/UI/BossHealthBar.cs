@@ -11,7 +11,10 @@ public class BossHealthBar : MonoBehaviour
 
     private void Update()
     {
-        FindBoss();
+        if (boss == null)
+        {
+            FindBoss();
+        }
 
         if (boss == null)
         {
@@ -34,10 +37,6 @@ public class BossHealthBar : MonoBehaviour
         if (bossObject != null)
         {
             boss = bossObject.GetComponent<EnemyShip>();
-        }
-        else
-        {
-            boss = null;
         }
     }
 
