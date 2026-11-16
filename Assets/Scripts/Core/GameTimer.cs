@@ -8,21 +8,32 @@ public class GameTimer : MonoBehaviour
 
     [Header ("UI")]
     public TMP_Text timerText;
+    private int lastDisplayedSecond = -1;
 
-    void Update()
+    private void Update()
     {
-        if (GameManager.Instance != null && !GameManager.Instance.gameRunning)
+        if (GameManager.Instance != null &&
+            !GameManager.Instance.gameRunning)
         {
             return;
         }
-        
+
         elapsedTime += Time.deltaTime;
 
-        UpdateTimerText();
+        int currentSecond = Mathf.FloorToInt(elapsedTime);
+
+        if (currentSecond != lastDisplayedSecond)
+        {
+            UpdateTimerText();
+            lastDisplayedSecond = currentSecond;
+        }
     }
 
     private void UpdateTimerText()
     {
+        if (timerText == null)
+            return;
+
         int minutes = Mathf.FloorToInt(elapsedTime / 60f);
         int seconds = Mathf.FloorToInt(elapsedTime % 60f);
 
