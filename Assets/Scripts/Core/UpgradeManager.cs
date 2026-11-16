@@ -89,7 +89,6 @@ public class UpgradeManager : MonoBehaviour
             playerShip = player.GetComponent<PlayerShip>();
             playerWeapon = player.GetComponentInChildren<Weapon>();
             playerAbilities = player.GetComponent<ShipAbilities>();
-            baseTorpedoProtection = playerShip.torpedoProtection;
 
             // Save the original stats before any upgrades are applied
             if (playerMovement != null)
