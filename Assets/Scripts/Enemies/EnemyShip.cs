@@ -299,10 +299,8 @@ public class EnemyShip : MonoBehaviour
         Vector3 spacingDirection = Vector3.zero;
 
         foreach (EnemyShip enemy in EnemyRegistry.ActiveEnemies)
-
-        foreach (GameObject enemy in enemies)
         {
-            if (enemy == gameObject)
+            if (enemy == null || enemy == this)
                 continue;
 
             Vector3 awayFromEnemy =
@@ -310,8 +308,7 @@ public class EnemyShip : MonoBehaviour
 
             awayFromEnemy.y = 0f;
 
-            float enemyDistance =
-                awayFromEnemy.magnitude;
+            float enemyDistance = awayFromEnemy.magnitude;
 
             if (enemyDistance < enemySpacing &&
                 enemyDistance > 0.01f)
@@ -321,6 +318,23 @@ public class EnemyShip : MonoBehaviour
 
                 spacingDirection +=
                     awayFromEnemy.normalized * strength;
+            }
+        }
+
+        if (spacingDirection.sqrMagnitude > 0.01f)
+        {
+            spacingDirection.Normalize();
+
+            Vector3 spacingOrbitDirection =
+                Vector3.ProjectOnPlane(
+                    spacingDirection,
+                    directionToPlayer
+                );
+
+            if (spacingOrbitDirection.sqrMagnitude > 0.01f)
+            {
+                movementDirection +=
+                    spacingOrbitDirection.normalized * spacingStrength;
             }
         }
 

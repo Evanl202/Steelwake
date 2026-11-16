@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
 
-public class EnemyRegistry : MonoBehaviour
+public static class EnemyRegistry
 {
     public static readonly List<EnemyShip> ActiveEnemies =
         new List<EnemyShip>();
