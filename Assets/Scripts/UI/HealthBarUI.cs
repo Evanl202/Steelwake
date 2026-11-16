@@ -11,14 +11,17 @@ public class HealthBarUI : MonoBehaviour
 
     private void Update()
     {
-        FindActivePlayerShip();
+        if (player == null)
+        {
+            FindActivePlayerShip();
+        }
 
         if (player == null)
             return;
 
         if (healthSlider == null || healthText == null)
             return;
-        
+
         UpdateHealthBar();
     }
 
