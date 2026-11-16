@@ -140,9 +140,11 @@ public class AbilityUI : MonoBehaviour
     {
         bool burning = playerFire != null && playerFire.IsBurning;
 
-        if (firePanel != null)
-            firePanel.SetActive(burning);
-
+        if (firePanel != null && firePanel.activeSelf != burning)
+            {
+                firePanel.SetActive(burning);
+            }
+            
         if (burning && fireTimerText != null)
         {
             fireTimerText.text =
